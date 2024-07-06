@@ -1,0 +1,139 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\nazar\\source\\repos\\spotify\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\WeatherForecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\WeatherForecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Spotify.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\Spotify.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Controllers\\WeatherForecastController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\Controllers\\WeatherForecastController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Spotify.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\Spotify.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Spotify\\Spotify\\appsettings.Development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WeatherForecast.cs",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\WeatherForecast.cs",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\WeatherForecast.cs",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\WeatherForecast.cs",
+              "RelativeToolTip": "Spotify\\Spotify\\WeatherForecast.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-22T11:28:41.607Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Spotify.http",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Spotify.http",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\Spotify.http",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Spotify.http",
+              "RelativeToolTip": "Spotify\\Spotify\\Spotify.http",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-06-22T11:28:39.884Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\appsettings.json",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\appsettings.json",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\appsettings.json",
+              "RelativeToolTip": "Spotify\\Spotify\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-06-22T11:28:34.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\appsettings.Development.json",
+              "RelativeToolTip": "Spotify\\Spotify\\appsettings.Development.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-06-22T11:28:31.485Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Program.cs",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\Program.cs",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Program.cs",
+              "RelativeToolTip": "Spotify\\Spotify\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-22T11:28:29.576Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Spotify.csproj",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Spotify.csproj",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\Spotify.csproj",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Spotify.csproj",
+              "RelativeToolTip": "Spotify\\Spotify\\Spotify.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-06-22T11:28:27.563Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "WeatherForecastController.cs",
+              "DocumentMoniker": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Controllers\\WeatherForecastController.cs",
+              "RelativeDocumentMoniker": "Spotify\\Spotify\\Controllers\\WeatherForecastController.cs",
+              "ToolTip": "C:\\Users\\nazar\\source\\repos\\spotify\\Spotify\\Spotify\\Controllers\\WeatherForecastController.cs",
+              "RelativeToolTip": "Spotify\\Spotify\\Controllers\\WeatherForecastController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-22T11:28:12.562Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
