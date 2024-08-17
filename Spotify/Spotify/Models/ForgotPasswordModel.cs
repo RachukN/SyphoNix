@@ -1,8 +1,5 @@
-﻿namespace Spotify.Models
+﻿namespace Spotify.Models;
+public class ForgotPasswordModel
 {
-    public class ForgotPasswordModel
-    {
-        public string Email { get; set; }
-
-    }
+    public string Email { get; set; }
 }
