@@ -1,86 +1,155 @@
-﻿// Controllers/AuthController.cs
-using Azure.Core;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using System;
-using Spotify.Models;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Spotify.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-
+    [Route("auth")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly string clientId = "75abbe1a1b5d489badb6aa0b0b6c7f65";  // Replace with your actual Client ID
+        private readonly string clientSecret = "1d4b6037d0384b3a84aa24ea9cc413e4";  // Keep this secure
+ private readonly string redirectUri = "http://localhost:5059/Auth/callback";  // Ensure this matches the registered redirect URI
+        private readonly string spotifyAuthUrl = "https://accounts.spotify.com/authorize";
+        private readonly string spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        // Store code_verifier in a way that is accessible between requests
+        private static string codeVerifier;
+
+        [HttpGet("login")]
+        public IActionResult Login()
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            codeVerifier = GenerateCodeVerifier();
+            string codeChallenge = GenerateCodeChallenge(codeVerifier);
+            string state = GenerateRandomString(16);
+            string scope = "user-read-private user-read-email";
+
+            var queryParams = new Dictionary<string, string>
+            {
+                ["client_id"] = clientId,
+                ["response_type"] = "code",
+                ["redirect_uri"] = redirectUri,
+                ["state"] = state,
+                ["scope"] = scope,
+                ["code_challenge_method"] = "S256",
+                ["code_challenge"] = codeChallenge
+            };
+
+            string fullAuthUrl = QueryHelpers.AddQueryString(spotifyAuthUrl, queryParams);
+
+            return Redirect(fullAuthUrl);
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        [HttpGet("callback")]
+        public async Task<IActionResult> Callback(string code, string state)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(state))
             {
-                return Ok();
+                return BadRequest("Invalid request: Missing code or state.");
             }
 
-            return BadRequest(result.Errors);
+            var tokenResponse = await ExchangeCodeForToken(code, codeVerifier);
+            if (tokenResponse == null)
+            {
+                return BadRequest("Failed to obtain access token.");
+            }
+
+            var tokenData = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenResponse);
+            string accessToken = tokenData["access_token"];
+
+            Console.WriteLine("Access Token Obtained: " + accessToken);
+            Console.WriteLine("Redirecting to: http://localhost:3000/profile?access_token=" + accessToken);
+
+            // Redirect to the frontend with the access token
+            return Redirect($"http://localhost:3000/profile?access_token={accessToken}");
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+
+
+
+
+        private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-
-            if (result.Succeeded)
+            var client = new HttpClient();
+            var postData = new Dictionary<string, string>
             {
-                // Generate JWT token
-                return Ok(new { Token = "YourJWTToken" });
-            }
+                ["grant_type"] = "authorization_code",
+                ["code"] = code,
+                ["redirect_uri"] = redirectUri,
+                ["client_id"] = clientId,
+                ["client_secret"] = clientSecret,  // For PKCE, client secret might be omitted, verify correct use case
+                ["code_verifier"] = codeVerifier
+            };
 
-            return Unauthorized();
+            var request = new HttpRequestMessage(HttpMethod.Post, spotifyTokenUrl)
+            {
+                Content = new FormUrlEncodedContent(postData)
+            };
+
+            try
+            {
+                var response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Failed to obtain access token. Status Code: {response.StatusCode}, Error: {errorContent}");
+                    return null;
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Access Token Obtained Successfully");
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception occurred: {ex.Message}");
+                return null;
+            }
         }
 
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
+        private static string GenerateRandomString(int length)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new StringBuilder();
+            using (var rng = new RNGCryptoServiceProvider())
             {
-                return BadRequest("User not found");
+                byte[] uintBuffer = new byte[sizeof(uint)];
+
+                while (length-- > 0)
+                {
+                    rng.GetBytes(uintBuffer);
+                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
+                    res.Append(valid[(int)(num % (uint)valid.Length)]);
+                }
             }
 
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = Url.Action("ResetPassword", "Auth", new { token, email = model.Email }, Request.Scheme);
-
-            // Send resetLink via email
-            return Ok();
+            return res.ToString();
         }
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+        private string GenerateCodeVerifier()
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
+            return GenerateRandomString(128);
+        }
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
-            if (result.Succeeded)
+        private string GenerateCodeChallenge(string codeVerifier)
+        {
+            using (var sha256 = SHA256.Create())
             {
-                return Ok();
+                var challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
+                return Convert.ToBase64String(challengeBytes)
+                    .Replace("+", "-")
+                    .Replace("/", "_")
+                    .Replace("=", "");
             }
-
-            return BadRequest(result.Errors);
         }
     }
 }

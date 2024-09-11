@@ -7,8 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\**" />
+    <Content Remove="Repositories\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="Repositories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+   
+       <PackageReference Include="AspNetCore.SwaggerUI" Version="1.0.1" />
+   
+       <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
    
        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+   
+       <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
+   
+       <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
    
    
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
@@ -30,11 +45,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
    
-       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\" />
+   
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="8.0.8" />
+   
+   
+    <PackageReference Include="Security.Cryptography" Version="1.7.2" />
+   
+       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
   </ItemGroup>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -1,24 +1,19 @@
-
+// src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './components/Register';
 import Login from './components/Login';
-import ForgotPassword from './components/ForgotPassword';
-import ResetPassword from './components/ResetPassword';
-import CreatePlaylist from './components/Library/CreatePlaylist';
-import EditPlaylist from './components/Library/EditPlaylist';
-import PlaylistList from './components/Library/PlaylistList';
-const App = () => {
+import Callback from './components/Callback';
+import Profile from './components/Profile';
+import Categories from './components/Categories';
+
+const App: React.FC = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:email/:token" element={<ResetPassword />} />
-     <Route path="/library/create" element={<CreatePlaylist />} />
-             <Route path="/library/edit/:id" element={<EditPlaylist />} />
-             <Route path="/library" element={<PlaylistList />} />
+        <Route path="/callback" element={<Callback />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/categories" element={<Categories />} /> {/* Ensure this route exists */}
       </Routes>
     </Router>
   );

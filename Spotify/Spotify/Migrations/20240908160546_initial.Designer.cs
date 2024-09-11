@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Spotify.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240816153319_AddPlaylistAndTrackModels")]
-    partial class AddPlaylistAndTrackModels
+    [Migration("20240908160546_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,46 +1,20 @@
-// src/components/Login.tsx
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+
+// Define the backend URL directly in your code
+const BACKEND_URL = 'http://localhost:5059'; // Update to your backend's URL
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleLogin = async () => {
-    try {
-      await axios.post('/api/auth/login', { email, password, rememberMe });
-      alert('Login successful');
-    } catch (error) {
-      alert('Login failed');
-    }
+  const handleLogin = () => {
+    // Use the backend URL directly
+    window.location.href = `${BACKEND_URL}/auth/login`;
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <div>
-        <input
-          type="checkbox"
-          checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-        />
-        <label>Remember Me</label>
-      </div>
-      <button onClick={handleLogin}>Login</button>
-      <a href="/forgot-password">Forgot Password?</a>
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h1>Spotify Authorization with PKCE</h1>
+      <button onClick={handleLogin} style={{ padding: '10px 20px', fontSize: '16px' }}>
+        Login with Spotify
+      </button>
     </div>
   );
 };
