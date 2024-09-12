@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Logging.AddConsole();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -17,6 +18,20 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
     });
 });
 builder.Services.AddHttpClient();
@@ -30,6 +45,7 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,7 +56,23 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(); // Ensure CORS policy is applied correctly
 app.UseAuthorization();
+
+// Add global error handling middleware
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        // Log the exception (consider using a logging framework)
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("An unexpected error occurred.");
+    }
+});
 
 app.MapControllers();
 

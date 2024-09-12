@@ -11,9 +11,12 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav style={{ display: 'flex', justifyContent: 'space-around', padding: '10px', background: '#282c34', color: 'white' }}>
-      <Link to="/profile" style={{ color: 'white', textDecoration: 'none' }}>Profile</Link>
-      <Link to="/categories" style={{ color: 'white', textDecoration: 'none' }}>Categories</Link>
+    <nav style={{ padding: '10px', backgroundColor: '#282c34', color: 'white' }}>
+      <Link to="/" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Home</Link>
+      <Link to="/profile" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Profile</Link>
+      <Link to="/categories" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Categories</Link>
+      <Link to="/music" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Music</Link>
+      
       <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>Logout</button>
     </nav>
   );

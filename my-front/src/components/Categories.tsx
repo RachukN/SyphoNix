@@ -11,9 +11,19 @@ interface Category {
   icons: { url: string }[];
 }
 
+interface SearchResult {
+  id: string;
+  name: string;
+  href: string;
+  type: string;
+  images: { url: string }[];
+}
+
 const Categories: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -27,8 +37,7 @@ const Categories: React.FC = () => {
 
     const fetchCategories = async () => {
       try {
-        console.log('Fetching categories with token:', token); // Debug logging
-
+        setLoading(true);
         const response = await axios.get('https://api.spotify.com/v1/browse/categories', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,12 +48,9 @@ const Categories: React.FC = () => {
           },
         });
 
-        console.log('Response from Spotify API:', response); // Log the entire response
-
         if (response.status === 200 && response.data.categories.items) {
           setCategories(response.data.categories.items);
         } else {
-          console.error('Unexpected response format:', response);
           setError('Unexpected response format from Spotify API.');
         }
       } catch (error: any) {
@@ -58,20 +64,74 @@ const Categories: React.FC = () => {
     fetchCategories();
   }, [navigate]);
 
-  if (loading) {
-    return <div>Loading categories...</div>;
-  }
+  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+    const token = localStorage.getItem('spotifyAccessToken');
+    if (!token) {
+      navigate('/');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.get('https://api.spotify.com/v1/search', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: query,
+          type: 'album,artist,track,playlist',
+          limit: 10,
+          market: 'US',
+        },
+      });
+
+      // Process response to handle various result types
+      const albums = response.data.albums?.items || [];
+      const artists = response.data.artists?.items || [];
+      const tracks = response.data.tracks?.items || [];
+      const playlists = response.data.playlists?.items || [];
+
+      // Flatten results into a single array
+      const results = [...albums, ...artists, ...tracks, ...playlists].map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        href: item.external_urls.spotify,
+        type: item.type,
+        images: item.images || [],
+      }));
+
+      setSearchResults(results);
+      setError('');
+    } catch (error: any) {
+      console.error('Error during search:', error?.response || error.message || error);
+      setError('An error occurred during the search. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
       <NavBar />
       <div style={{ padding: '20px' }}>
         <h1>Spotify Categories</h1>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px' }}>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search for albums, artists, tracks, playlists..."
+            style={{ padding: '10px', width: '300px' }}
+          />
+          <button type="submit" style={{ padding: '10px' }}>Search</button>
+        </form>
+
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px', marginTop: '20px' }}>
           {categories.map((category) => (
             <div key={category.id} style={{ textAlign: 'center', padding: '10px', border: '1px solid #ddd' }}>
               {category.icons.length > 0 && (
@@ -84,6 +144,25 @@ const Categories: React.FC = () => {
                 </a>
               )}
               <p>{category.name}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2>Search Results</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px' }}>
+          {searchResults.map((result) => (
+            <div key={result.id} style={{ textAlign: 'center', padding: '10px', border: '1px solid #ddd' }}>
+              {result.images.length > 0 && (
+                <a href={result.href} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={result.images[0].url}
+                    alt={result.name}
+                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                  />
+                </a>
+              )}
+              <p>{result.name}</p>
+              <p>Type: {result.type}</p>
             </div>
           ))}
         </div>
