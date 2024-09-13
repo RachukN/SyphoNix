@@ -5,8 +5,8 @@ import './Sidebar.css';
 
 // Correct paths based on the file structure
 import HomeIcon from './Frame 41.png';
-import SearchIcon from './Frame 42.png';
-import LibraryIcon from './Frame 57.png';
+import SearchIcon from './Frame 57.png';
+import LibraryIcon from './Frame 42.png';
 import Logo from './SymphoNix logo.png';
 import LikedTracksIcon from './Rectangle 2.png';
 
