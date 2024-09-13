@@ -13,7 +13,13 @@
   .filter{
     position: fixed ;
     top: 0;
-    right: 0;
+    right: 0px;
+  }
+  .filter-f{
+    position: fixed ;
+    top: 0;
+    left: 320px;
+    width: 300px;
   }
   .content {
     margin-top: -65px;

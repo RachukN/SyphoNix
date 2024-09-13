@@ -13,6 +13,7 @@ import SymphoNixAlbums from './SymphoNixAlbums';
 import PopularAlbums from './PopularAlbums';
 import PopularRadio from './PopularRadio';
 import Footer from './Footer';
+import Filter from './Filter';
 const MainPage: React.FC = () => {
   return (
     <div className="main-container">
@@ -60,11 +61,12 @@ const MainPage: React.FC = () => {
         </div>
         <div className='cont' >
       <Footer/>
+      
       </div>
       </div>
       
       <div className='filter'><TopNavigation /></div>
-     
+      <div className='filter-f'> <Filter/></div>
     </div>
   );
 };

@@ -8,9 +8,7 @@ const TopNavigation: React.FC = () => {
   return (
     <div className="top-navigation">
       <div className="nav-left">
-        <button className="nav-button">Усе</button>
-        <button className="nav-button">Музика</button>
-        <button className="nav-button">Подкасти</button>
+        
       </div>
       <div className="nav-right">
         <img src={Bell} alt="Bell" className="icon" />

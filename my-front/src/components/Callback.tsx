@@ -23,7 +23,8 @@ const Callback: React.FC = () => {
           localStorage.setItem('spotifyAccessToken', token);
           console.log('Token stored:', localStorage.getItem('spotifyAccessToken')); // Log to confirm storage
 
-          navigate('/home');
+          // Redirect to the home page
+          navigate('/profile');
         })
         .catch((error) => {
           console.error('Error during the authorization process', error);

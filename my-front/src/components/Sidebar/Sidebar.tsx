@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <Link to="/categories" className="sidebar-link">
+            <Link to="/searchh" className="sidebar-link">
               <img src={SearchIcon} alt="Search" className="sidebar-icon" />
               Пошук
             </Link>
