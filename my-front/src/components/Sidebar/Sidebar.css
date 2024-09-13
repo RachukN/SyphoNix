@@ -1,0 +1,130 @@
+/* src/components/Sidebar.css */
+.sidebar {
+    width: 280px;
+    background: var(--Light-black, #1A2125); /* Dark background */
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar-logo {
+    width: 250px;
+    height: 100px;
+    margin-right: 10px;
+    color: #00FF03;
+  }
+  
+  .sidebar-title {
+    
+    font-weight: bold;
+    color: #00FF03; /* Spotify green color */
+  }
+  
+  .sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 25px;
+  }
+  
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #4BDD4C;
+    transition: color 0.3s;
+  }
+  
+  .sidebar-link:hover {
+    color: #00FF03; /* Hover color */
+  }
+  
+  .sidebar-icon {
+    margin-right: 10px;
+    margin-left: 20px;
+    width: 35px;
+    height: 35px;
+    
+  }
+  .sidebar-icon-h {
+    margin-right: 10px;
+    margin-left: 26px;
+    width: 23px;
+    height: 23px;
+  }
+  .sidebar-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .sidebar-button {
+    display: inline-flex;
+padding: 8px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 5px;
+background: var(--white-19, rgba(255, 255, 255, 0.19));
+color: var(--Light-black, #1A2125);
+/* txt16(semi bold) */
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+}
+  
+  .sidebar-button:hover {
+    display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+background: var(--White, #FFF);
+
+  }
+  
+  .sidebar-content {
+    margin-top: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+  
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  
+  .sidebar-item-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .sidebar-item-title {
+    font-weight: bold;
+    
+    margin: 0;
+  }
+  
+  .sidebar-item-subtitle {
+    font-size: 12px;
+    color: #b3b3b3;
+    margin: 0;
+  }
+  

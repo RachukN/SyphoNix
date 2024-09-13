@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Spotify.Controllers
@@ -9,12 +10,11 @@ namespace Spotify.Controllers
     public class SpotifyController : ControllerBase
     {
         private readonly HttpClient _httpClient;
-
         public SpotifyController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient();
         }
-
+        
         [HttpGet("categories")]
         public async Task<IActionResult> GetCategories([FromQuery] string accessToken)
         {

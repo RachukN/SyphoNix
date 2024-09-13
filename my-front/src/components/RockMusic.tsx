@@ -1,9 +1,9 @@
-// src/components/Music.tsx
+// src/components/RockMusic.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Left from './Main/Frame 73.png';
 import Right from './Main/Frame 72.png';
-import '../styles/Music.css'
+import '../styles/Music.css';
 
 import { useGlobalPlayer } from './Player/GlobalPlayer'; // Use global player for track playback
 
@@ -19,7 +19,7 @@ interface Track {
   external_urls: { spotify: string } | null;
 }
 
-const Music: React.FC = () => {
+const RockMusic: React.FC = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -27,7 +27,7 @@ const Music: React.FC = () => {
   const { playTrack } = useGlobalPlayer(); // Get playTrack function from global player context
 
   useEffect(() => {
-    const fetchTracks = async () => {
+    const fetchRockTracks = async () => {
       const token = localStorage.getItem('spotifyAccessToken');
       if (!token) {
         console.error('No access token found');
@@ -36,40 +36,33 @@ const Music: React.FC = () => {
 
       try {
         setLoading(true);
-        const trackIds = [
-          '7ouMYWpwJ422jRcDASZB7P', '4VqPOruhp5EdPBeR92t6lQ', '2takcwOaAZWiXQijPHIx7B',
-          '1M4qEo4HE3PRaCOM7EXNJq', '1rgnBhdG2JDFTbYkYRZAku', '0VjIjW4GlUZAMYd2vXMi3b',
-          '7qiZfU4dY1lWllzX7mPBI3', '3n3Ppam7vgaVa1iaRUc9Lp', '2TpxZ7JUBn3uw46aR7qd6V',
-          '4RVwu0g32PAqgUiJoXsdF8', '2WfaOiMkCvy7F5fcp2zZ8L', '5KawlOMHjWeUjQtnuRs22c',
-          '6UelLqGlWMcVH1E5c4H7lY', '6habFhsOp2NvshLv26DqMb', '7e89621JPkKaeDSTQ3avtg',
-          '2Fxmhks0bxGSBdJ92vM42m', '6DCZcSspjsKoFjzjrWoCdn', '1fDsrQ23eTAVFElUMaf38X',
-          '2xLMifQCjDGFmkHkpNLD9h', '0e7ipj03S05BNilyu5bRzt'
-        ].join(',');
-
-        const response = await axios.get(`https://api.spotify.com/v1/tracks`, {
+        // Fetch rock tracks by specifying a genre
+        const response = await axios.get(`https://api.spotify.com/v1/search`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            ids: trackIds,
-            market: 'US',
+            q: 'genre:rock', // Search query for rock genre
+            type: 'track',
+            market: 'UA',
+            limit: 20, // Fetch 20 rock tracks
           },
         });
 
-        if (response.status === 200 && response.data.tracks) {
-          setTracks(response.data.tracks);
+        if (response.status === 200 && response.data.tracks.items) {
+          setTracks(response.data.tracks.items);
         } else {
           setError('Unexpected response format from Spotify API.');
         }
       } catch (error: any) {
-        console.error('Error fetching tracks:', error?.response || error.message || error);
-        setError('An error occurred while fetching tracks.');
+        console.error('Error fetching rock tracks:', error?.response || error.message || error);
+        setError('An error occurred while fetching rock tracks.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTracks();
+    fetchRockTracks();
   }, []);
 
   const scrollLeft = () => {
@@ -91,7 +84,7 @@ const Music: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading tracks...</div>;
+    return <div>Loading rock tracks...</div>;
   }
 
   if (error) {
@@ -99,28 +92,27 @@ const Music: React.FC = () => {
   }
 
   if (tracks.length === 0) {
-    return <div>No tracks available.</div>;
+    return <div>No rock tracks available.</div>;
   }
 
   return (
-    <div>
+    <div className='music-c'>
       <div style={{ padding: '20px', textAlign: 'center' }}>
-        
         <div style={{ position: 'relative', width: '100%' }}>
-        
-          <img src={Left} alt="Bell"  className="icon, img-l" onClick={scrollLeft} />
-          <img src={Right} alt="Bell" className="icon, img-r" onClick={scrollRight} />
-        
+          <img src={Left} alt="Scroll Left" className="icon, img-l" onClick={scrollLeft} />
+          <img src={Right} alt="Scroll Right" className="icon, img-r" onClick={scrollRight} />
+
           <div
             ref={scrollRef}
+            className='music-c'
             style={{
               width: '1100px',
-              height: '250px',
               overflowX: 'hidden',
               display: 'flex',
               gap: '20px',
               padding: '10px 0',
               scrollBehavior: 'smooth',
+              
             }}
           >
             {tracks.map((track) => {
@@ -158,4 +150,4 @@ const Music: React.FC = () => {
   );
 };
 
-export default Music;
+export default RockMusic;

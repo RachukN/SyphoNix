@@ -1,0 +1,70 @@
+/* TopNavigation.css */
+.top-navigation {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    background: var(--Black, #13191C);
+    height: 50px; 
+    width: 1139px;
+  }
+  
+  .nav-left {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .nav-button {
+    display: flex;
+padding: 10px 26px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 5px;
+background: var(--white-19, rgba(255, 255, 255, 0.19));
+  }
+  
+  .nav-button.active {
+    background-color: #ffffff;
+    color: #121212;
+  }
+  
+  .nav-button:hover {
+    display: flex;
+padding: 10px 26px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 5px;
+background: var(--White, #FFF);
+color: var(--Black, #13191C);
+  }
+  
+  .nav-right {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    right: 0;
+  }
+  
+  .icon {
+    
+    width: 30px;
+    height: 30px; /* Spotify green color */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-right: 10px;
+  }
+  
+  .icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #00FF03;
+    margin-right: 20px;
+  }
+  
