@@ -1,0 +1,16 @@
+/* Music.css */
+.img-r{
+  position: absolute;
+  right: 60px;
+  top: -40px;
+  margin-right: 10px;
+}
+.img-l{
+  position: absolute;
+  right: 60px;
+  top: -40px;
+  margin-right: 65px;
+}
+.auth{
+  color: #00FF03;
+}

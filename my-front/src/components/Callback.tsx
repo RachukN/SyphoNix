@@ -23,7 +23,7 @@ const Callback: React.FC = () => {
           localStorage.setItem('spotifyAccessToken', token);
           console.log('Token stored:', localStorage.getItem('spotifyAccessToken')); // Log to confirm storage
 
-          // Redirect to the profile page
+          // Redirect to the home page
           navigate('/profile');
         })
         .catch((error) => {
