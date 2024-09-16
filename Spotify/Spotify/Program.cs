@@ -5,7 +5,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
 builder.Logging.AddConsole();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -42,9 +41,12 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:3000") // Allow the frontend origin
                .AllowAnyHeader()
-               .AllowAnyMethod();
+               .AllowAnyMethod()
+               .AllowCredentials(); // Include credentials if needed
     });
 });
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -56,7 +58,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors(); // Ensure CORS policy is applied correctly
+
 app.UseAuthorization();
 
 // Add global error handling middleware

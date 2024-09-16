@@ -17,7 +17,6 @@ const NavBar: React.FC = () => {
       <Link to="/categories" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Categories</Link>
       <Link to="/music" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Music</Link>
       <Link to="/home" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Home</Link>
-      <Link to="/rockmusic" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>rock</Link>
       
       <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>Logout</button>
     </nav>

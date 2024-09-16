@@ -1,0 +1,113 @@
+
+  /* src/components/MainPage.css */
+
+  .main-container {
+    display: flex;
+  }
+  .sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+
+  }
+  .filter-user{
+    position:fixed ;
+    top: 20px;
+    right: 0px;
+    width: 0px;
+    
+  }
+  .player{
+    position: fixed;
+    bottom: 0;
+  }
+  .content {
+    margin-top: -65px;
+    margin-left: 320px; /* Sidebar width */
+    flex-grow: 1;
+    overflow-y: auto;
+    background: var(--Black, #13191C);
+    position: sticky;
+    right: 0;
+    width: 1199px;
+    }
+  .banner-container-user {
+    display: flexbox;
+    /* Змініть розмір відповідно до ваших потреб */
+    margin-bottom: 20px; /* Відстань від банеру до наступного контенту */
+    
+    overflow: hidden;
+}
+h2{
+  margin-left: 20px;
+  color: #00FF03;
+  margin-bottom: -10px;
+  font-size: 30px;
+}
+.music{
+margin-left: 30px;
+}
+.cont{
+  margin-top: 0px;
+  margin-left: 30px;
+  
+}
+.section-titleh{
+    color: var(--gray-white, #CECECE);
+
+/* txt16 (regular) */
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+margin-left: 25px;
+}
+.banner-image-user {
+  margin-left: -90px;
+    width: 1300px;
+    height: 360px;
+    margin-bottom: 50px;
+  }
+.inf{
+    margin-left: 50px;
+    margin-top: -270px;
+}
+.title{
+    margin-top: -60px;
+    
+}
+.profile-image{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #00FF03;
+    margin-right: 20px;
+}
+.profile-details{
+    margin-top: -30px;
+    color: var(--White, #FFF);
+
+/* txt32 (semi bold) */
+font-size: 16px;
+font-weight: 600;
+
+}
+.name{
+    margin-left: 170px;
+    margin-top: -100px;
+}
+.seting{
+    height: 25px;
+    background: var(--Light-black, #1A2125);display: flex;
+    width: 1200;
+    height: 25px;
+    padding-left: 367px;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-top: 50px;
+}
+.seting-img{
+    margin-left: -320px;
+}

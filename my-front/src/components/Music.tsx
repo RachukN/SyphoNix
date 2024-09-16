@@ -3,9 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Left from './Main/Frame 73.png';
 import Right from './Main/Frame 72.png';
-import '../styles/Music.css'
-
-import { useGlobalPlayer } from './Player/GlobalPlayer'; // Use global player for track playback
+import '../styles/Music.css';
 
 interface Track {
   id: string;
@@ -19,12 +17,16 @@ interface Track {
   external_urls: { spotify: string } | null;
 }
 
+interface Device {
+  id: string;
+  is_active: boolean;
+}
+
 const Music: React.FC = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { playTrack } = useGlobalPlayer(); // Get playTrack function from global player context
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -72,6 +74,69 @@ const Music: React.FC = () => {
     fetchTracks();
   }, []);
 
+  const getActiveDeviceId = async (): Promise<string | null> => {
+    const token = localStorage.getItem('spotifyAccessToken');
+
+    if (!token) {
+      console.error('No access token found');
+      return null;
+    }
+
+    try {
+      const response = await axios.get('https://api.spotify.com/v1/me/player/devices', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const devices: Device[] = response.data.devices;
+      if (devices.length === 0) {
+        console.error('No active devices found');
+        return null;
+      }
+
+      const activeDevice = devices.find((device: Device) => device.is_active);
+      return activeDevice ? activeDevice.id : devices[0].id;
+    } catch (error) {
+      console.error('Error fetching devices:', error);
+      return null;
+    }
+  };
+
+  const handlePlayTrack = async (trackUri: string) => {
+    const token = localStorage.getItem('spotifyAccessToken');
+
+    if (!token) {
+      console.error('No access token found');
+      return;
+    }
+
+    const deviceId = await getActiveDeviceId();
+    if (!deviceId) {
+      alert('Please open Spotify on one of your devices to start playback.');
+      return;
+    }
+
+    try {
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        {
+          uris: [trackUri],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('Track is playing');
+    } catch (error: any) {
+      console.error('Error playing track:', error?.response || error.message || error);
+    }
+  };
+
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
@@ -105,12 +170,10 @@ const Music: React.FC = () => {
   return (
     <div>
       <div style={{ padding: '20px', textAlign: 'center' }}>
-        
         <div style={{ position: 'relative', width: '100%' }}>
-        
-          <img src={Left} alt="Bell"  className="icon, img-l" onClick={scrollLeft} />
-          <img src={Right} alt="Bell" className="icon, img-r" onClick={scrollRight} />
-        
+          <img src={Left} alt="Scroll Left" className="  img-l" onClick={scrollLeft} />
+          <img src={Right} alt="Scroll Right" className="  img-r" onClick={scrollRight} />
+
           <div
             ref={scrollRef}
             style={{
@@ -124,13 +187,17 @@ const Music: React.FC = () => {
             }}
           >
             {tracks.map((track) => {
-              if (!track || !track.album || !track.external_urls) {
+              if (!track || !track.album || !track.external_urls || !track.external_urls.spotify) {
                 return null;
               }
               return (
                 <div
                   key={track.id}
-                  onClick={() => track.preview_url && playTrack(track.preview_url)}
+                  onClick={() => {
+                    if (track.external_urls && track.external_urls.spotify) {
+                      handlePlayTrack(track.external_urls.spotify);
+                    }
+                  }}
                   style={{
                     minWidth: '140px',
                     textAlign: 'center',
@@ -151,7 +218,6 @@ const Music: React.FC = () => {
               );
             })}
           </div>
-
         </div>
       </div>
     </div>

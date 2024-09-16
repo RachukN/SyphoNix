@@ -1,18 +1,20 @@
-// src/components/Artists.tsx
+// src/components/TopArtists.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Left from './Main/Frame 73.png';
 import Right from './Main/Frame 72.png';
-import '../styles/Music.css';
+import '../styles/Music.css'; // Ensure you have the correct path
 
+// Define the interfaces for types used in this component
 interface Artist {
   id: string;
   name: string;
   images: { url: string }[];
   external_urls: { spotify: string };
+  popularity: number; // Adding popularity attribute to sort artists
 }
 
-const Artists: React.FC = () => {
+const TopArtists: React.FC = () => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,12 +25,13 @@ const Artists: React.FC = () => {
       const token = localStorage.getItem('spotifyAccessToken');
       if (!token) {
         console.error('No access token found');
+        setError('No access token found');
         return;
       }
 
       try {
         setLoading(true);
-        // List of artist IDs
+        // List of popular artist IDs (you can replace these with actual IDs or make a dynamic request)
         const artistIds = [
           '2CIMQHirSU0MQqyYHq0eOx', '57dN52uHvrHOxijzpIgu3E', '1vCWHaC5f2uS3yhpwWbIA6',
           '6eUKZXaKkcviH0Ku9w2n3V', '3TVXtAsR1Inumwj472S9r4', '66CXWjxzNUsdJxJ2JdwvnR',
@@ -49,7 +52,8 @@ const Artists: React.FC = () => {
         });
 
         if (response.status === 200 && response.data.artists) {
-          setArtists(response.data.artists);
+          const sortedArtists = response.data.artists.sort((a: Artist, b: Artist) => b.popularity - a.popularity);
+          setArtists(sortedArtists);
         } else {
           setError('Unexpected response format from Spotify API.');
         }
@@ -98,8 +102,8 @@ const Artists: React.FC = () => {
     <div className='music-c'>
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <div style={{ position: 'relative', width: '100%' }}>
-          <img src={Left} alt="Scroll Left" className="  img-l" onClick={scrollLeft} />
-          <img src={Right} alt="Scroll Right" className="  img-r" onClick={scrollRight} />
+          <img src={Left} alt="Scroll Left" className="img-l" onClick={scrollLeft} />
+          <img src={Right} alt="Scroll Right" className="img-r" onClick={scrollRight} />
 
           <div
             ref={scrollRef}
@@ -116,32 +120,32 @@ const Artists: React.FC = () => {
             {artists.map((artist) => (
               <div
                 key={artist.id}
+                className="img-container"
                 style={{
                   minWidth: '140px',
                   textAlign: 'center',
                   display: 'inline-block',
                   cursor: 'pointer',
+                  position: 'relative',
                 }}
               >
                 <a href={artist.external_urls.spotify} target="_blank" rel="noopener noreferrer">
-                  {artist.images.length > 0 && (
-                    <img
-                      src={artist.images[0].url}
-                      alt={artist.name}
-                      style={{ width: '140px', height: '140px', borderRadius: '50%' }} // Circular image
-                    />
-                  )}
+                  <img
+                    src={artist.images.length > 0 ? artist.images[0].url : 'default-artist.png'}
+                    alt={artist.name}
+                    style={{ width: '140px', height: '140px', borderRadius: '50%' }} // Circular image
+                  />
+                  
                   <p className='auth' style={{ margin: '10px 0' }}>{artist.name}</p>
-                  <p style={{ fontSize: 'small', color: '#666' }}>Виконавець</p> {/* Subtitle */}
+                  <p style={{ fontSize: 'small', color: '#666' }}>Виконавець</p>
                 </a>
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </div>
   );
 };
 
-export default Artists;
+export default TopArtists;
