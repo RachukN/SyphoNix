@@ -4,7 +4,10 @@
   padding: 2rem;
   text-align: center;
 }
-
+.player-item{
+  position: fixed;
+  bottom: 0px;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
