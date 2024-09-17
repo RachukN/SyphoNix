@@ -10,6 +10,10 @@
     top: 0;
 
   }
+  .player{
+    position: fixed;
+    bottom: 0;
+  }
   .filter{
     position: fixed ;
     top: 0;

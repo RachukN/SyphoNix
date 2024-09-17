@@ -98,8 +98,8 @@ const PopularAlbums: React.FC = () => {
     <div className='music-c'>
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <div style={{ position: 'relative', width: '100%' }}>
-          <img src={Left} alt="Scroll Left" className="icon, img-l" onClick={scrollLeft} />
-          <img src={Right} alt="Scroll Right" className="icon, img-r" onClick={scrollRight} />
+          <img src={Left} alt="Scroll Left" className="  img-l" onClick={scrollLeft} />
+          <img src={Right} alt="Scroll Right" className="  img-r" onClick={scrollRight} />
 
           <div
             ref={scrollRef}

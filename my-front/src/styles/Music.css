@@ -1,16 +1,66 @@
-/* Music.css */
-.img-r{
+.music-c {
+  position: relative;
+}
+
+.img-container {
+  position: relative;
+  display: inline-block;
+}
+.public{
+  margin-left: -4px;
+}
+.m-5{
+  margin-left: 15px;
+}
+.play-icon {
+  position: absolute;
+  top: 31%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+}
+
+.play-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.img-container:hover .play-icon {
+  display: flex; /* Show on hover */
+}
+
+.img-r {
   position: absolute;
   right: 60px;
   top: -40px;
   margin-right: 10px;
+  width: 25px;
+  height: 25px;
 }
-.img-l{
+
+.img-l {
   position: absolute;
   right: 60px;
   top: -40px;
   margin-right: 65px;
+  width: 25px;
+  height: 25px;
 }
-.auth{
+
+.img-r:hover {
+  transform: scale(1.1);
+}
+
+.img-l:hover {
+  transform: scale(1.1);
+}
+
+.auth {
   color: #00FF03;
 }

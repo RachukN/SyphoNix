@@ -17,7 +17,7 @@ namespace Spotify.Controllers
     {
         private readonly string clientId = "75abbe1a1b5d489badb6aa0b0b6c7f65";  // Replace with your actual Client ID
         private readonly string clientSecret = "1d4b6037d0384b3a84aa24ea9cc413e4";  // Keep this secure
- private readonly string redirectUri = "http://localhost:5059/Auth/callback";  // Ensure this matches the registered redirect URI
+        private readonly string redirectUri = "http://localhost:5059/Auth/callback";  // Ensure this matches the registered redirect URI
         private readonly string spotifyAuthUrl = "https://accounts.spotify.com/authorize";
         private readonly string spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 
@@ -30,7 +30,19 @@ namespace Spotify.Controllers
             codeVerifier = GenerateCodeVerifier();
             string codeChallenge = GenerateCodeChallenge(codeVerifier);
             string state = GenerateRandomString(16);
-            string scope = "user-read-private user-read-email";
+
+            // Include all required scopes
+            var scopes = new List<string>
+    {
+        "user-read-private",
+        "user-read-email",
+        "user-modify-playback-state",
+        "user-read-playback-state",
+        "streaming"
+    };
+
+            string scope = "user-read-private user-read-email user-modify-playback-state user-read-playback-state streaming";
+
 
             var queryParams = new Dictionary<string, string>
             {
@@ -48,6 +60,9 @@ namespace Spotify.Controllers
             return Redirect(fullAuthUrl);
         }
 
+
+
+
         [HttpGet("callback")]
         public async Task<IActionResult> Callback(string code, string state)
         {
@@ -63,29 +78,31 @@ namespace Spotify.Controllers
             }
 
             var tokenData = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenResponse);
-            string accessToken = tokenData["access_token"];
+            if (!tokenData.TryGetValue("access_token", out string accessToken))
+            {
+                return BadRequest("Access token not found in response.");
+            }
+
+            // Optionally handle refresh token
+            string refreshToken = tokenData.ContainsKey("refresh_token") ? tokenData["refresh_token"] : null;
+
+            // You can store tokens in a secure way, like a server-side session or secure cookie
+            // Store access token securely, and use refresh tokens if available
 
             Console.WriteLine("Access Token Obtained: " + accessToken);
-            Console.WriteLine("Redirecting to: http://localhost:3000/profile?access_token=" + accessToken);
-
-            // Redirect to the frontend with the access token
+            // Redirect to frontend with the access token
             return Redirect($"http://localhost:3000/profile?access_token={accessToken}");
         }
 
-
-
-
-
         private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)
         {
-            var client = new HttpClient();
+            using var client = new HttpClient();
             var postData = new Dictionary<string, string>
             {
                 ["grant_type"] = "authorization_code",
                 ["code"] = code,
                 ["redirect_uri"] = redirectUri,
                 ["client_id"] = clientId,
-                ["client_secret"] = clientSecret,  // For PKCE, client secret might be omitted, verify correct use case
                 ["code_verifier"] = codeVerifier
             };
 
@@ -97,7 +114,6 @@ namespace Spotify.Controllers
             try
             {
                 var response = await client.SendAsync(request);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -116,6 +132,7 @@ namespace Spotify.Controllers
             }
         }
 
+
         private static string GenerateRandomString(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -123,7 +140,6 @@ namespace Spotify.Controllers
             using (var rng = new RNGCryptoServiceProvider())
             {
                 byte[] uintBuffer = new byte[sizeof(uint)];
-
                 while (length-- > 0)
                 {
                     rng.GetBytes(uintBuffer);

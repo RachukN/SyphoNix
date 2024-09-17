@@ -1,0 +1,58 @@
+.top-tracks {
+    width: 1150px; /* Adjust according to your layout */
+    margin-left: -55px;
+    padding: 20px;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+  }
+  
+  .track-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 14px;
+  }
+  
+  .track-index {
+    width: 30px;
+    text-align: right;
+    margin-right: 20px;
+    color: #888;
+  }
+  
+  .track-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    margin-right: 15px;
+  }
+  
+  .track-info {
+    flex: 2; /* Adjusts the space ratio between the items */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .track-name {
+    font-weight: bold;
+    margin: 0;
+    color: #ffffff;
+  }
+  
+  .track-artist {
+    color: #888;
+    margin: 0;
+  }
+  
+  .track-album {
+    flex: 2; /* Aligns and spaces album names centrally */
+    color: #888;
+    text-align: center;
+  }
+  
+  .track-duration {
+    flex: 1; /* Adjusts the space ratio between the items */
+    text-align: right;
+    color: #888;
+  }
+  

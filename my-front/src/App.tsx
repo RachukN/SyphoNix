@@ -9,6 +9,7 @@ import { GlobalPlayerProvider } from './components/Player/GlobalPlayer';
 import MainPage from './components/Mainpage';
 import Search from './components/Search';
 import SearchResults from './components/SearchResults';
+import UserProfile from './components/Home/UserProfile';
 
 const App: React.FC = () => {
   return (
@@ -22,11 +23,14 @@ const App: React.FC = () => {
         <Route path="/categories" element={<Categories />} /> 
         <Route path="/searchh" element={<Search />} />
         <Route path="/search" element={<SearchResults />} />
-      
+        <Route path="/userprofile" element={<UserProfile />} />
+        
         
       </Routes>
     </Router>
+    
     </GlobalPlayerProvider>
+    
   );
 };
 

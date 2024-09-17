@@ -14,6 +14,7 @@ import PopularAlbums from './PopularAlbums';
 import PopularRadio from './PopularRadio';
 import Footer from './Footer';
 import Filter from './Filter';
+import PlayerControls from './PlayerControls';
 const MainPage: React.FC = () => {
   return (
     <div className="main-container">
@@ -60,11 +61,11 @@ const MainPage: React.FC = () => {
          <div className="h2"><PopularRadio/></div>
         </div>
         <div className='cont' >
-      <Footer/>
-      
+        <Footer/>
+        
       </div>
       </div>
-      
+      <div className='player'><PlayerControls/></div>
       <div className='filter'><TopNavigation /></div>
       <div className='filter-f'> <Filter/></div>
     </div>
