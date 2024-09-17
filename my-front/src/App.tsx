@@ -10,13 +10,11 @@ import MainPage from './components/Mainpage';
 import Search from './components/Search';
 import SearchResults from './components/SearchResults';
 import UserProfile from './components/Home/UserProfile';
-import PlayerControls from './components/PlayerControls';
 
 
 const App: React.FC = () => {
   return (
     <GlobalPlayerProvider>
-     <div className='player-item'><PlayerControls/></div> 
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
