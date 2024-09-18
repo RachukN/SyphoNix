@@ -34,7 +34,10 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   useEffect(() => {
     const token = localStorage.getItem('spotifyAccessToken');
-    if (!token) return;
+    if (!token) {
+      console.error('No Spotify access token found');
+      return;
+    }
 
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -51,33 +54,33 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
         setPlayer(spotifyPlayer);
 
         spotifyPlayer.addListener('ready', ({ device_id }) => {
-          console.log('Ready with Device ID', device_id);
+          console.log('Player is ready with Device ID:', device_id);
           setDeviceId(device_id);
         });
 
         spotifyPlayer.addListener('not_ready', ({ device_id }) => {
-          console.log('Device ID has gone offline', device_id);
-          setDeviceId(null); // Clear device ID when offline
-        });
-
-        spotifyPlayer.addListener('player_state_changed', (state) => {
-          console.log('Player state changed', state);
+          console.log('Device went offline with Device ID:', device_id);
+          setDeviceId(null);
         });
 
         spotifyPlayer.addListener('initialization_error', ({ message }) => {
-          console.error('Failed to initialize', message);
+          console.error('Initialization error:', message);
         });
 
         spotifyPlayer.addListener('authentication_error', ({ message }) => {
-          console.error('Failed to authenticate', message);
+          console.error('Authentication error:', message);
         });
 
         spotifyPlayer.addListener('account_error', ({ message }) => {
-          console.error('Failed to validate Spotify account', message);
+          console.error('Account error:', message);
         });
 
         spotifyPlayer.addListener('playback_error', ({ message }) => {
-          console.error('Failed to perform playback', message);
+          console.error('Playback error:', message);
+        });
+
+        spotifyPlayer.addListener('player_state_changed', state => {
+          console.log('Player state changed:', state);
         });
 
         spotifyPlayer.connect().then(success => {
@@ -99,7 +102,7 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   const play = () => {
     if (!player) {
-      console.error('Player is not available for play');
+      console.error('Player is not available to play');
       return;
     }
     player.resume().catch(error => {
@@ -110,7 +113,7 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   const pause = () => {
     if (!player) {
-      console.error('Player is not available for pause');
+      console.error('Player is not available to pause');
       return;
     }
     player.pause().catch(error => {
@@ -121,7 +124,7 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   const next = () => {
     if (!player) {
-      console.error('Player is not available for next track');
+      console.error('Player is not available to skip to next track');
       return;
     }
     player.nextTrack().catch(error => {
@@ -132,7 +135,7 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   const previous = () => {
     if (!player) {
-      console.error('Player is not available for previous track');
+      console.error('Player is not available to skip to previous track');
       return;
     }
     player.previousTrack().catch(error => {
@@ -143,7 +146,10 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   const repeat = (mode: 'track' | 'context' | 'off') => {
     const token = localStorage.getItem('spotifyAccessToken');
-    if (!token) return;
+    if (!token) {
+      console.error('No Spotify access token found for repeat');
+      return;
+    }
 
     axios.put(
       `https://api.spotify.com/v1/me/player/repeat?state=${mode}`,
@@ -162,7 +168,10 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
 
   const shuffle = (state: boolean) => {
     const token = localStorage.getItem('spotifyAccessToken');
-    if (!token) return;
+    if (!token) {
+      console.error('No Spotify access token found for shuffle');
+      return;
+    }
 
     axios.put(
       `https://api.spotify.com/v1/me/player/shuffle?state=${state}`,
@@ -180,9 +189,8 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
   };
 
   const refreshToken = async () => {
-    // Implement the logic to refresh your token using the refresh token
-    console.log('Refreshing token...');
-    // Example code to refresh token would go here
+    console.log('Attempting to refresh Spotify access token...');
+    // Implement the refresh token logic here
   };
 
   return (

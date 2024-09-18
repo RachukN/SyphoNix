@@ -1,4 +1,126 @@
-.player-item{
+
+  .img{
+    width: 75px;
+    height: 75px;
+    border-radius: 10%;
+    
+  }
+  .alb{
+    position: relative;
+    right: -20px;
+    justify-content:right ;
+    margin-top: 5px;
+
+  }
+  button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    
+  }
+.imgbtb{
+    width: 10px;
+    height: 10px;
+  }
+  .player-controls {
+    
+    width: 1520px;
+    position: relative;
+  display: flex;
+  justify-content: space-between; /* Блоки "прилипають" до різних сторін */
+  align-items: center; 
+  background: #0D0D0D;
+  height: 90px;
+
+  }
+  
+  .info {
+    position: relative;
+    display: flex;
+    justify-content:right ; /* Блоки "прилипають" до різних сторін */
+    align-items: center; 
+  }
+  
+  .track-info .img {
+    margin-right: 15px;
+  }
+  
+  .track-details {
+    position: relative;
+    right: -40px;
+  }
+  .nam{
+    margin-bottom: 10px;
+    font-size: 20px;
+    margin-top: 0px;
+  }
+  .track-details .name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .track-details p {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .track-progress {
+    display: flex;
     position: fixed;
-    bottom: 0px;
-}
+    bottom: 0;
+    left: 550px;
+    align-items: center;
+    margin-left: 20px;
+  }
+  
+  .track-progress .title {
+    margin: 0 10px;
+  }
+  
+  .tools {
+    justify-content: center; /* Вирівнювання по горизонталі */
+  align-items: center;
+  display: flex;
+  position: fixed;
+  bottom: 40px;
+  left: 620px;
+  align-items: center;
+  margin-left: 20px;
+  }
+  
+  .tools img {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .zvuk {
+    position: fixed;
+    right: 120px;
+    cursor: pointer;
+  }
+  .vic{
+    position: fixed;
+    right: 20px;
+  }
+  
+button:hover{
+    transform: scale(1.1);
+    outline: none;
+    border: none;
+  }
+ .zvuk:hover{
+    transform: scale(1.1);
+
+  }
+  img:hover{
+    transform: scale(1.05);
+  }
+ .vic:hover{
+    transform: scale(1.1);
+
+  }
+  .title{
+    color: var(--Green, #00FF03);
+    font-size: 18px;
+  }

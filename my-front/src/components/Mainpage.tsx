@@ -14,7 +14,7 @@ import PopularAlbums from './PopularAlbums';
 import PopularRadio from './PopularRadio';
 import Footer from './Footer';
 import Filter from './Filter';
-import PlayerControls from './PlayerControls';
+import PlayerControls from './Player/PlayerControls';
 const MainPage: React.FC = () => {
   return (
     <div className="main-container">
