@@ -10,11 +10,15 @@ import MainPage from './components/Mainpage';
 import Search from './components/Search';
 import SearchResults from './components/SearchResults';
 import UserProfile from './components/Home/UserProfile';
+import ImageGallery from './components/ImageGallery';
+import InfoMusic from './components/Player/InfoMusic';
 
 
 const App: React.FC = () => {
   return (
+
     <GlobalPlayerProvider>
+      
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -25,7 +29,8 @@ const App: React.FC = () => {
         <Route path="/searchh" element={<Search />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        
+        <Route path="/gal" element={<ImageGallery />} />
+        <Route path="/infomusic" element={<InfoMusic />} />
         
       </Routes>
     </Router>

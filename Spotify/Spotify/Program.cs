@@ -1,11 +1,23 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Spotify.Models; // Ваші моделі
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Logging.AddConsole();
+
+// Додайте контекст бази даних
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Налаштуйте Identity
+builder.Services.AddDefaultIdentity<ApplicationUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -33,19 +45,20 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 builder.Services.AddHttpClient();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        builder.WithOrigins("http://localhost:3000") // Allow the frontend origin
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials(); // Include credentials if needed
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials() // Якщо потрібні куки або авторизація
+              .WithExposedHeaders("Content-Disposition"); // Дозволяємо заголовки, які можуть бути потрібні
     });
 });
-
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -58,9 +71,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 
-app.UseCors(); // Ensure CORS policy is applied correctly
-
+app.UseAuthentication(); // Додайте автентифікацію
 app.UseAuthorization();
 
 // Add global error handling middleware

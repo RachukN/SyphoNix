@@ -12,7 +12,7 @@ import TopArtists from '../TopArtists';
 import TopTracks from '../TopTracks';
 import PublicPlaylists from '../PublicPlaylists';
 import FollowedArtists from '../FollowedArtists';
-import PlayerControls from '../PlayerControls';
+import PlayerControls from '../Player/PlayerControls';
 interface UserProfile {
   display_name: string;
   email: string;
