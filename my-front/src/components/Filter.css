@@ -1,6 +1,6 @@
 /* TopNavigation.css */
 .top-navigation {
-    display: flex;
+  position: sticky;
     align-items: center;
     padding: 15px 30px;
     background: var(--Black, #13191C);
@@ -9,8 +9,11 @@
   }
   
   .nav-left {
+    position:fixed ;
+    width: 600px;
     display: flex;
     gap: 10px;
+    background: var(--Black, #13191C);
   }
   
   .nav-button {

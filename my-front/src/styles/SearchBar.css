@@ -1,51 +1,55 @@
 /* src/styles/SearchBar.css */
 
 .search-bar-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    }
-  
-  .search-input {
-    display: flex;
-    justify-content: center;
-width: 400px;
-height: 15px;
-padding: 10px 10px 10px 40px;
-align-items: center;
-gap: 18px;
-flex-shrink: 0;
-border-radius: 12px;
-border: 2px solid var(--Green, #00FF03);
-background: var(--Black, #13191C);
-    
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-  
-  .search-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -455px;
-  }
-  
-  .search-icon {
-    width: 20px;
-    height: 20px;
+
+.search-input {
+  display: flex;
+  justify-content: center;
+  width: 400px;
+  height: 15px;
+  padding: 10px 10px 10px 40px;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 2px solid var(--Green, #00FF03);
+  background: var(--Black, #13191C);
+
 }
+
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -455px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
 .top-navigation {
-    display: flex;
-    align-items: center;
-    padding: 15px 30px;
-    background: var(--Black, #13191C);
-    height: 50px; 
-    width: 600px;
-  }
-  
-  .nav-left {
-    display: flex;
-    gap: 10px;
-  }
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  height: 50px;
+}
+
+.nav-left {
+  display: flex;
+  gap: 10px;
+  position: fixed;
+}
+.home{
+  margin-left: 420px;
+  margin-top: px;
+}

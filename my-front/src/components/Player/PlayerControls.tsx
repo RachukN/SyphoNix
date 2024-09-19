@@ -2,6 +2,8 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useGlobalPlayer } from './GlobalPlayer';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom'; // Import useLocation to detect the current route
+
 import '../../styles/PlayerControls.css'
 import PreviousIcon from './Frame 105.png';
 import NextIcon from './Frame 107.png';
@@ -9,9 +11,11 @@ import PlayIcon from './Frame 109.png';
 import RepeatIcon from './Repeat.png';
 import ShuffleIcon from './Mixing mode.png';
 import VolumeIcon from './Vector (1).png';
-import ProgressBar from './ProgressBar'; 
+import ProgressBar from './ProgressBar';
 import Vic from './Frame 113 (1).png'
+import Pause from './Frame 109 (1).png';
 import { Link } from 'react-router-dom';
+import Min from './Frame 436.png';
 // Import ProgressBar component
 
 // Helper function for debouncing API calls
@@ -25,7 +29,7 @@ const debounce = (func: Function, delay: number) => {
 };
 
 const PlayerControls: React.FC = () => {
-  const { player,  repeat, shuffle } = useGlobalPlayer();
+  const { player, repeat, shuffle } = useGlobalPlayer();
   const token = localStorage.getItem('spotifyAccessToken');
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
@@ -39,10 +43,10 @@ const PlayerControls: React.FC = () => {
   const [currentDeviceId, setCurrentDeviceId] = useState<string | null>(null); // State to store the current device ID
   const [position, setPosition] = useState<number>(0); // Track's current position
   const [duration, setDuration] = useState<number>(0); // Track's duration
-  
+  const location = useLocation();
   const intervalRef = useRef<NodeJS.Timeout | null>(null); // Store the interval ID in a ref
-  
-    useEffect(() => {
+
+  useEffect(() => {
     // Initialize player and set up event listeners
     const initializePlayer = async () => {
       if (player) {
@@ -68,16 +72,16 @@ const PlayerControls: React.FC = () => {
               albumImage: track.album.images[0]?.url || '',
             });
 
-            
 
-          // Calculate the actual position based on how long it's been since the timestamp
-          
 
-          setPosition(state.position);
-          setDuration(state.duration);
+            // Calculate the actual position based on how long it's been since the timestamp
 
-          // Clear interval if song is paused
-          
+
+            setPosition(state.position);
+            setDuration(state.duration);
+
+            // Clear interval if song is paused
+
 
             // Start interval to update position while playing
             if (intervalRef.current) {
@@ -97,7 +101,7 @@ const PlayerControls: React.FC = () => {
                 });
               }, 1000);
             }
-          
+
           }
         });
 
@@ -139,12 +143,12 @@ const PlayerControls: React.FC = () => {
         clearInterval(intervalRef.current);
       }
       player?.disconnect();
-      
+
     };
-    
+
   }, [player]);
 
-  
+
 
   const skipToNext = useCallback(
     debounce(async () => {
@@ -284,7 +288,7 @@ const PlayerControls: React.FC = () => {
     const seconds = totalSeconds % 60; // Calculate remaining seconds
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // Format as mm:ss
   };
-  
+
   const generateImagePaths = () => {
     const images = [];
     for (let i = 1; i <= 33; i++) {
@@ -301,62 +305,146 @@ const PlayerControls: React.FC = () => {
   };
   const imagePathsA = generateImagePathsA();
   const imagePaths = generateImagePaths();
+  const renderPlayerDesign = () => {
+    if (location.pathname === '/infomusic') {
+      return (
+
+        <div className="infomusic-player">
+          <div className="play">
+            {currentTrack && (
+              <div className="info-c">
+
+                <img className="img-bg" src={currentTrack.albumImage} alt="Album cover" />
+
+                <div className='alb-c'>
+                  <img className="img-c" src={currentTrack.albumImage} alt="Album cover" />
+
+                </div>
+
+
+                <div className="track-details-c">
+                  <h4 className="nam-c">{currentTrack.name}</h4>
+                  <p>{currentTrack.artist}</p>
+                </div>
+                <div className='mid-c'>
+                  <div className='tools-c'>
+                    <button onClick={toggleShuffle} disabled={!isPlayerReady}>
+                      <img src={ShuffleIcon} alt="Shuffle" />
+                    </button>
+                    <button onClick={skipToPrevious} disabled={!isPlayerReady}>
+                      <img src={PreviousIcon} alt="Previous" />
+                    </button>
+                    <button onClick={togglePlayPause} disabled={!isPlayerReady}>
+                      <img src={isPlaying ? Pause : PlayIcon} alt="Play/Pause" />
+                    </button>
+                    <button onClick={skipToNext} disabled={!isPlayerReady}>
+                      <img src={NextIcon} alt="Next" />
+                    </button>
+                    <button onClick={toggleRepeat} disabled={!isPlayerReady}>
+                      <img src={RepeatIcon} alt="Repeat" />
+                    </button></div>
+                  <div className="track-progress-c">
+                    <span className="title-c">{formatTime(position)}</span>
+
+                    <ProgressBar
+                      position={position}
+                      duration={duration}
+                      inactiveImagePaths={imagePaths}
+                      activeImagePaths={imagePathsA}
+                    />
+
+                    <span className="title-c">{formatTime(duration)}</span>
+                  </div>
+                  <div className="link">
+              <Link to="/home" className="imgg">
+                <img className="vic" src={Min} alt="Min" />
+              </Link>
+
+              <div className="imgg">
+                <img className="zvuk" src={VolumeIcon} alt="Volume" />
+              </div>
+            </div>
+
+                </div>
+              </div>
+
+            )}
+
+           
+
+
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="default">
+        <div className="player-controls">
+          {currentTrack && (
+            <div className="info">
+              <div className='alb'><img className="img" src={currentTrack.albumImage} alt="Album cover" />
+              </div>
+
+
+              <div className="track-details">
+                <h4 className="nam">{currentTrack.name}</h4>
+                <p>{currentTrack.artist}</p>
+              </div>
+              <div className='mid'>
+                <div className='tools'>
+                  <button onClick={toggleShuffle} disabled={!isPlayerReady}>
+                    <img className='imgbtb' src={ShuffleIcon} alt="Shuffle" />
+                  </button>
+                  <button onClick={skipToPrevious} disabled={!isPlayerReady}>
+                    <img src={PreviousIcon} alt="Previous" />
+                  </button>
+                  <button onClick={togglePlayPause} disabled={!isPlayerReady}>
+                    <img src={isPlaying ? Pause : PlayIcon} alt="Play/Pause" />
+                  </button>
+                  <button onClick={skipToNext} disabled={!isPlayerReady}>
+                    <img src={NextIcon} alt="Next" />
+                  </button>
+                  <button onClick={toggleRepeat} disabled={!isPlayerReady}>
+                    <img src={RepeatIcon} alt="Repeat" />
+                  </button></div>
+                <div className="track-progress">
+                  <span className="title">{formatTime(position)}</span>
+
+                  <ProgressBar
+                    position={position}
+                    duration={duration}
+                    inactiveImagePaths={imagePaths}
+                    activeImagePaths={imagePathsA}
+                  />
+
+                  <span className="title">{formatTime(duration)}</span>
+                </div>
+              </div>
+            </div>
+
+          )}
+
+
+          <Link to="/infomusic" className="sidebar-link">
+            <img className="vic" src={Vic} alt="Vic" />
+          </Link>
+          <div className="sidebar-link">
+            <img className="zvuk" src={VolumeIcon} alt="Volume" />
+
+          </div>
+
+        </div>
+      </div>
+    );
+
+
+  };
+
   return (
     <div className="player-controls">
-     {currentTrack && (
-        <div className="info">
-            <div className='alb'><img className="img" src={currentTrack.albumImage} alt="Album cover" />
-            </div>
-           
- 
-           <div className="track-details">
-           <h4 className="nam">{currentTrack.name}</h4>
-            <p>{currentTrack.artist}</p>
-            </div> 
-            <div className='mid'>
-             <div className='tools'>
-              <button onClick={toggleShuffle} disabled={!isPlayerReady}>
-      <img className='imgbtb' src={ShuffleIcon} alt="Shuffle" />
-    </button>
-    <button onClick={skipToPrevious} disabled={!isPlayerReady}>
-      <img src={PreviousIcon} alt="Previous" />
-    </button>
-    <button onClick={togglePlayPause} disabled={!isPlayerReady}>
-      <img src={isPlaying ? PlayIcon : PlayIcon} alt="Play/Pause" />
-    </button>
-    <button onClick={skipToNext} disabled={!isPlayerReady}>
-      <img src={NextIcon} alt="Next" />
-    </button>
-    <button onClick={toggleRepeat} disabled={!isPlayerReady}>
-      <img src={RepeatIcon} alt="Repeat" />
-    </button></div>
-            <div className="track-progress">
-           <span className="title">{formatTime(position)}</span>
-
-           <ProgressBar
-           position={position}
-           duration={duration}
-           inactiveImagePaths={imagePaths}
-           activeImagePaths={imagePathsA}
-           />
-
-            <span className="title">{formatTime(duration)}</span>
-          </div>
-          </div>
-      </div>
-      )}
-
-      
-<Link to="/infomusic" className="sidebar-link">
-<img className="vic" src={Vic} alt="Vic" />
-            </Link>
-
-    <img className="zvuk" src={VolumeIcon} alt="Volume" />
-    
-  
-</div>
-
+      {renderPlayerDesign()}
+    </div>
   );
 };
 
-export default PlayerControls
+export default PlayerControls;

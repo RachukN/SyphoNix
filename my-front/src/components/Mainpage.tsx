@@ -1,8 +1,7 @@
-// src/components/MainPage.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar/Sidebar';
 import TopNavigation from './Main/TopNavigation';
-import bannerImage from './Main/Rectangle 4.png'; 
+import bannerImage from './Main/Rectangle 4.png';
 import './Mainpage.css'; // Styling for the main page and sidebar
 import RockMusic from './RockMusic';
 import Artists from './Artists';
@@ -14,60 +13,78 @@ import PopularAlbums from './PopularAlbums';
 import PopularRadio from './PopularRadio';
 import Footer from './Footer';
 import Filter from './Filter';
-import PlayerControls from './Player/PlayerControls';
 const MainPage: React.FC = () => {
+  const [filter, setFilter] = useState<string>('all'); // Track the current filter ("all", "music", etc.)
+
+  const handleFilterChange = (newFilter: string) => {
+    setFilter(newFilter); // Update the filter state when a new filter is selected
+  };
+
   return (
     <div className="main-container">
-      
       <div className='sidebar'><Sidebar /></div>
       <div className="content">
+        <div className="banner-container">
+          <img src={bannerImage} alt="Banner" className="banner-image" />
+        </div>
+        
+        {/* Filter Section */}
         
         
 
-        <div className="banner-container">
-                <img src={bannerImage} alt="Banner" className="banner-image" />
-        </div>
-        
+        {/* Conditionally Render Sections Based on Filter */}
         <div className='cont'>
-        <h2 className="section-title, h2">Рок музика</h2>
-         <div className="h2"><RockMusic/></div>
+          <h2 className="section-title">Рок музика</h2>
+          <RockMusic />
+        </div>
+
+        <div className='cont'>
+          <h2 className="section-title">Відомі артисти</h2>
+          <Artists />
+        </div>
+
+        {/* Only show this section when filter is "all" */}
+        {filter === 'all' && (
+          <div className='cont'>
+            <h2 className="section-title">Шоу, які варто переглянути</h2>
+            <Shows />
+          </div>
+        )}
+
+        <div className='cont'>
+          <h2 className="section-title">Новинки для вас</h2>
+          <NewReleases />
+        </div>
+
+        <div className='cont'>
+          <h2 className="section-title">Щоденний мікс</h2>
+          <Music />
+        </div>
+
+        <div className='cont'>
+          <h2 className="section-title">Топ-чарти</h2>
+          <SymphoNixAlbums />
+        </div>
+
+        <div className='cont'>
+          <h2 className="section-title">Популярні альбоми</h2>
+          <PopularAlbums />
+        </div>
+
+        <div className='cont'>
+          <h2 className="section-title">Популярні радіо</h2>
+          <PopularRadio />
         </div>
         <div className='cont'>
-        <h2 className="section-title, h2">Відомі артисти</h2>
-         <div className="h2"><Artists/></div>
+          <h2 className="section-title">Подкасти</h2>
+          
         </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Шоу, які варто переглянути</h2>
-         <div className="h2"><Shows/></div>
+        <div className='filter'><TopNavigation /></div>
+        <div className='filter-f'>
+          <Filter onFilterChange={handleFilterChange} /> {/* Pass the handler to Filter */}
         </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Новинки для вас</h2>
-         <div className="h2"><NewReleases/></div>
-        </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Щоденний мікс</h2>
-         <div className="h2"><Music/></div>
-        </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Топ-чарти</h2>
-         <div className="h2"><SymphoNixAlbums/></div>
-        </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Популярні альбоми</h2>
-         <div className="h2"><PopularAlbums/></div>
-        </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Популярні радіо</h2>
-         <div className="h2"><PopularRadio/></div>
-        </div>
-        <div className='cont' >
-        <Footer/>
-        
+        <Footer />
       </div>
-      </div>
-      <div className='player'><PlayerControls/></div>
-      <div className='filter'><TopNavigation /></div>
-      <div className='filter-f'> <Filter/></div>
     </div>
   );
 };

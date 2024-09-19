@@ -13,6 +13,8 @@ import TopTracks from '../TopTracks';
 import PublicPlaylists from '../PublicPlaylists';
 import FollowedArtists from '../FollowedArtists';
 import PlayerControls from '../Player/PlayerControls';
+import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
+
 interface UserProfile {
   display_name: string;
   email: string;
@@ -113,7 +115,10 @@ const UserProfile: React.FC = () => {
         
       </div>
       <div className='filter-user'><TopNavigation /></div>
+      <GlobalPlayerProvider>
+
       <div className='player'><PlayerControls/></div>
+      </GlobalPlayerProvider>
     </div>
   );
 };

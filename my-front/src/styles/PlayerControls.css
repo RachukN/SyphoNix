@@ -18,36 +18,35 @@
     border: none;
     
   }
-.imgbtb{
-    width: 10px;
-    height: 10px;
-  }
   .player-controls {
     
     width: 1520px;
-    position: relative;
+    position: fixed;
+    bottom: 0;
   display: flex;
   justify-content: space-between; /* Блоки "прилипають" до різних сторін */
   align-items: center; 
-  background: #0D0D0D;
-  height: 90px;
-
   }
-  
   .info {
+    width: 1520px;
     position: relative;
     display: flex;
-    justify-content:right ; /* Блоки "прилипають" до різних сторін */
+    justify-content:left ; /* Блоки "прилипають" до різних сторін */
     align-items: center; 
+    
+  background-color: #0D0D0D;
+  
+  height: 90px;
   }
   
   .track-info .img {
     margin-right: 15px;
   }
-  
   .track-details {
     position: relative;
     right: -40px;
+    
+  background-color: #0D0D0D;
   }
   .nam{
     margin-bottom: 10px;
@@ -72,10 +71,13 @@
     left: 550px;
     align-items: center;
     margin-left: 20px;
+    
+  background-color: #0D0D0D;
   }
   
   .track-progress .title {
     margin: 0 10px;
+    
   }
   
   .tools {
@@ -86,8 +88,10 @@
   bottom: 40px;
   left: 620px;
   align-items: center;
-  margin-left: 20px;
-  }
+  margin-left: 30px;
+  
+  background-color: #0D0D0D;
+}
   
   .tools img {
     width: 25px;
@@ -96,14 +100,21 @@
   
   .zvuk {
     position: fixed;
-    right: 120px;
+    right: 200px;
     cursor: pointer;
   }
   .vic{
     position: fixed;
-    right: 20px;
+    right: 50px;
   }
-  
+  .img-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1550px;
+    height: 1000px;
+
+  }
 button:hover{
     transform: scale(1.1);
     outline: none;
@@ -113,14 +124,161 @@ button:hover{
     transform: scale(1.1);
 
   }
-  img:hover{
-    transform: scale(1.05);
-  }
+  
  .vic:hover{
     transform: scale(1.1);
 
   }
   .title{
     color: var(--Green, #00FF03);
+    font-size: 18px;
+  }
+.link{
+  margin-bottom: 70px;
+}
+
+
+
+
+
+
+  
+  .img-c{
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+    margin-bottom: 100px;
+   
+      box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.5); /* Example of a black shadow */
+   
+    
+  }
+  .alb-c{
+    position: relative;
+    right: -20px;
+    justify-content:right ;
+    margin-top: 5px;
+
+  }
+  button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    
+  }
+  .play {
+    width: 0px;
+    position: fixed;
+    bottom: 0;
+  display: flex;
+  justify-content: space-between; 
+   align-items: center; 
+  height: 90px;
+  }
+  
+ 
+    
+  
+  .info-c {
+    position: relative;
+    display: flex;
+    justify-content:right ; /* Блоки "прилипають" до різних сторін */
+    align-items: center; 
+  }
+
+  .track-info-c .img-c {
+    margin-right: 15px;
+  }
+  
+  .track-details-c {
+    position: relative;
+    right: -40px;
+    margin-bottom: 100px;
+    width: 300px;
+  }
+  .nam-c{
+    margin-bottom: 10px;
+    font-size: 30px;
+    margin-top: 0px;
+    
+  }
+  
+  .track-details-c .name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .track-details-c p {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .track-progress-c {
+    display: flex;
+    position: fixed;
+    bottom: 40px;
+    left: 550px;
+    align-items: center;
+    margin-left: 20px;
+  }
+  
+  .track-progress-c .title-c {
+    margin: 0 10px;
+  }
+  
+  .tools-c {
+    justify-content: center; /* Вирівнювання по горизонталі */
+  align-items: center;
+  display: flex;
+  position: fixed;
+  bottom: 90px;
+  left: 620px;
+  align-items: center;
+  margin-left: 30px;
+  }
+  
+  .tools-c img {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .zvuk-c {
+    position: fixed;
+    right: 120px;
+    cursor: pointer;
+    filter: invert(11%) brightness(20000%);
+  }
+  .vic-c{
+    position: fixed;
+    filter: invert(11%) brightness(20000%);
+  }
+ .tools-c button img {
+  filter: invert(11%) brightness(20000%);
+ }
+ .link .imgg img{
+  
+  filter: invert(11%) brightness(20000%);
+ }
+button:hover{
+    transform: scale(1.1);
+    outline: none;
+    border: none;
+  }
+  button:any-link {
+    outline: none;
+    border: none;
+  }
+ .zvuk-c:hover{
+    transform: scale(1.1);
+
+  }
+  
+ .vic-c:hover{
+    transform: scale(1.1);
+
+  }
+  .title-c{
+    color: var(--Green, #ffffff);
     font-size: 18px;
   }

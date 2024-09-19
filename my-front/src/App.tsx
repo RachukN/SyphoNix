@@ -12,6 +12,7 @@ import SearchResults from './components/SearchResults';
 import UserProfile from './components/Home/UserProfile';
 import ImageGallery from './components/ImageGallery';
 import InfoMusic from './components/Player/InfoMusic';
+import Layout from './components/Player/Layout';
 
 
 const App: React.FC = () => {
@@ -21,6 +22,7 @@ const App: React.FC = () => {
       
     <Router>
       <Routes>
+      <Route path="/" element={<Layout />}>
         <Route path="/" element={<Login />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/home" element={<MainPage />} />
@@ -31,7 +33,7 @@ const App: React.FC = () => {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/gal" element={<ImageGallery />} />
         <Route path="/infomusic" element={<InfoMusic />} />
-        
+        </Route>
       </Routes>
     </Router>
     
