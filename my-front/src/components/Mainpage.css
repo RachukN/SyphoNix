@@ -33,7 +33,7 @@
     background: var(--Black, #13191C);
     position: sticky;
     right: 0;
-    width: 1199px;
+    width: 1200px;
     }
   .banner-container {
     display: flexbox;
@@ -54,7 +54,7 @@ h2{
 margin-left: 30px;
 }
 .cont{
-  margin-top: -50px;
+  margin-top: -70px;
   margin-left: 30px;
   
 }

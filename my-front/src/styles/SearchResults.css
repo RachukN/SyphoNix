@@ -1,36 +1,129 @@
-/* src/styles/SearchResults.css */
-
+/* SearchResults.css */
 .search-results-container {
-    padding: 20px;
-    text-align: center;
-    color: #00ff00; /* Green color for the text */
-  }
+  padding: 20px;
+  display: flex;
+  justify-content: left; /* Блоки "прилипають" до різних cторін */
   
-  .error-message {
-    color: red;
-  }
+  background: var(--Black, #13191C);
+}
+.search{
+  margin-left: 30px;
+  background: var(--Black, #13191C);
+  position: fixed;
+  top: 0;
+  right: 0;
+width: 935px;
+height:80px;
+}
+.results-container {
+  position: fixed;
+  top: 0;
+  right: 250px;
+  z-index: 9999; 
+  border: #13191C;/* Ensure it's on top of other elements */
+  width: 100px; /* Full width *//* Background color to ensure readability */
+  display: flex;
+  justify-content: right; /* Keep SearchBar and TopNavigation aligned */
   
-  .results-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
+ 
+}
+ 
+.bg-img{
+  margin-top:-20px;
+  margin-left: -20px;
+  position: fixed;
+ 
+}
+
+.bg-img img{
   
-  .result-item {
-    text-align: center;
-  }
+  width: 590px;
   
-  .result-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.result-item {
   
-  .result-name {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #ffffff; /* White color for the names */
-  }
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  width: 200px;
+  margin: 6px;
+  margin-right: 20px;
   
+}
+.result{
+  margin-left: 478px;
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+.result-item:hover {
+  transform: translateY(-10px);
+}
+
+.result-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+}
+.result{
+  width: 900px;
+  padding-left: 100px;
+}
+.result-name-c {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+.content{
+width: 800px;
+}
+
+.music-c-c {
+  width: 850px;
+  overflow-x: hidden;
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  margin-left: -15px;
+  padding-left: 10px;
+}
+.img-container-c {
+  min-width: 160px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+}
+
+.music-c-c img:hover{
+  transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Green shadow on hover */
+ 
+}
+.marg-c{
+  margin-right: 5px;
+}
+.auth {
+  margin: 10px 0;
+  width: 140px; /* Define the max width */
+  white-space: nowrap; /* Ensure text stays in one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflowing text */
+}
+
+.artist-name {
+  font-size: small;
+  color: #666;
+  width: 140px; /* Define the max width */
+  white-space: nowrap; /* Ensure text stays in one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflowing text */
+}
