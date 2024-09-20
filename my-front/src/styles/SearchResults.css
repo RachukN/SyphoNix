@@ -92,7 +92,8 @@ width: 800px;
   gap: 10px;
   padding: 10px 0;
   scroll-behavior: smooth;
-  
+  margin-left: -15px;
+  padding-left: 10px;
 }
 .img-container-c {
   min-width: 160px;
@@ -101,11 +102,7 @@ width: 800px;
   cursor: pointer;
   position: relative;
 }
-.img-container img:hover{
-  transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Green shadow on hover */
- 
-}
+
 .music-c-c img:hover{
   transform: scale(1.05);
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Green shadow on hover */

@@ -187,7 +187,7 @@ const SearchResults: React.FC = () => {
       <div className='bg-img'><img src={BGimage} alt="image" /></div>
       <div className="results-container">
         <div className='results-container'><TopNavigation /></div>
-        
+
         <div className='search'><SearchBar /></div>
 
 
@@ -198,32 +198,34 @@ const SearchResults: React.FC = () => {
         <div >
           <h2>Artists</h2>
           <div style={{ padding: '20px', textAlign: 'center' }}>
-            <div style={{ position: 'relative', width: '100%' }}>
-              <img src={Left} alt="Scroll Left" className="img-l" onClick={() => scrollLeft(artistScrollRef)} />
-              <img src={Right} alt="Scroll Right" className="img-r" onClick={() => scrollRight(artistScrollRef)} />
+            <div className='margin'>
+              <div style={{ position: 'relative', width: '100%' }}>
+                <img src={Left} alt="Scroll Left" className="img-l" onClick={() => scrollLeft(artistScrollRef)} />
+                <img src={Right} alt="Scroll Right" className="img-r" onClick={() => scrollRight(artistScrollRef)} />
 
-              <div
-                ref={artistScrollRef}
-                className='music-c-c'
+                <div
+                  ref={artistScrollRef}
+                  className='music-c-c'
 
-              >
-                {artists.map((artist) => {
-                  if (!artist || !artist.uri) return null;
-                  return (
-                    <div
-                      key={artist.id}
-                      className="img-container-c"
+                >
+                  {artists.map((artist) => {
+                    if (!artist || !artist.uri) return null;
+                    return (
+                      <div
+                        key={artist.id}
+                        className="img-container-c"
 
-                    >
-                      <img
-                        src={artist.images[0]?.url || 'default-artist.png'}
-                        alt={artist.name}
-                        style={{ width: '150px', height: '150px', borderRadius: '50%' }}
-                      />
-                      <p className='auth' style={{ margin: '10px 0' }}>{artist.name}</p>
-                    </div>
-                  );
-                })}
+                      >
+                        <img
+                          src={artist.images[0]?.url || 'default-artist.png'}
+                          alt={artist.name}
+                          style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+                        />
+                        <p className='auth' style={{ margin: '10px 0' }}>{artist.name}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -241,6 +243,7 @@ const SearchResults: React.FC = () => {
                 className="music-c-c"
                 style={{ display: 'flex', overflowX: 'hidden', gap: '20px', padding: '10px 0' }}
               >
+                <div className='margin'></div>
                 {albums.map((album) => (
                   <div
                     key={album.id}
@@ -274,6 +277,7 @@ const SearchResults: React.FC = () => {
                 className="music-c-c"
                 style={{ display: 'flex', overflowX: 'hidden', gap: '20px', padding: '10px 0' }}
               >
+                <div className='margin'></div>
                 {tracks.map((track) => (
                   <div
                     key={track.id}
@@ -281,6 +285,7 @@ const SearchResults: React.FC = () => {
                     onClick={() => checkAndPlayTrack(track.uri)}
                     style={{ cursor: 'pointer' }}
                   >
+                    
                     <img
                       src={track.album.images[0]?.url}
                       alt={track.name}

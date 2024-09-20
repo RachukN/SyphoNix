@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Left from './Main/Frame 73.png';
-import Right from './Main/Frame 72.png';
+import { Link } from 'react-router-dom';
+import LeftGray from './Main/Frame 73.png';
+import RightGray from './Main/Frame 72 (1).png';
+import LeftGreen from './Main/Frame 73 (1).png';
+import RightGreen from './Main/Frame 72.png';
 import Play from '../images/Frame 76.png';
 import '../styles/Music.css';
 
@@ -9,7 +12,7 @@ interface Album {
   id: string;
   name: string;
   images: { url: string }[];
-  artists: { name: string }[];
+  artists: { name: string, id: string; }[];
   external_urls: { spotify: string } | null;
   uri: string;
 }
@@ -24,7 +27,8 @@ const NewReleases: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
-
+  const [leftArrow, setLeftArrow] = useState(LeftGray);
+  const [rightArrow, setRightArrow] = useState(RightGreen);
   useEffect(() => {
     const fetchNewReleases = async () => {
       const token = localStorage.getItem('spotifyAccessToken');
@@ -42,7 +46,7 @@ const NewReleases: React.FC = () => {
           },
           params: {
             market: 'US', // Adjust market as needed
-            limit: 20,
+            limit: 21,
           },
         });
 
@@ -130,12 +134,35 @@ const NewReleases: React.FC = () => {
     }
   };
 
+  const updateArrows = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+
+      // If scrolled all the way to the left
+      if (scrollLeft === 0) {
+        setLeftArrow(LeftGray);
+        setRightArrow(RightGreen);  // Enable right arrow for more content
+      }
+      // If scrolled all the way to the right
+      else if (scrollLeft + clientWidth >= scrollWidth - 1) {  // Ensure close to the rightmost position
+        setLeftArrow(LeftGreen); // Enable left arrow to go back
+        setRightArrow(RightGray); // Disable right arrow
+      }
+      // Scrolling in between
+      else {
+        setLeftArrow(LeftGreen);
+        setRightArrow(RightGreen);
+      }
+    }
+  };
+
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
         left: -scrollRef.current.clientWidth,
         behavior: 'smooth',
       });
+      setTimeout(updateArrows, 300);  // Update after scrolling
     }
   };
 
@@ -145,6 +172,7 @@ const NewReleases: React.FC = () => {
         left: scrollRef.current.clientWidth,
         behavior: 'smooth',
       });
+      setTimeout(updateArrows, 300);  // Update after scrolling
     }
   };
 
@@ -164,20 +192,14 @@ const NewReleases: React.FC = () => {
     <div className='music-c'>
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <div style={{ position: 'relative', width: '100%' }}>
-          <img src={Left} alt="Scroll Left" className="img-l" onClick={scrollLeft} />
-          <img src={Right} alt="Scroll Right" className="img-r" onClick={scrollRight} />
+          <img src={leftArrow} alt="Scroll Left" className="img-l" onClick={scrollLeft} />
+          <img src={rightArrow} alt="Scroll Right" className="img-r" onClick={scrollRight} />
+          <div className='main-title'>Новинки для вас</div>
 
           <div
             ref={scrollRef}
             className='music-c'
-            style={{
-              width: '1100px',
-              overflowX: 'hidden',
-              display: 'flex',
-              gap: '20px',
-              padding: '10px 0',
-              scrollBehavior: 'smooth',
-            }}
+            onScroll={updateArrows}
           >
             {albums.map((album) => {
               if (!album || !album.external_urls || !album.uri) {
@@ -185,32 +207,47 @@ const NewReleases: React.FC = () => {
               }
               return (
                 <div
-                  key={album.id}
-                  onClick={() => handlePlayAlbum(album.uri)}
+
                   className="img-container"
-                  style={{
-                    minWidth: '140px',
-                    textAlign: 'center',
-                    display: 'inline-block',
-                    cursor: 'pointer',
-                    position: 'relative',
-                  }}
+
                 >
-                  <img
-                    src={album.images[0]?.url || 'default-album.png'}
-                    alt={album.name}
-                    style={{ width: '140px', height: '140px', borderRadius: '8px' }}
-                  />
-                  <div className="play-icon">
-                    <img src={Play} alt="Play" />
+                  <div className='img-content'>
+                    <img
+                      src={album.images[0]?.url || 'default-album.png'}
+                      alt={album.name}
+                      style={{}}
+                      className='m-5'
+                      key={album.id}
+
+                    />
+                    <div onClick={() => handlePlayAlbum(album.uri)} className="play-icon">
+                      <img src={Play} alt="Play" />
+                    </div>
                   </div>
-                  <p className='auth' style={{ margin: '10px 0' }}>{album.name}</p>
-                  <p style={{ fontSize: 'small', color: '#666' }}>
-                    {album.artists.map((artist) => artist.name).join(', ')}
-                  </p>
+                  <div>
+                    <p className='artist-name' style={{ fontSize: 'small' }}>
+
+                      <Link key={album.id} to={`/album/${album.id}`}>
+                        <p className="auth" style={{ margin: '10px 0' }}>{album.name}</p>
+                      </Link>
+
+
+
+
+                    </p>
+                    <p className='artist-name' style={{ fontSize: 'small' }}>
+                      {album.artists.map(artist => (
+                        <Link key={artist.id} to={`/artist/${artist.id}`}>
+                          <p className="result-name">{artist.name}</p>
+                        </Link>
+                      ))}
+                    </p>
+                  </div>
                 </div>
               );
+
             })}
+
           </div>
         </div>
       </div>

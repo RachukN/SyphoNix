@@ -292,14 +292,14 @@ const PlayerControls: React.FC = () => {
   const generateImagePaths = () => {
     const images = [];
     for (let i = 1; i <= 33; i++) {
-      images.push(`public/progressbar/${i}.png`); // Adjust the path based on the folder you placed them in
+      images.push(`/public/progressbar/${i}.png`); // Adjust the path based on the folder you placed them in
     }
     return images;
   };
   const generateImagePathsA = () => {
     const images = [];
     for (let i = 1; i <= 33; i++) {
-      images.push(`public/activ/${i}.png`); // Adjust the path based on the folder you placed them in
+      images.push(`/public/activ/${i}.png`); // Adjust the path based on the folder you placed them in
     }
     return images;
   };
@@ -356,21 +356,21 @@ const PlayerControls: React.FC = () => {
                     <span className="title-c">{formatTime(duration)}</span>
                   </div>
                   <div className="link">
-              <Link to="/home" className="imgg">
-                <img className="vic" src={Min} alt="Min" />
-              </Link>
+                    <Link to="/home" className="imgg">
+                      <img className="vic" src={Min} alt="Min" />
+                    </Link>
 
-              <div className="imgg">
-                <img className="zvuk" src={VolumeIcon} alt="Volume" />
-              </div>
-            </div>
+                    <div className="imgg">
+                      <img className="zvuk" src={VolumeIcon} alt="Volume" />
+                    </div>
+                  </div>
 
                 </div>
               </div>
 
             )}
 
-           
+
 
 
           </div>
@@ -420,18 +420,19 @@ const PlayerControls: React.FC = () => {
                   <span className="title">{formatTime(duration)}</span>
                 </div>
               </div>
-            </div>
-
-          )}
-
-
-          <Link to="/infomusic" className="sidebar-link">
+              <Link to="/infomusic" className="sidebar-link">
             <img className="vic" src={Vic} alt="Vic" />
           </Link>
           <div className="sidebar-link">
             <img className="zvuk" src={VolumeIcon} alt="Volume" />
 
           </div>
+            </div>
+
+          )}
+
+
+          
 
         </div>
       </div>

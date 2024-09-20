@@ -52,7 +52,6 @@ const MainPage: React.FC = () => {
         )}
 
         <div className='cont'>
-          <h2 className="section-title">Новинки для вас</h2>
           <NewReleases />
         </div>
 
