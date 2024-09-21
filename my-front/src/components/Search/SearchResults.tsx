@@ -6,7 +6,7 @@ import Left from './Main/Frame 73.png';
 import Right from './Main/Frame 72.png';
 import BGimage from '../images/Vector 1.png';
 import SearchBar from './SearchBar';
-import TopNavigation from './Main/TopNavigation';
+import TopNavigation from './Navigation/TopNavigation';
 
 interface TrackResult {
   id: string;

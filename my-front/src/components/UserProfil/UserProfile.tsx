@@ -4,14 +4,14 @@ import axios from 'axios';
 import './UserProfile.css';
 import Sidebar from '../Sidebar/Sidebar';
 import bannerImage from './Frame 148 (1).png';
-import TopNavigation from '../Main/TopNavigation';
-import Footer from '../Footer';
+import TopNavigation from '../Navigation/TopNavigation';
+import Footer from '../Footer/Footer';
 import defaultProfileImage from '../Main/user-128.png'; // Import the default profile image
 import Seting from './Frame 129.png';
-import TopArtists from '../TopArtists';
-import TopTracks from '../TopTracks';
-import PublicPlaylists from '../PublicPlaylists';
-import FollowedArtists from '../FollowedArtists';
+import TopArtists from '../Templates/TopArtists';
+import TopTracks from '../Templates/TopTracks';
+import PublicPlaylists from '../Templates/PublicPlaylists';
+import FollowedArtists from '../ArtistsPage/FollowedArtists';
 import PlayerControls from '../Player/PlayerControls';
 import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
 
@@ -91,7 +91,7 @@ const UserProfile: React.FC = () => {
         
         </div>
         <div className='cont'>
-        <h2 className="section-title, m-5">Топ артисти цього місяця</h2>
+        <h2 className="section-title">Топ артисти цього місяця</h2>
         <h3 className="section-titleh ">Бачите лише ви</h3>
         
          <div className="h2"><TopArtists/></div>

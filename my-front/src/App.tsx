@@ -1,21 +1,20 @@
 // src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Callback from './components/Callback';
-import Profile from './components/Profile';
-import Categories from './components/Categories';
+import Login from './components/Auth/Login';
+import Callback from './components/Auth/Callback';
+import Profile from './components/UserProfil/Profile';
+import Categories from './components/Search/Categories';
 import { GlobalPlayerProvider } from './components/Player/GlobalPlayer';
-import MainPage from './components/Mainpage';
-import Search from './components/Search';
-import SearchResults from './components/SearchResults';
-import UserProfile from './components/Home/UserProfile';
-import ImageGallery from './components/ImageGallery';
-import InfoMusic from './components/Player/InfoMusic';
+import MainPage from './components/Main/Mainpage';
+import Search from './components/Search/Search';
+import SearchResults from './components/Search/SearchResults';
+import UserProfile from './components/UserProfil/UserProfile';
+import InfoMusic from './components/InfoMusic/InfoMusic';
 import Layout from './components/Player/Layout';
-import ArtistPage from './components/Home/ArtistPage';
-import SongPage from './components/Home/SongPage';
-import AlbumPage from './components/Home/SongPage';
+import ArtistPage from './components/ArtistsPage/ArtistPage';
+import SongPage from './components/SongPage/SongPage';
+import AlbumPage from './components/SongPage/SongPage';
 const App: React.FC = () => {
   return (
 
@@ -32,7 +31,6 @@ const App: React.FC = () => {
         <Route path="/searchh" element={<Search />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/gal" element={<ImageGallery />} />
         <Route path="/infomusic" element={<InfoMusic />} />
         <Route path="/artist/:artistId" element={<ArtistPage />} />
         <Route path="/track/:songId" element={<SongPage />} />

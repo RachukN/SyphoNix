@@ -8,12 +8,15 @@ import RightGreen from './Main/Frame 72.png';
 import Play from '../images/Frame 76.png';
 import '../styles/Music.css';
 
-interface Album {
+interface Track {
   id: string;
   name: string;
-  images: { url: string }[];
+  album: {
+    images: { url: string }[];
+    name: string;
+    uri: string;
+  };
   artists: { name: string, id: string; }[];
-  external_urls: { spotify: string } | null;
   uri: string;
 }
 
@@ -22,15 +25,16 @@ interface Device {
   is_active: boolean;
 }
 
-const NewReleases: React.FC = () => {
-  const [albums, setAlbums] = useState<Album[]>([]);
+const RockMusic: React.FC = () => {
+  const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const [leftArrow, setLeftArrow] = useState(LeftGray);
   const [rightArrow, setRightArrow] = useState(RightGreen);
+
   useEffect(() => {
-    const fetchNewReleases = async () => {
+    const fetchRockTracks = async () => {
       const token = localStorage.getItem('spotifyAccessToken');
       if (!token) {
         console.error('No access token found');
@@ -40,30 +44,33 @@ const NewReleases: React.FC = () => {
 
       try {
         setLoading(true);
-        const response = await axios.get(`https://api.spotify.com/v1/browse/new-releases`, {
+        // Використовуємо пошук за жанром "Rock"
+        const response = await axios.get(`https://api.spotify.com/v1/search`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            market: 'US', // Adjust market as needed
+            q: 'genre:rock',
+            type: 'track',
+            market: 'US',
             limit: 21,
           },
         });
 
-        if (response.status === 200 && response.data.albums && response.data.albums.items) {
-          setAlbums(response.data.albums.items);
+        if (response.status === 200 && response.data.tracks && response.data.tracks.items) {
+          setTracks(response.data.tracks.items);
         } else {
           setError('Unexpected response format from Spotify API.');
         }
       } catch (error: any) {
-        console.error('Error fetching new releases:', error?.response || error.message || error);
-        setError('An error occurred while fetching new releases.');
+        console.error('Error fetching rock tracks:', error?.response || error.message || error);
+        setError('An error occurred while fetching rock tracks.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNewReleases();
+    fetchRockTracks();
   }, []);
 
   const getActiveDeviceId = async (): Promise<string | null> => {
@@ -95,7 +102,7 @@ const NewReleases: React.FC = () => {
     }
   };
 
-  const handlePlayAlbum = async (albumUri: string) => {
+  const handlePlayTrack = async (trackUri: string) => {
     const token = localStorage.getItem('spotifyAccessToken');
 
     if (!token) {
@@ -113,7 +120,7 @@ const NewReleases: React.FC = () => {
       await axios.put(
         `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
         {
-          context_uri: albumUri,
+          uris: [trackUri],
         },
         {
           headers: {
@@ -123,13 +130,12 @@ const NewReleases: React.FC = () => {
         }
       );
 
-      console.log('Album is playing');
+      console.log('Track is playing');
     } catch (error: any) {
-      console.error('Error playing album:', error?.response || error.message || error);
+      console.error('Error playing track:', error?.response || error.message || error);
       if (error.response && error.response.status === 404) {
-        // Retry logic for specific errors
         console.log('Retrying to connect player...');
-        setTimeout(() => handlePlayAlbum(albumUri), 2000); // Retry after delay
+        setTimeout(() => handlePlayTrack(trackUri), 2000);
       }
     }
   };
@@ -138,18 +144,13 @@ const NewReleases: React.FC = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
 
-      // If scrolled all the way to the left
       if (scrollLeft === 0) {
         setLeftArrow(LeftGray);
-        setRightArrow(RightGreen);  // Enable right arrow for more content
-      }
-      // If scrolled all the way to the right
-      else if (scrollLeft + clientWidth >= scrollWidth - 1) {  // Ensure close to the rightmost position
-        setLeftArrow(LeftGreen); // Enable left arrow to go back
-        setRightArrow(RightGray); // Disable right arrow
-      }
-      // Scrolling in between
-      else {
+        setRightArrow(RightGreen);
+      } else if (scrollLeft + clientWidth >= scrollWidth - 1) {
+        setLeftArrow(LeftGreen);
+        setRightArrow(RightGray);
+      } else {
         setLeftArrow(LeftGreen);
         setRightArrow(RightGreen);
       }
@@ -162,7 +163,7 @@ const NewReleases: React.FC = () => {
         left: -scrollRef.current.clientWidth,
         behavior: 'smooth',
       });
-      setTimeout(updateArrows, 300);  // Update after scrolling
+      setTimeout(updateArrows, 300);
     }
   };
 
@@ -172,20 +173,20 @@ const NewReleases: React.FC = () => {
         left: scrollRef.current.clientWidth,
         behavior: 'smooth',
       });
-      setTimeout(updateArrows, 300);  // Update after scrolling
+      setTimeout(updateArrows, 300);
     }
   };
 
   if (loading) {
-    return <div>Loading new releases...</div>;
+    return <div>Loading rock tracks...</div>;
   }
 
   if (error) {
     return <div style={{ color: 'red' }}>{error}</div>;
   }
 
-  if (albums.length === 0) {
-    return <div>No new releases available.</div>;
+  if (tracks.length === 0) {
+    return <div>No rock tracks available.</div>;
   }
 
   return (
@@ -194,60 +195,45 @@ const NewReleases: React.FC = () => {
         <div style={{ position: 'relative', width: '100%' }}>
           <img src={leftArrow} alt="Scroll Left" className="img-l" onClick={scrollLeft} />
           <img src={rightArrow} alt="Scroll Right" className="img-r" onClick={scrollRight} />
-          <div className='main-title'>Новинки для вас</div>
+          <div className='main-title'>Рок треки</div>
 
           <div
             ref={scrollRef}
             className='music-c'
             onScroll={updateArrows}
           >
-            {albums.map((album) => {
-              if (!album || !album.external_urls || !album.uri) {
-                return null;
-              }
-              return (
-                <div
-
-                  className="img-container"
-
-                >
-                  <div className='img-content'>
-                    <img
-                      src={album.images[0]?.url || 'default-album.png'}
-                      alt={album.name}
-                      style={{}}
-                      className='m-5'
-                      key={album.id}
-
-                    />
-                    <div onClick={() => handlePlayAlbum(album.uri)} className="play-icon">
-                      <img src={Play} alt="Play" />
-                    </div>
-                  </div>
-                  <div>
-                    <p className='artist-name' style={{ fontSize: 'small' }}>
-
-                      <Link key={album.id} to={`/album/${album.id}`}>
-                        <p className="auth" style={{ margin: '10px 0' }}>{album.name}</p>
-                      </Link>
-
-
-
-
-                    </p>
-                    <p className='artist-name' style={{ fontSize: 'small' }}>
-                      {album.artists.map(artist => (
-                        <Link key={artist.id} to={`/artist/${artist.id}`}>
-                          <p className="result-name">{artist.name}</p>
-                        </Link>
-                      ))}
-                    </p>
+            {tracks.map((track) => (
+              <div className="img-container" key={track.id}>
+                <div className='img-content'>
+                  <img
+                    src={track.album.images[0]?.url || 'default-album.png'}
+                    alt={track.name}
+                    className='m-5'
+                  />
+                  <div onClick={() => handlePlayTrack(track.uri)} className="play-icon">
+                    <img src={Play} alt="Play" />
                   </div>
                 </div>
-              );
-
-            })}
-
+                <div>
+                  <p className='artist-name'>
+                    <Link key={track.id} to={`/album/${track.id}`}>
+                      <span className="auth" style={{ cursor: 'pointer' }}>
+                        {track.album.name}
+                      </span>
+                    </Link>
+                  </p>
+                  <p className='artist-name'>
+                    {track.artists.map(artist => (
+                      <Link key={artist.id} to={`/artist/${artist.id}`}>
+                        <span className="result-name" style={{ cursor: 'pointer' }}>
+                          {artist.name}
+                        </span>
+                      </Link>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -255,4 +241,4 @@ const NewReleases: React.FC = () => {
   );
 };
 
-export default NewReleases;
+export default RockMusic;

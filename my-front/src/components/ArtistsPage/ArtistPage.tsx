@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 import bannerImage from './Frame 148 (2).png';
-import TopNavigation from '../Main/TopNavigation';
-import Footer from '../Footer';
+import TopNavigation from '../Navigation/TopNavigation';
+import Footer from '../Footer/Footer';
 import PlayerControls from '../Player/PlayerControls';
 import Seting from './Frame 129 (2).png';
 import LeftGray from '../Main/Frame 73.png';
@@ -52,7 +52,10 @@ interface RelatedArtist {
   popularity: number;
   uri: string;
 }
-
+interface Device {
+  id: string;
+  is_active: boolean;
+}
 const ArtistPage: React.FC = () => {
   const { artistId } = useParams<{ artistId: string }>();
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -64,6 +67,9 @@ const ArtistPage: React.FC = () => {
   const [rightArrowSingles, setRightArrowSingles] = useState(RightGreen);
   const [leftArrowRelated, setLeftArrowRelated] = useState(LeftGray);
   const [rightArrowRelated, setRightArrowRelated] = useState(RightGreen);
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+  
+  
   const scrollRefSingles = useRef<HTMLDivElement>(null);
   const scrollRefRelated = useRef<HTMLDivElement>(null);
 
@@ -102,7 +108,17 @@ const ArtistPage: React.FC = () => {
           }
         );
         setSingles(singlesResponse.data.items);
-
+        const followingResponse = await axios.get(
+          `https://api.spotify.com/v1/me/following/contains`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            params: {
+              type: 'artist',
+              ids: artistId,
+            },
+          }
+        );
+        setIsFollowing(followingResponse.data[0]); // Assumes a single ID was passed
         const relatedArtistsResponse = await axios.get(
           `https://api.spotify.com/v1/artists/${artistId}/related-artists`,
           {
@@ -130,8 +146,35 @@ const ArtistPage: React.FC = () => {
   };
 
   const handleSubscribe = async () => {
-    alert('Subscribed to the artist!');
+    const token = localStorage.getItem('spotifyAccessToken');
+    if (!token) return;
+
+    try {
+      if (isFollowing) {
+        // Unfollow the artist
+        await axios.delete(`https://api.spotify.com/v1/me/following?type=artist&ids=${artistId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        // Follow the artist
+        await axios.put(
+          `https://api.spotify.com/v1/me/following?type=artist&ids=${artistId}`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+      setIsFollowing(!isFollowing); // Toggle follow state
+    } catch (error) {
+      console.error('Failed to update following status', error);
+    }
   };
+
 
   const updateArrowsSingles = () => {
     if (scrollRefSingles.current) {
@@ -206,18 +249,71 @@ const ArtistPage: React.FC = () => {
       setTimeout(updateArrowsRelated, 300);
     }
   };
-
-  const handlePlayAlbum = async (uri: string) => {
+  const handlePlayTrack = async (uri: string) => {
     const token = localStorage.getItem('spotifyAccessToken');
-    if (!token) {
-      console.error('No access token found');
-      return;
-    }
+    if (!token) return;
 
     try {
       await axios.put(
         `https://api.spotify.com/v1/me/player/play`,
         { uris: [uri] },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (error) {
+      console.error('Failed to play track.', error);
+    }
+  };
+  const getActiveDeviceId = async (): Promise<string | null> => {
+    const token = localStorage.getItem('spotifyAccessToken');
+
+    if (!token) {
+      console.error('No access token found');
+      return null;
+    }
+
+    try {
+      const response = await axios.get('https://api.spotify.com/v1/me/player/devices', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const devices: Device[] = response.data.devices;
+      if (devices.length === 0) {
+        console.error('No active devices found');
+        return null;
+      }
+
+      const activeDevice = devices.find((device: Device) => device.is_active);
+      return activeDevice ? activeDevice.id : devices[0].id;
+    } catch (error) {
+      console.error('Error fetching devices:', error);
+      return null;
+    }
+  };
+
+  const handlePlayAlbum = async (albumUri: string) => {
+    const token = localStorage.getItem('spotifyAccessToken');
+
+    if (!token) {
+      console.error('No access token found');
+      return;
+    }
+
+    const deviceId = await getActiveDeviceId();
+    if (!deviceId) {
+      alert('Please open Spotify on one of your devices to start playback.');
+      return;
+    }
+
+    try {
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        {
+          context_uri: albumUri,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -225,10 +321,18 @@ const ArtistPage: React.FC = () => {
           },
         }
       );
-    } catch (error) {
-      console.error('Error playing album:', error);
+
+      console.log('Album is playing');
+    } catch (error: any) {
+      console.error('Error playing album:', error?.response || error.message || error);
+      if (error.response && error.response.status === 404) {
+        // Retry logic for specific errors
+        console.log('Retrying to connect player...');
+        setTimeout(() => handlePlayAlbum(albumUri), 2000); // Retry after delay
+      }
     }
   };
+
 
   if (error) {
     return <div>{error}</div>;
@@ -245,12 +349,12 @@ const ArtistPage: React.FC = () => {
       <div className="sidebar-a">
         <Sidebar />
       </div>
-  
+
       <div className="content-a">
         <div className="banner-container-user-a">
           <img src={bannerImage} alt="Banner" className="banner-image-user-a" />
         </div>
-  
+
         <div className="inf-a">
           <img
             src={profileImageUrl}
@@ -265,21 +369,25 @@ const ArtistPage: React.FC = () => {
             </div>
           </div>
         </div>
-  
+
         <div className="seting-a">
+          
           <img src={Seting} alt="Seting" className="seting-img" />
-          <button onClick={handleSubscribe} className="subscribe-button">
-            Підписатися
+          <button
+            onClick={handleSubscribe}
+            className={isFollowing ? ' subscribed' : 'subscribe-button'}
+          >
+            {isFollowing ? 'Підписаний' : 'Підписатися'}
           </button>
         </div>
-  
+
         {/* Top Tracks Section */}
         <div className="cont-a">
           <div className="top-tracks">
             <h2 className="popularity">Популярні</h2>
             <ul className="tracks-list">
               {topTracks.map((track, index) => (
-                <li key={track.id} className="track-item">
+                <li key={track.id} className="track-item" onClick={() => handlePlayTrack(track.uri)}>
                   <span className="track-index">{index + 1}</span>
                   <img
                     src={track.album.images[0]?.url || "default-album.png"}
@@ -287,9 +395,16 @@ const ArtistPage: React.FC = () => {
                     className="track-image"
                   />
                   <div className="track-info">
-                    <p className="track-name">{track.name}</p>
+                    <p className="track-name">
+                    <Link key={track.id} to={`/album/${track.id}`}>
+                        <span className='name-title'  style={{ margin: '10px 0', cursor: 'pointer' }}>
+                          {track.name}
+                        </span>
+                      </Link>
+                    </p>
+
                   </div>
-                  <div className="track-album">{track.popularity}/50</div>
+                  <div className="track-album">{track.popularity}</div>
                   <div className="track-duration">{formatDuration(track.duration_ms)}</div>
                   <div onClick={() => handlePlayAlbum(track.uri)} className="play-icona">
                     <img src={Play} alt="Play" />
@@ -299,7 +414,7 @@ const ArtistPage: React.FC = () => {
             </ul>
           </div>
         </div>
-  
+
         {/* Singles Section with Scroll */}
         <h2 className="popularity">Сингли</h2>
         <div className="cont-sa">
@@ -332,7 +447,12 @@ const ArtistPage: React.FC = () => {
                     <div onClick={() => handlePlayAlbum(single.uri)} className="play-icona">
                       <img src={Play} alt="Play" />
                     </div>
-                    <p className="auth">{single.name}</p>
+                    <Link key={single.id} to={`/album/${single.id}`}>
+                        <span className='auth' style={{ margin: '10px 0', cursor: 'pointer' }}>
+                        {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
+                   
+                        </span>
+                      </Link>
                     <p className="release-date">{single.release_date}</p>
                   </div>
                 </div>
@@ -340,7 +460,7 @@ const ArtistPage: React.FC = () => {
             </div>
           </div>
         </div>
-  
+
         {/* Related Artists Section with Scroll */}
         <h2 className="popularity">Схожі артисти</h2>
         <div className="cont-sa">
@@ -369,26 +489,34 @@ const ArtistPage: React.FC = () => {
                       src={artist.images[0]?.url || "default-artist.png"}
                       alt={artist.name}
                       className="m5m"
+
                     />
-                    </div>
-                    <div onClick={() => handlePlayAlbum(artist.uri)} className="play-iconaa">
-                      <img src={Play} alt="Play" />
-                    </div>
-                    <p className="auth">{artist.name}</p>
+                  </div>
+                  <Link key={artist.id} to={`/artist/${artist.id}`}>
+                  <div  className="play-iconaa" />
+                  </Link>
                   
+                  
+                  <Link key={artist.id} to={`/artist/${artist.id}`}>
+                        <span className='auth'  style={{ margin: '10px 0', cursor: 'pointer' }}>
+                        {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                   
+                        </span>
+                      </Link>
+
                 </div>
               ))}
             </div>
           </div>
         </div>
-  
+
         <Footer />
       </div>
-  
+
       <div className="filter-user-a">
         <TopNavigation />
       </div>
-  
+
       <GlobalPlayerProvider>
         <div className="player-a">
           <PlayerControls />
@@ -396,8 +524,8 @@ const ArtistPage: React.FC = () => {
       </GlobalPlayerProvider>
     </div>
   );
-  
-  
+
+
 };
 
 export default ArtistPage;

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import NavBar from './NavBar';
+import NavBar from '../Navigation/NavBar';
 
 interface UserProfile {
   country: string;
