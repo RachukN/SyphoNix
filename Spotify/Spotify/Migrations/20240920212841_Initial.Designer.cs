@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Spotify.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240918121426_Initial")]
+    [Migration("20240920212841_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -91,7 +91,7 @@ namespace Spotify.Controllers
 
             Console.WriteLine("Access Token Obtained: " + accessToken);
             // Redirect to frontend with the access token
-            return Redirect($"http://localhost:3000/profile?access_token={accessToken}");
+            return Redirect($"http://localhost:1573/home?access_token={accessToken}");
         }
 
         private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)
