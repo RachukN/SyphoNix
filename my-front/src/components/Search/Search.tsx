@@ -1,9 +1,9 @@
 import React from 'react';
 import Sidebar from './Sidebar/Sidebar';
-import TopNavigation from './Main/TopNavigation';
-import Footer from './Footer';
+import TopNavigation from './Navigation/TopNavigation';
+import Footer from './Footer/Footer';
 import SearchBar from './SearchBar';
-import Categories from './Categories';
+import Categories from './Searh/Categories';
 const Search: React.FC = () => {
     return (
         <div className="main-container">

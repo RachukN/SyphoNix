@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import Sidebar from './Sidebar/Sidebar';
-import TopNavigation from './Main/TopNavigation';
+import Sidebar from '../Sidebar/Sidebar';
+import TopNavigation from '../Navigation/TopNavigation';
 import bannerImage from './Main/Rectangle 4.png';
 import './Mainpage.css'; // Styling for the main page and sidebar
-import RockMusic from './RockMusic';
-import Artists from './Artists';
-import Shows from './Shows';
-import NewReleases from './NewReleases';
-import Music from './Music';
-import SymphoNixAlbums from './SymphoNixAlbums';
-import PopularAlbums from './PopularAlbums';
-import PopularRadio from './PopularRadio';
-import Footer from './Footer';
-import Filter from './Filter';
+import RockMusic from '../Templates/RockMusic';
+import Artists from '../ArtistsPage/Artists';
+import Shows from '../Templates/Shows';
+import NewReleases from '../Templates/NewReleases';
+import SymphoNixAlbums from '../Templates/SymphoNixAlbums';
+import PopularAlbums from '../Templates/PopularAlbums';
+import PopularRadio from '../Templates/PopularRadio';
+import Footer from '../Footer/Footer';
+import Filter from '../Navigation/Filter';
+import NewTracks from '../Templates/NewTrack';
 const MainPage: React.FC = () => {
   const [filter, setFilter] = useState<string>('all'); // Track the current filter ("all", "music", etc.)
 
@@ -34,7 +34,7 @@ const MainPage: React.FC = () => {
 
         {/* Conditionally Render Sections Based on Filter */}
         <div className='cont'>
-          <h2 className="section-title">Рок музика</h2>
+          
           <RockMusic />
         </div>
 
@@ -57,7 +57,7 @@ const MainPage: React.FC = () => {
 
         <div className='cont'>
           <h2 className="section-title">Щоденний мікс</h2>
-          <Music />
+          <NewTracks />
         </div>
 
         <div className='cont'>

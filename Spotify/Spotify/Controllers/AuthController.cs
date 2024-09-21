@@ -38,10 +38,15 @@ namespace Spotify.Controllers
         "user-read-email",
         "user-modify-playback-state",
         "user-read-playback-state",
-        "streaming"
+        "streaming",
+        "user-follow-read",
+        "user-follow-modify",
+        "user-library-modify",
+        "user-library-read"
+
     };
 
-            string scope = "user-read-private user-read-email user-modify-playback-state user-read-playback-state streaming";
+            string scope = "user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
 
 
             var queryParams = new Dictionary<string, string>
@@ -91,7 +96,7 @@ namespace Spotify.Controllers
 
             Console.WriteLine("Access Token Obtained: " + accessToken);
             // Redirect to frontend with the access token
-            return Redirect($"http://localhost:1573/home?access_token={accessToken}");
+            return Redirect($"http://localhost:1573/profile?access_token={accessToken}");
         }
 
         private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)

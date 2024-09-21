@@ -90,7 +90,6 @@ margin-left: 25px;
   line-height: normal;
 }
 .m5m{
-  border-radius: 50%;
   margin-right: 12px;
   width: 140px;
   height: 140px;
@@ -164,6 +163,10 @@ font-weight: 600;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Green shadow on hover */
    
 }
+
+.img-contenta{
+  border-radius: 50%;
+}
 .play-icona img {
   width: 40px;
   height: 40px;
@@ -197,4 +200,16 @@ font-weight: 600;
 line-height: normal;
 border-radius: 12px;
 background: var(--green-less-saturated, #4BDD4C);
+}
+.subscribed{
+ 
+    margin-left: 115%;
+    color: var(--Light-black, #1A2125);
+  /* txt20 (semi bold) */
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 12px;
+  background: var(--green-less-saturated, #7f7e7e);
 }
