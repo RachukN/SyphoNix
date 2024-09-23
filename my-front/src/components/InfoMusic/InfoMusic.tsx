@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PlayerControls from './PlayerControls';
-import { useGlobalPlayer } from './GlobalPlayer';
+import PlayerControls from '../Player/PlayerControls';
+import { useGlobalPlayer } from '../Player/GlobalPlayer';
 
 const InfoMusic: React.FC = () => {
   const { player } = useGlobalPlayer();

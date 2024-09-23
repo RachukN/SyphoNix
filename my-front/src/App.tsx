@@ -13,8 +13,10 @@ import UserProfile from './components/UserProfil/UserProfile';
 import InfoMusic from './components/InfoMusic/InfoMusic';
 import Layout from './components/Player/Layout';
 import ArtistPage from './components/ArtistsPage/ArtistPage';
-import SongPage from './components/SongPage/SongPage';
 import AlbumPage from './components/SongPage/SongPage';
+import TrackPage from './components/SongPage/TrackPage';
+import FavoritesPage from './components/SongPage/FavoritesPage';
+import PlaylistsPage from './components/SongPage/PlaylistsPage';
 const App: React.FC = () => {
   return (
 
@@ -33,9 +35,10 @@ const App: React.FC = () => {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/infomusic" element={<InfoMusic />} />
         <Route path="/artist/:artistId" element={<ArtistPage />} />
-        <Route path="/track/:songId" element={<SongPage />} />
         <Route path="/album/:albumId" element={<AlbumPage />} />
-
+        <Route path="/track/:trackId" element={<TrackPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/playlists" element={<PlaylistsPage />} />
         </Route>
       </Routes>
     </Router>

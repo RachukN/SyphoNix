@@ -1,7 +1,7 @@
 // src/components/Shows.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import '../styles/Music.css';
+import '../../styles/Music.css';
 
 interface Show {
   id: string;

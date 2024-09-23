@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Left from './Main/Frame 73.png';
 import Right from './Main/Frame 72.png';
-import '../styles/Music.css';
+import '../../styles/Music.css';
 
 interface Track {
   id: string;

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './UserProfile.css';
 import Sidebar from '../Sidebar/Sidebar';
-import bannerImage from './Frame 148 (1).png';
+import bannerImage from '../Home/Images/Frame 148 (1).png';
 import TopNavigation from '../Navigation/TopNavigation';
 import Footer from '../Footer/Footer';
-import defaultProfileImage from '../Main/user-128.png'; // Import the default profile image
-import Seting from './Frame 129.png';
+import defaultProfileImage from '../Main/Images/user-128.png'; // Import the default profile image
+import Seting from '../Home/Images/Frame 129.png';
 import TopArtists from '../Templates/TopArtists';
 import TopTracks from '../Templates/TopTracks';
 import PublicPlaylists from '../Templates/PublicPlaylists';

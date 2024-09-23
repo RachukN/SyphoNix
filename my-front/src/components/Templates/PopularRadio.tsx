@@ -1,9 +1,9 @@
 // src/components/PopularRadio.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Left from './Main/Frame 73.png';
-import Right from './Main/Frame 72.png';
-import '../styles/Music.css';
+import Left from '../Main/Images/Frame 73.png';
+import Right from '../Main/Images/Frame 72.png';
+import '../../styles/Music.css';
 
 const PopularRadio: React.FC = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);

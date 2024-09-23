@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useGlobalPlayer } from '../Player/GlobalPlayer'; // Import the global player context
-import '../styles/TopTracks.css'; // Ensure this file exists with the styles
+import '../../styles/Music.css'; // Ensure this file exists with the styles
 
 interface Track {
   id: string;

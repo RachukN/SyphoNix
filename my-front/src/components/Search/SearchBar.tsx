@@ -1,9 +1,9 @@
 // src/components/SearchBar.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/SearchBar.css'; // Import the CSS file for styles
-import Search from '../images/Frame 57.png';
-import Home from '../components/Player/Vector (26).png'
+import './SearchBar.css'; // Import the CSS file for styles
+import Search from '../../images/Frame 57.png';
+import Home from '../Player/Images/Vector (26).png'
 import { Link } from 'react-router-dom';
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');

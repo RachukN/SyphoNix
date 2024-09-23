@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TopNavigation.css';
-import Bell from './Bell.png';
-import User from './user-128.png'; // Your user image
+import Bell from '../Main/Images/Bell.png';
+import User from '../Main/Images/user-128.png'; // Your user image
 
 const TopNavigation: React.FC = () => {
   const navigate = useNavigate();

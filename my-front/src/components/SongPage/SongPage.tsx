@@ -6,12 +6,12 @@ import TopNavigation from '../Navigation/TopNavigation';
 import Footer from '../Footer/Footer';
 import PlayerControls from '../Player/PlayerControls';
 import Play from '../../images/Frame 76.png';
-import Seting from './Frame 129 (2).png';
-import bannerImage from './Frame 148 (2).png';
-import LeftGray from '../Main/Frame 73.png';
-import RightGray from '../Main/Frame 72 (1).png';
-import LeftGreen from '../Main/Frame 73 (1).png';
-import RightGreen from '../Main/Frame 72.png';
+import Seting from '../Home/Images/Frame 129 (2).png';
+import bannerImage from '../Home/Images/Frame 148 (2).png';
+import LeftGray from '../Main/Images/Frame 73.png';
+import RightGray from '../Main/Images/Frame 72 (1).png';
+import LeftGreen from '../Main/Images/Frame 73 (1).png';
+import RightGreen from '../Main/Images/Frame 72.png';
 import '../../styles/SongPage.css'; // Використовуємо стилі сторінки артиста
 
 interface Album {
@@ -54,6 +54,8 @@ interface Device {
   id: string;
   is_active: boolean;
 }
+
+
 const SongPage: React.FC = () => {
   const { albumId } = useParams<{ albumId: string }>();
   const [album, setAlbum] = useState<Album | null>(null);
@@ -384,10 +386,7 @@ const SongPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Album Tracks Section */}
-        <div className="cont-a">
-
-        </div>
+      
 
         {/* Recommendations Section */}
         <div className="cont-a">
@@ -395,13 +394,17 @@ const SongPage: React.FC = () => {
             <h2 className="popularity">Рекомендації на основі треку</h2>
             <ul className="tracks-list">
               {recommendations.slice(0, 5).map((rec, index) => (
-                <li key={rec.id} className="track-item" onClick={() => handlePlayTrack(rec.uri)} // Play track on image click
-                  style={{ cursor: 'pointer' }}>
+                <li  className="track-item"  // Play track on image click
+                key={`${rec.id}-${index}`}
+                >
                   <span className="track-index">{index + 1}</span>
                   <img
                     src={rec.album.images[0]?.url || "default-album.png"}
                     alt={rec.name}
                     className="track-image"
+                    key={rec.id}
+                    onClick={() => handlePlayTrack(rec.uri)}
+                    style={{ margin: '10px 0', cursor: 'pointer' }}
                   // Optionally change the cursor to indicate the image is clickable
                   />
                   <div className="track-info">
@@ -496,35 +499,31 @@ const SongPage: React.FC = () => {
               onClick={scrollRightRelated}
             />
             <div
-              ref={scrollRefRelated}
-              className="music-c"
-              onScroll={updateArrowsRelated}
-            >
-              {relatedArtists.map((artist) => (
-                <div key={artist.id} className="img-container">
-                  <div className="img-contenta">
-                    <img
-                      src={artist.images[0]?.url || "default-artist.png"}
-                      alt={artist.name}
-                      className="m5m"
+  ref={scrollRefRelated}
+  className="music-c"
+  onScroll={updateArrowsRelated}
+>
+  {relatedArtists.map((artist) => (
+    <div key={artist.id} className="img-container">
+      <div className="img-contenta">
+        <img
+          src={artist.images[0]?.url || "default-artist.png"}
+          alt={artist.name}
+          className="m5m"
+        />
+      </div>
+      <Link to={`/artist/${artist.id}`}>
+        <div className="play-iconaa" />
+      </Link>
+      <Link to={`/artist/${artist.id}`}>
+        <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
+          {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+        </span>
+      </Link>
+    </div>
+  ))}
+</div>
 
-                    />
-
-                  </div>
-                  
-                 <Link key={artist.id} to={`/artist/${artist.id}`}>
-                 <div onClick={() => handlePlayTrack(artist.uri)} className="play-iconaa"/>
-                  
-                  </Link>
-                  <Link key={artist.id} to={`/artist/${artist.id}`}>
-                    <span className="auth" style={{ cursor: 'pointer' }}>
-                      {artist.name.length > 13 ? `${artist.name.substring(0, 10)}...` : artist.name}
-                    </span>
-                  </Link>
-
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 

@@ -2,23 +2,23 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useGlobalPlayer } from './GlobalPlayer';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom'; // Import useLocation to detect the current route
+import { useLocation, Link  } from 'react-router-dom'; // Import useLocation to detect the current route
 
 import '../../styles/PlayerControls.css'
-import PreviousIcon from './Frame 105.png';
-import NextIcon from './Frame 107.png';
-import PlayIcon from './Frame 109.png';
-import RepeatIcon from './Repeat.png';
-import ShuffleIcon from './Mixing mode.png';
-import VolumeIcon from './Vector (1).png';
+import PreviousIcon from './Images/Frame 105.png';
+import NextIcon from './Images/Frame 107.png';
+import PlayIcon from './Images/Frame 109.png';
+import RepeatIcon from './Images/Repeat.png';
+import ShuffleIcon from './Images/Mixing mode.png';
+import VolumeIcon from './Images/Vector (1).png';
 import ProgressBar from './ProgressBar';
-import Vic from './Frame 113 (1).png'
-import Pause from './Frame 109 (1).png';
-import { Link } from 'react-router-dom';
-import Min from './Frame 436.png';
-// Import ProgressBar component
+import Vic from './Images/Frame 113 (1).png'
+import Pause from './Images/Frame 109 (1).png';
+import Min from './Images/Frame 436.png';
 
-// Helper function for debouncing API calls
+
+
+
 
 const debounce = (func: Function, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -27,10 +27,9 @@ const debounce = (func: Function, delay: number) => {
     timer = setTimeout(() => func(...args), delay);
   };
 };
-
 const PlayerControls: React.FC = () => {
-  const { player, repeat, shuffle } = useGlobalPlayer();
-  const token = localStorage.getItem('spotifyAccessToken');
+   const { player, repeat, shuffle } = useGlobalPlayer();
+  const token = localStorage.getItem('spotifyAccessToken')|| '';
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [repeatMode, setRepeatMode] = useState<'off' | 'track' | 'context'>('off');
@@ -39,13 +38,13 @@ const PlayerControls: React.FC = () => {
     name: string;
     artist: string;
     albumImage: string;
+    
   } | null>(null);
   const [currentDeviceId, setCurrentDeviceId] = useState<string | null>(null); // State to store the current device ID
   const [position, setPosition] = useState<number>(0); // Track's current position
   const [duration, setDuration] = useState<number>(0); // Track's duration
   const location = useLocation();
   const intervalRef = useRef<NodeJS.Timeout | null>(null); // Store the interval ID in a ref
-
   useEffect(() => {
     // Initialize player and set up event listeners
     const initializePlayer = async () => {
@@ -63,15 +62,15 @@ const PlayerControls: React.FC = () => {
 
         player.addListener('player_state_changed', (state) => {
           if (state) {
-            setIsPlaying(!state.paused);
-            // Extract current track information
             const track = state.track_window.current_track;
             setCurrentTrack({
               name: track.name,
               artist: track.artists.map(artist => artist.name).join(', '),
-              albumImage: track.album.images[0]?.url || '',
-            });
-
+              albumImage: track.album?.images[0]?.url || '', // Якщо album або images не існує, використовуйте опціональний ланцюжок
+              });
+            
+            
+            
 
 
             // Calculate the actual position based on how long it's been since the timestamp

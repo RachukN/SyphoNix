@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import TopNavigation from '../Navigation/TopNavigation';
-import bannerImage from './Main/Rectangle 4.png';
+import bannerImage from './Images/Rectangle 4.png';
 import './Mainpage.css'; // Styling for the main page and sidebar
 import RockMusic from '../Templates/RockMusic';
 import Artists from '../ArtistsPage/Artists';
@@ -56,7 +56,6 @@ const MainPage: React.FC = () => {
         </div>
 
         <div className='cont'>
-          <h2 className="section-title">Щоденний мікс</h2>
           <NewTracks />
         </div>
 

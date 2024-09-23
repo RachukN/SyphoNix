@@ -1,8 +1,8 @@
 import React from 'react';
-import '../styles/Footer.css';
-import FacebookIcon from '../images/Frame 165.png'; // Replace with the correct path
-import TwitterIcon from '../images/Frame 169.png';  // Replace with the correct path
-import InstagramIcon from '../images/Frame 170.png'; // Replace with the correct path
+import './Footer.css';
+import FacebookIcon from '../../images/Frame 165.png'; // Replace with the correct path
+import TwitterIcon from '../../images/Frame 169.png';  // Replace with the correct path
+import InstagramIcon from '../../images/Frame 170.png'; // Replace with the correct path
 
 const Footer: React.FC = () => {
   return (

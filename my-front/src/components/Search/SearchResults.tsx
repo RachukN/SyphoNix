@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/SearchResults.css';
-import Left from './Main/Frame 73.png';
-import Right from './Main/Frame 72.png';
-import BGimage from '../images/Vector 1.png';
+import './SearchResults.css';
+import Left from '../Main/Images/Frame 73.png';
+import Right from '../Main/Images/Frame 72.png';
+import BGimage from '../../images/Vector 1.png';
 import SearchBar from './SearchBar';
-import TopNavigation from './Navigation/TopNavigation';
+import TopNavigation from '../Navigation/TopNavigation';
 
 interface TrackResult {
   id: string;

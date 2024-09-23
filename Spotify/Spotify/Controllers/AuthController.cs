@@ -42,11 +42,14 @@ namespace Spotify.Controllers
         "user-follow-read",
         "user-follow-modify",
         "user-library-modify",
-        "user-library-read"
+        "user-library-read",
+        "playlist-modify-public",
+        "playlist-modify-private",
+        "ugc-image-upload"
 
     };
 
-            string scope = "user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
+            string scope = " ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
 
 
             var queryParams = new Dictionary<string, string>
