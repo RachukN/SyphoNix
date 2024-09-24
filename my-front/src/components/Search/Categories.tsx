@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Categories.css'; // Підключаємо стилі
+import './Categories.css'; // Підключаємо стилі
 
 const Categories: React.FC = () => {
   const [categories, setCategories] = useState<any[]>([]); // Використовуємо стан для зображень

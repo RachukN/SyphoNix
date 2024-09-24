@@ -1,9 +1,9 @@
 // src/components/FollowedArtists.tsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Left from './Main/Frame 73.png';
-import Right from './Main/Frame 72.png';
-import '../styles/Music.css'; // Ensure you have the correct path
+import Left from '../Main/Images/Frame 73.png';
+import Right from '../Main/Images/Frame 72.png';
+import '../../styles/Music.css'; // Ensure you have the correct path
 
 // Define the interfaces for types used in this component
 interface Artist {

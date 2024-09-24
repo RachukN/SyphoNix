@@ -9,7 +9,7 @@ import SearchIcon from './Frame 57.png';
 import LibraryIcon from './Frame 42.png';
 import Logo from './SymphoNix logo.png';
 import LikedTracksIcon from './Rectangle 2.png';
-
+import Plus from'./Default.png';
 interface Album {
   id: string;
   name: string;
@@ -19,9 +19,10 @@ interface Album {
 
 const Sidebar: React.FC = () => {
   const [savedAlbums, setSavedAlbums] = useState<Album[]>([]);
+  const [favoriteTracksCount, setFavoriteTracksCount] = useState<number>(0);
 
   useEffect(() => {
-    const fetchSavedAlbums = async () => {
+    const fetchSavedAlbumsAndTracks = async () => {
       const token = localStorage.getItem('spotifyAccessToken');
       if (!token) {
         console.error('No access token found');
@@ -29,19 +30,28 @@ const Sidebar: React.FC = () => {
       }
 
       try {
-        const response = await axios.get('https://api.spotify.com/v1/me/albums', {
+        // Fetch saved albums
+        const albumsResponse = await axios.get('https://api.spotify.com/v1/me/albums', {
           headers: { Authorization: `Bearer ${token}` },
           params: { limit: 10 }, // Limit to 10 albums, adjust as needed
         });
 
-        const albums = response.data.items.map((item: any) => item.album);
+        const albums = albumsResponse.data.items.map((item: any) => item.album);
         setSavedAlbums(albums);
+
+        // Fetch favorite tracks
+        const tracksResponse = await axios.get('https://api.spotify.com/v1/me/tracks', {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { limit: 50 }, // You can adjust the limit based on your need
+        });
+
+        setFavoriteTracksCount(tracksResponse.data.total); // Store the total number of saved tracks
       } catch (error) {
-        console.error('Failed to fetch saved albums:', error);
+        console.error('Failed to fetch saved albums or tracks:', error);
       }
     };
 
-    fetchSavedAlbums();
+    fetchSavedAlbumsAndTracks();
   }, []);
 
   return (
@@ -64,10 +74,14 @@ const Sidebar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <Link to="/library" className="sidebar-link">
+            <div className="sidebar-link">
+            <Link to="/playlists" className="sidebar-link" >
               <img src={LibraryIcon} alt="Library" className="sidebar-icon" />
               Бібліотека
+              <img src={Plus} alt="Library" className="plus" />
             </Link>
+            
+            </div>
           </li>
         </ul>
       </nav>
@@ -76,21 +90,21 @@ const Sidebar: React.FC = () => {
         <button className="sidebar-button">Артисти</button>
         <button className="sidebar-button">Альбоми</button>
       </div>
-      
-      
-        
+
       <div className="sidebar-item">
-        <div className='margin-5' >
-        <img src={LikedTracksIcon} alt="Liked Tracks" className="sidebar-item-img" />
-          <div >
-            <p className="sidebar-item-title">Треки, які сподобалися</p>
-            <p className="sidebar-item-subtitle">Плейліст • 20 пісень</p>
+        <div className='margin-5'>
+          <Link to="/favorites" className="sidebar-link">
+            <img src={LikedTracksIcon} alt="Liked Tracks" className="sidebar-item-img" />
+          </Link>
+          <div>
+            <p className="sidebar-item-title-s">Треки, які сподобалися</p>
+            <p className="sidebar-item-subtitle-s">Плейліст • {favoriteTracksCount} пісень</p>
           </div>
         </div>
-          
-        </div>
-        {/* Display saved albums */}
-        <section className="sidebar-content">
+      </div>
+
+      {/* Display saved albums */}
+      <section className="sidebar-content">
         {savedAlbums.map((album) => (
           <div key={album.id} className="sidebar-item">
             <img src={album.images[0]?.url || 'default-album.png'} alt={album.name} className="sidebar-item-img" />

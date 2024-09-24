@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
-import '../styles/Music.css';
+import '../../styles/Music.css';
 
 // Імпортуйте зображення альбомів
-import Album1 from '../images/Rectangle 2.png';
-import Album2 from '../images/Rectangle 2 (1).png';
-import Album3 from '../images/Rectangle 2 (2).png';
-import Album4 from '../images/Rectangle 2 (3).png';
-import Album5 from '../images/Rectangle 2 (4).png';
-import Album6 from '../images/Rectangle 2 (5).png';
-import Album7 from '../images/Rectangle 2 (6).png';
+import Album1 from '../../images/Rectangle 2.png';
+import Album2 from '../../images/Rectangle 2 (1).png';
+import Album3 from '../../images/Rectangle 2 (2).png';
+import Album4 from '../../images/Rectangle 2 (3).png';
+import Album5 from '../../images/Rectangle 2 (4).png';
+import Album6 from '../../images/Rectangle 2 (5).png';
+import Album7 from '../../images/Rectangle 2 (6).png';
 
 const SymphoNixAlbums: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);

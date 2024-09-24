@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import LeftGray from './Main/Frame 73.png';
-import RightGray from './Main/Frame 72 (1).png';
-import LeftGreen from './Main/Frame 73 (1).png';
-import RightGreen from './Main/Frame 72.png';
-import Play from '../images/Frame 76.png';
-import '../styles/Music.css';
+import LeftGray from '../Main/Images/Frame 73.png';
+import RightGray from '../Main/Images/Frame 72 (1).png';
+import LeftGreen from '../Main/Images/Frame 73 (1).png';
+import RightGreen from '../Main/Images/Frame 72.png';
+import Play from '../../images/Frame 76.png';
+import '../../styles/Music.css';
 
 interface Track {
   id: string;
