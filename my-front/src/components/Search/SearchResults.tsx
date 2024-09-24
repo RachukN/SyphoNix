@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './SearchResults.css';
 import Left from '../Main/Images/Frame 73.png';
@@ -7,12 +7,12 @@ import Right from '../Main/Images/Frame 72.png';
 import BGimage from '../../images/Vector 1.png';
 import SearchBar from './SearchBar';
 import TopNavigation from '../Navigation/TopNavigation';
-
+import Play from '../../images/Frame 76.png';
 interface TrackResult {
   id: string;
   name: string;
   album: { images: { url: string }[] };
-  artists: { name: string }[];
+  artists: { name: string, id: string; }[];
   uri: string;
 }
 
@@ -20,7 +20,7 @@ interface AlbumResult {
   id: string;
   name: string;
   images: { url: string }[];
-  artists: { name: string }[];
+  artists: { name: string, id: string; }[];
   uri: string;
 }
 
@@ -30,7 +30,10 @@ interface ArtistResult {
   images: { url: string }[];
   uri: string;
 }
-
+interface Device {
+  id: string;
+  is_active: boolean;
+}
 const SearchResults: React.FC = () => {
   const [tracks, setTracks] = useState<TrackResult[]>([]);
   const [albums, setAlbums] = useState<AlbumResult[]>([]);
@@ -102,10 +105,7 @@ const SearchResults: React.FC = () => {
     };
   }, []);
 
-  const getActiveDeviceId = async (): Promise<string | null> => {
-    if (!deviceId) return null;
-    return deviceId;
-  };
+
 
   const checkAndPlayTrack = async (trackUri: string) => {
     const deviceId = await getActiveDeviceId();
@@ -181,7 +181,72 @@ const SearchResults: React.FC = () => {
       });
     }
   };
+  const getActiveDeviceId = async (): Promise<string | null> => {
+    const token = localStorage.getItem('spotifyAccessToken');
 
+    if (!token) {
+      console.error('No access token found');
+      return null;
+    }
+
+    try {
+      const response = await axios.get('https://api.spotify.com/v1/me/player/devices', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const devices: Device[] = response.data.devices;
+      if (devices.length === 0) {
+        console.error('No active devices found');
+        return null;
+      }
+
+      const activeDevice = devices.find((device: Device) => device.is_active);
+      return activeDevice ? activeDevice.id : devices[0].id;
+    } catch (error) {
+      console.error('Error fetching devices:', error);
+      return null;
+    }
+  };
+  const handlePlayAlbum = async (albumUri: string) => {
+    const token = localStorage.getItem('spotifyAccessToken');
+
+    if (!token) {
+      console.error('No access token found');
+      return;
+    }
+
+    const deviceId = await getActiveDeviceId();
+    if (!deviceId) {
+      alert('Please open Spotify on one of your devices to start playback.');
+      return;
+    }
+
+    try {
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        {
+          context_uri: albumUri,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('Album is playing');
+    } catch (error: any) {
+      console.error('Error playing album:', error?.response || error.message || error);
+      if (error.response && error.response.status === 404) {
+        // Retry logic for specific errors
+        console.log('Retrying to connect player...');
+        setTimeout(() => handlePlayAlbum(albumUri), 2000); // Retry after delay
+      }
+    }
+  };
   return (
     <div className="search-results-container">
       <div className='bg-img'><img src={BGimage} alt="image" /></div>
@@ -216,12 +281,20 @@ const SearchResults: React.FC = () => {
                         className="img-container-c"
 
                       >
+                        <Link key={artist.id} to={`/artist/${artist.id}`}>
                         <img
                           src={artist.images[0]?.url || 'default-artist.png'}
                           alt={artist.name}
                           style={{ width: '150px', height: '150px', borderRadius: '50%' }}
                         />
-                        <p className='auth' style={{ margin: '10px 0' }}>{artist.name}</p>
+                        
+                      
+                        
+                          <span className="auth" style={{ cursor: 'pointer' }}>
+                          {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                          </span>
+                        </Link>
+                    
                       </div>
                     );
                   })}
@@ -248,19 +321,34 @@ const SearchResults: React.FC = () => {
                   <div
                     key={album.id}
                     className="marg-c"
-                    onClick={() => checkAndPlayAlbum(album.uri)}
                     style={{ cursor: 'pointer' }}
                   >
+                    
                     <img
                       src={album.images[0]?.url}
                       alt={album.name}
                       style={{ width: '140px', height: '140px', borderRadius: '10px' }}
+                      onClick={() => handlePlayAlbum(album.uri)}
                       className="marg-c"
                     />
-                    <p className="auth" style={{ margin: '10px 0' }}>{album.name}</p>
-                    <p style={{ fontSize: 'small', color: '#666' }}>
-                      {album.artists.map((artist) => artist.name).join(', ')}
+
+                    <Link key={album.id} to={`/album/${album.id}`}>
+                      <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                        {album.name.length > 16 ? `${album.name.substring(0, 12)}...` : album.name}
+                      </span>
+                    </Link>
+
+
+                    <p className="track-artists">
+                      {album.artists.map(artist => (
+                        <Link key={artist.id} to={`/artist/${artist.id}`}>
+                          <span className="artist-name" style={{ cursor: 'pointer' }}>
+                          {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                          </span>
+                        </Link>
+                      ))}
                     </p>
+
                   </div>
                 ))}
               </div>
@@ -282,19 +370,30 @@ const SearchResults: React.FC = () => {
                   <div
                     key={track.id}
                     className="marg-c"
-                    onClick={() => checkAndPlayTrack(track.uri)}
-                    style={{ cursor: 'pointer' }}
+                   
                   >
-                    
+
                     <img
                       src={track.album.images[0]?.url}
                       alt={track.name}
-                      style={{ width: '140px', height: '140px', borderRadius: '10px' }}
+                      style={{ width: '140px', height: '140px', borderRadius: '10px',cursor: 'pointer' }}
                       className="marg-c"
                     />
-                    <p className="auth">{track.name}</p>
-                    <p className="artist-name">
-                      {track.artists.map((artist) => artist.name).join(', ')}
+                    <Link key={track.id} to={`/album/${track.id}`}>
+                      <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                        {track.name.length > 16 ? `${track.name.substring(0, 12)}...` : track.name}
+                      </span>
+                    </Link>
+
+
+                    <p className="track-artists">
+                      {track.artists.map(artist => (
+                        <Link key={artist.id} to={`/artist/${artist.id}`}>
+                          <span className="artist-name" style={{ cursor: 'pointer' }}>
+                          {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                          </span>
+                        </Link>
+                      ))}
                     </p>
                   </div>
                 ))}

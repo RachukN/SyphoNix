@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import '../../styles/Playlists.css';
 import BGimage from '../../images/Vector 1.png';
 import TopNavigation from '../Navigation/TopNavigation';
@@ -172,7 +173,9 @@ const PlaylistsPage: React.FC = () => {
                                 <p style={{ fontSize: 'small', color: '#666' }}>
                                     {playlist.description.length > 16 ? `${playlist.description.substring(0, 12)}...` : playlist.description}
                                 </p>
-                                <p className="auth-p">{playlist.name}</p>
+                                <p className="auth-p">
+            <Link to={`/playlist/${playlist.id}`}>{playlist.name}</Link>
+        </p>
                             </div>
                         ))}
                     </div>

@@ -78,7 +78,7 @@ const Sidebar: React.FC = () => {
             <Link to="/playlists" className="sidebar-link" >
               <img src={LibraryIcon} alt="Library" className="sidebar-icon" />
               Бібліотека
-              
+              <img src={Plus} alt="Library" className="plus" />
             </Link>
             
             </div>

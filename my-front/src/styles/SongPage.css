@@ -18,11 +18,70 @@
     width: 0px;
 
 }
-
+.modal-p{
+    background: var(--Light-black, #111619f9);
+    padding: 20px;
+    width: 1250px;
+    height: 1000px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+}
+.tracks-list-f-p{
+    position: fixed;
+    top: 0;
+    left: 275px; /* Dark background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .track-info {
     margin-top: 10px;
 }
+.close-dropdown-btn{
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    margin-top: -50px;
+    margin-left: 1015px;
+    
+}
+.add-track-btn{
+    margin-top: 50px;
+    margin-bottom: -30px;
+    margin-left: 378px;
+    justify-content: right;
 
+}
+.addp{
+    display: flex;
+    color: var(--Light-black, #1A2125);
+    /* txt20 (semi bold) */
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border-radius: 12px;
+    background: var(--green-less-saturated, #4BDD4C);
+    margin-top: -55px;
+    margin-left: -220px;
+}
+.addpp{
+    display: flex;
+    color: var(--Light-black, #1A2125);
+    /* txt20 (semi bold) */
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border-radius: 12px;
+    background: var(--green-less-saturated, #4BDD4C);
+    margin-top: -38px;
+    margin-left: -70px;
+}
 .track-artists {
     margin-top: -3px;
 }
@@ -284,7 +343,27 @@ h2 {
     margin-top: -15px;
     margin-left: -6px;
 }
-
+.nav{
+    position: fixed;
+    right: 0;
+    top:0;
+}
+.add{
+    position: fixed;
+    top: 0;
+    left: 320px;
+    background: #13191C;
+    width: 600px;
+    height: 80px;
+}
+.content-s-p{
+    position: sticky;
+    background: #13191C;
+    margin-left: 320px;
+    width: 1199px;
+    padding-top: 0px;
+    right: 0;
+}
 .img-content:hover .play-icona {
     display: flex;
     /* Show on hover */

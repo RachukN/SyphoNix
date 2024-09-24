@@ -17,6 +17,7 @@ import AlbumPage from './components/SongPage/SongPage';
 import TrackPage from './components/SongPage/TrackPage';
 import FavoritesPage from './components/SongPage/FavoritesPage';
 import PlaylistsPage from './components/SongPage/PlaylistsPage';
+import PlaylistDetailsPage from './components/SongPage/PlaylistDetailsPage';
 const App: React.FC = () => {
   return (
 
@@ -39,6 +40,7 @@ const App: React.FC = () => {
         <Route path="/track/:trackId" element={<TrackPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/playlists" element={<PlaylistsPage />} />
+        <Route path="/playlist/:id" element={<PlaylistDetailsPage/>} />
         </Route>
       </Routes>
     </Router>
