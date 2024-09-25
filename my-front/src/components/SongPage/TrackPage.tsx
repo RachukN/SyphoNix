@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar/Sidebar';
 import TopNavigation from '../Navigation/TopNavigation';
@@ -12,7 +12,9 @@ import LeftGray from '../Main/Images/Frame 73.png';
 import RightGray from '../Main/Images/Frame 72 (1).png';
 import LeftGreen from '../Main/Images/Frame 73 (1).png';
 import RightGreen from '../Main/Images/Frame 72.png';
+import Setting1 from '../../images/Frame 160 (1).png';
 import '../../styles/SongPage.css';
+
 interface Device {
     id: string;
     is_active: boolean;
@@ -31,7 +33,11 @@ interface Track {
     popularity: number;
     uri: string;
 }
-
+interface Playlist {
+    id: string;
+    name: string;
+    images: { url: string }[];
+}
 interface Recommendation {
     id: string;
     name: string;
@@ -71,12 +77,17 @@ const TrackPage: React.FC = () => {
     const [rightArrowSingles, setRightArrowSingles] = useState(RightGreen);
     const [leftArrowRelated, setLeftArrowRelated] = useState(LeftGray);
     const [rightArrowRelated, setRightArrowRelated] = useState(RightGreen);
-
     const [isTrackSaved, setIsTrackSaved] = useState(false);
     const scrollRefSingles = useRef<HTMLDivElement>(null);
     const scrollRefRelated = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+    const [playlists, setPlaylists] = useState<Playlist[]>([]);
+    const [showPlaylists, setShowPlaylists] = useState(false); // Control playlist visibility
+    const [showDropdown, setShowDropdown] = useState<{ [key: number]: boolean }>({});
+    const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null);
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-
+    
     useEffect(() => {
         const fetchTrackData = async () => {
             const token = localStorage.getItem('spotifyAccessToken');
@@ -111,6 +122,10 @@ const TrackPage: React.FC = () => {
                         headers: { Authorization: `Bearer ${token}` },
                     }
                 );
+                const playlistsResponse = await axios.get('https://api.spotify.com/v1/me/playlists', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setPlaylists(playlistsResponse.data.items);
                 setIsTrackSaved(savedResponse.data[0]);
                 // Fetch top 5 tracks of the artist
                 const topTracksResponse = await axios.get(
@@ -182,8 +197,43 @@ const TrackPage: React.FC = () => {
             console.error('Failed to save or remove track.', error);
         }
     };
-
-
+    const fetchWithRetry = async (url: string, options: any, retries: number = 3, delay: number = 2000) => {
+        try {
+            const response = await axios.get(url, options);
+            return response.data;
+        } catch (error: any) {
+            if (error.response && error.response.status === 429 && retries > 0) {
+                console.log(`Rate limit exceeded. Retrying in ${delay / 1000} seconds...`);
+                await wait(delay); // Затримка перед повторним запитом
+                return fetchWithRetry(url, options, retries - 1, delay * 2); // Збільшення затримки
+            } else {
+                throw error;
+            }
+        }
+    };
+    useEffect(() => {
+        const fetchRecommendations = async () => {
+            const token = localStorage.getItem('spotifyAccessToken');
+            if (!token) {
+                setError('No access token found');
+                return;
+            }
+    
+            const url = `https://api.spotify.com/v1/recommendations?seed_tracks=${trackId}&limit=5`;
+            const options = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+    
+            try {
+                const data = await fetchWithRetry(url, options);
+                setRecommendations(data.tracks);
+            } catch (error) {
+                console.error('Failed to fetch recommendations:', error);
+            }
+        };
+    
+        fetchRecommendations();
+    }, [trackId]);
 
     const handlePlayTrack = async (uri: string) => {
         const token = localStorage.getItem('spotifyAccessToken');
@@ -350,6 +400,44 @@ const TrackPage: React.FC = () => {
     };
     const trackImageUrl = track.album.images.length > 0 ? track.album.images[0].url : 'default-track.png';
 
+    const handleDropdownToggle = (event: React.MouseEvent, index: number) => {
+        const rect = (event.target as HTMLElement).getBoundingClientRect();
+        setDropdownPosition({
+            top: rect.top + window.scrollY + 65,
+            left: rect.right + window.scrollX - 1200, // Offset to display the dropdown to the left of the button
+        });
+        setShowDropdown((prev) => ({
+            ...prev,
+            [index]: !prev[index], // Toggle only the clicked dropdown
+        }));
+    };
+
+    const handleAddToPlaylist = async (playlistId: string) => {
+        const token = localStorage.getItem('spotifyAccessToken');
+        if (!token) return;
+
+        try {
+            await axios.post(
+                `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+                { uris: [track?.uri] },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            alert('Track added to playlist!');
+        } catch (error) {
+            console.error('Failed to add track to playlist.', error);
+            alert('Error adding track to playlist.');
+        }
+    };
+    const handleGoToAlbum = () => {
+        if (track) {
+            navigate(`/album/${track.album.id}`);
+        }
+    };
+
+    const togglePlaylists = () => {
+        setShowPlaylists(!showPlaylists);
+    };
+
     return (
         <div className="main-container-s">
             <div className="sidebar-s">
@@ -371,15 +459,20 @@ const TrackPage: React.FC = () => {
                         <div className="title-s">Трек</div>
                         <h1>{track.name}</h1>
                         <div className="profile-details-s">
-                            <p className="title-s">{track.artists.map((artist) => artist.name).join(', ')}</p>
-                            <p>{track.album.name}</p>
-                            <p>{track.album.release_date}</p>
+                            <p className="title-s">{track.artists.map((artist) => artist.name).join(', ')}</p><div className="marg-5">|</div>
+                            <p>{track.album.name}</p><div className="marg-5">|</div>
+                            <p>{track.album.release_date}</p><div className="marg-5">|</div>
                             <p>{formatDuration(track.duration_ms)}</p>
                         </div>
                     </div>
                 </div>
                 <div className="seting-s">
                     <img src={Seting} alt="Seting" className="seting-img" />
+
+                    {/* Dropdown Menu */}
+
+
+
                     {/* Save/Remove Button */}
                     <button
                         onClick={handleSaveOrRemoveTrack}
@@ -398,9 +491,9 @@ const TrackPage: React.FC = () => {
                         <h2 className="popularity">Рекомендації на основі треку</h2>
                         <ul className="tracks-list">
                             {recommendations.slice(0, 5).map((rec, index) => (
-                                
+
                                 <li className="track-item"  // Play track on image click
-                                key={`${rec.id}-${index}`}
+                                    key={`${rec.id}-${index}`}
                                 >
                                     <span className="track-index">{index + 1}</span>
                                     <img
@@ -430,10 +523,54 @@ const TrackPage: React.FC = () => {
                                         </p>
                                     </div>
                                     <div className="track-album">{rec.popularity || 'N/A'}</div>
-                                    <div className="track-duration">{rec.duration_ms ? formatDuration(rec.duration_ms) : 'Unknown'}</div>
-                                    <div onClick={() => handlePlayTrack(rec.uri)} className="play-icona">
-                                        <img src={Play} alt="Play" />
-                                    </div>
+                                    <div className="track-duration">
+                                        <img
+                                            src={Setting1}
+                                            alt="Settings"
+                                            className="seting-imgg"
+                                            onClick={(event) => handleDropdownToggle(event, index)}
+                                        />
+                                        {rec.duration_ms ? formatDuration(rec.duration_ms) : 'Unknown'}</div>
+                                    {showDropdown[index] && dropdownPosition && (
+                                        <div
+                                            className="dropdown-menu"
+                                            style={{
+                                                position: 'absolute',
+                                                top: `${dropdownPosition.top}px`,
+                                                right: `${dropdownPosition.left}px`,
+                                                backgroundColor: '#333',
+                                                padding: '10px',
+                                                borderRadius: '5px',
+                                                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                                            }}
+                                        >
+                                            <ul>
+                                                {/* Add to Favorites (already implemented) */}
+                                                <li onClick={() => handleSaveOrRemoveTrack()}>
+                                                    {isTrackSaved ? 'Видалити з улюблених' : 'Додати до улюблених'}
+                                                </li>
+
+                                                {/* Add to Playlist (show playlists on click) */}
+                                                <li onClick={togglePlaylists}>
+                                                    Додати до плейлиста
+                                                    {showPlaylists && (
+                                                        <ul className="playlist-options">
+                                                            {playlists.map((playlist) => (
+                                                                <li key={playlist.id} onClick={() => handleAddToPlaylist(playlist.id)}>
+                                                                    {playlist.name}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    )}
+                                                </li>
+
+                                                {/* Go to Album */}
+                                                <li onClick={handleGoToAlbum}>Перейти до альбому</li>
+                                            </ul>
+                                        </div>
+                                    )}
+
+
                                 </li>
                             ))}
                         </ul>
@@ -445,7 +582,7 @@ const TrackPage: React.FC = () => {
                         <h2 className="popularity">Популярні треки {track.artists.map((artist) => artist.name).join(', ')} </h2>
                         <ul className="tracks-list">
                             {topTracks.map((track, index) => (
-                                <li className="track-item"  key={`${track.id}-${index}`} >
+                                <li className="track-item" key={`${track.id}-${index}`} >
                                     <span className="track-index">{index + 1}</span>
                                     <img
                                         src={track.album.images[0]?.url || "default-album.png"}

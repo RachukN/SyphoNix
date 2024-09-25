@@ -7,7 +7,7 @@ import TopNavigation from '../Navigation/TopNavigation';
 import Footer from '../Footer/Footer';
 import bannerImage from '../Home/Images/Frame 148.png';
 import SearchBar from '../Search/SearchBar';
-import Plus from'../Sidebar/Default.png';
+import Plus from '../../images/plus-square_svgrepo.com.png';
 import Play from '../../images/Circle play.png';
 interface Track {
     id: string;
@@ -21,6 +21,10 @@ interface Track {
     popularity: number;
     uri: string;
 }
+interface Device {
+    id: string;
+    is_active: boolean;
+}
 
 const PlaylistDetailsPage: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Отримуємо ID плейлиста з URL
@@ -28,6 +32,8 @@ const PlaylistDetailsPage: React.FC = () => {
     const [tracks, setTracks] = useState<Track[]>([]); // Зберігаємо треки плейлиста
     const [popularTracks, setPopularTracks] = useState<Track[]>([]); // Зберігаємо популярні треки
     const [showDropdown, setShowDropdown] = useState(false); // Контроль відображення випадаючого списку
+    const [showDropdownT, setShowDropdownT] = useState(false); // Контроль відображення випадаючого списку
+
     const [recommendedTracks, setRecommendedTracks] = useState<Track[]>([]); // Зберігаємо рекомендовані треки
     const [selectedTracks, setSelectedTracks] = useState<string[]>([]); // Зберігаємо вибрані для видалення треки
     const [error, setError] = useState<string | null>(null);
@@ -108,7 +114,54 @@ const PlaylistDetailsPage: React.FC = () => {
 
         fetchPopularTracks();
     }, []);
+    useEffect(() => {
+        const fetchPopularTracks = async () => {
+            const token = localStorage.getItem('spotifyAccessToken');
+            if (!token) {
+                setError('No access token found');
+                return;
+            }
 
+            try {
+                // Отримуємо нові релізи (альбоми)
+                const albumsResponse = await axios.get(`https://api.spotify.com/v1/browse/new-releases`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                const albums = albumsResponse.data.albums.items;
+
+                // Для кожного альбому отримуємо його треки
+                const tracksPromises = albums.map(async (album: any) => {
+                    const tracksResponse = await axios.get(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    return tracksResponse.data.items.map((track: any) => ({
+                        ...track,
+                        album: {
+                            name: album.name,
+                            images: album.images,
+                        },
+                    }));
+                });
+
+                // Чекаємо, поки всі треки будуть отримані
+                const tracksArrays = await Promise.all(tracksPromises);
+
+                // Об'єднуємо всі треки в один масив
+                const allTracks = tracksArrays.flat();
+
+                setPopularTracks(allTracks);
+            } catch (error) {
+                console.error('Failed to fetch popular tracks', error);
+            }
+        };
+
+        fetchPopularTracks();
+    }, []);
     // Форматування тривалості треку в хвилини та секунди
     const formatDuration = (ms: number) => {
         const minutes = Math.floor(ms / 60000);
@@ -165,7 +218,9 @@ const PlaylistDetailsPage: React.FC = () => {
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
-
+    const toggleDropdownT = () => {
+        setShowDropdownT(!showDropdownT);
+    };
     // Вибір треку для видалення
     const handleTrackSelection = (trackUri: string) => {
         setSelectedTracks((prev) =>
@@ -192,38 +247,96 @@ const PlaylistDetailsPage: React.FC = () => {
             console.error('Failed to remove tracks from playlist.', error);
         }
     };
-    const handlePlayTrack = async (uri: string) => {
+    const getActiveDeviceId = async (): Promise<string | null> => {
         const token = localStorage.getItem('spotifyAccessToken');
-        if (!token) return;
+        if (!token) {
+            console.error('No access token found');
+            setError('Please log in to continue.');
+            return null;
+        }
 
         try {
-            await axios.put(
-                `https://api.spotify.com/v1/me/player/play`,
-                { uris: [uri] },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
+            const response = await axios.get('https://api.spotify.com/v1/me/player/devices', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const devices: Device[] = response.data.devices;
+            if (devices.length === 0) {
+                setError('No available devices found. Please open Spotify on a device.');
+                return null;
+            }
+
+            const activeDevice = devices.find((device: Device) => device.is_active);
+            return activeDevice ? activeDevice.id : devices[0].id;
         } catch (error) {
-            console.error('Failed to play track.', error);
+            console.error('Error fetching devices:', error);
+            setError('Failed to fetch active devices.');
+            return null;
         }
     };
+
+
+    const handlePlayTrack = async (trackUri: string) => {
+        const token = localStorage.getItem('spotifyAccessToken');
+
+        if (!token) {
+            console.error('No access token found');
+            setError('Please log in to continue.');
+            return;
+        }
+
+        const deviceId = await getActiveDeviceId(); // Отримуємо активний пристрій
+        if (!deviceId) {
+            alert('Please open Spotify on one of your devices to start playback.');
+            return;
+        }
+
+        try {
+            // Запит на відтворення треку на обраному пристрої
+            await axios.put(
+                `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+                {
+                    uris: [trackUri],  // Масив з одним треком для відтворення
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            console.log('Track is playing');
+        } catch (error: any) {
+            console.error('Error playing track:', error.response || error.message || error);
+            if (error.response && error.response.status === 404) {
+                // Логіка для повторної спроби підключення
+                console.log('Retrying to connect player...');
+                setTimeout(() => handlePlayTrack(trackUri), 2000); // Повтор через 2 секунди
+            } else if (error.response && error.response.status === 400) {
+                setError('Invalid request. Check the device ID or track URI.');
+            }
+        }
+    };
+
     const handlePlayAllTracks = async () => {
         const token = localStorage.getItem('spotifyAccessToken');
         if (!token) {
             setError('No access token found');
             return;
         }
-    
+
         try {
             // Collect all track URIs from the playlist
             const trackUris = tracks.map(track => track.uri);
-    
+
             if (trackUris.length === 0) {
                 console.error('No tracks to play.');
                 return;
             }
-    
+
             // Send a request to play all the tracks
             await axios.put(
                 `https://api.spotify.com/v1/me/player/play`,
@@ -232,14 +345,14 @@ const PlaylistDetailsPage: React.FC = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-    
+
             console.log('All tracks are now playing.');
         } catch (error) {
             console.error('Failed to play all tracks.', error);
             setError('Failed to play all tracks.');
         }
     };
-    
+
     // Отримання рекомендацій на основі треків з плейлиста
     useEffect(() => {
         const fetchRecommendations = async () => {
@@ -297,63 +410,63 @@ const PlaylistDetailsPage: React.FC = () => {
                         </>
                     )}
                 </div>
-                <div className="add-track-btn"> 
-                <img
+                <div className="add-track-btn">
+                    <img
                         src={Play}
                         alt="Play"
                         className="seting-img"
                         onClick={handlePlayAllTracks}
                     />
-                <button  className='addp' onClick={toggleDropdown}>Add Tracks</button>
-                {selectedTracks.length > 0 && (
-                    <button className='addpp' onClick={handleRemoveTracks}>Remove Selected Tracks</button>
-                )}
+                    <button className='addp' onClick={toggleDropdown}>Add Tracks</button>
+                    {selectedTracks.length > 0 && (
+                        <button className='addpp' onClick={handleRemoveTracks}>Remove Selected Tracks</button>
+                    )}
                 </div>
-                
 
-                
+
+
                 {showDropdown && (
                     <div className="dropdown">
-                        <ul>    
+                        <ul>
 
                             <div className="tracks-list-f-p">
 
-                                <div className='modal-p'> 
-                                <ul className="tracks-list-f">
-                                    <h2>Recommended Tracks</h2>
-                                    <button onClick={toggleDropdown} className="close-dropdown-btn">
-                                    ✕
-                                    </button>
-                                    {recommendedTracks.map((track, index) => (
-                                        <li className="track-item" key={`${track.uri}-${index}`}>
-                                            <span className="track-index">{index + 1}</span>
-                                            <img
-                                                src={track.album.images[0]?.url || "default-album.png"}
-                                                alt={track.name}
-                                                className="track-image"
-                                                onClick={() => handlePlayTrack(track.uri)}
-                                                style={{ margin: '10px 0', cursor: 'pointer' }}
-                                            />
-                                            <div className="track-info">
-                                                <Link to={`/track/${track.id}`}>
-                                                    <span className="name-title">{track.album.name}</span>
-                                                </Link>
-                                                <p className="track-artists">
-                                                    {track.artists.map((artist: any) => (
-                                                        <Link key={artist.id} to={`/artist/${artist.id}`}>
-                                                            <span className='artist-name'>{artist.name}</span>
-                                                        </Link>
-                                                    ))}
-                                                </p>
-                                            </div>
-                                            <div className="track-album">{track.popularity || 'N/A'}</div>
-                                            <div className="track-duration">{formatDuration(track.duration_ms)}</div>
-                                            <button onClick={() => handleAddTrack(track.uri)}>
-                                            <img src={Plus} alt="Library" className="plus" />
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <div className='modal-p'>
+                                    <ul className="tracks-list-f">
+                                        <h2>Recommended Tracks</h2>
+                                        <button onClick={toggleDropdown} className="close-dropdown-btn">
+                                            ✕
+                                        </button>
+                                        {recommendedTracks.map((track, index) => (
+                                            <li className="track-item" key={`${track.uri}-${index}`}>
+                                                <span className="track-index">{index + 1}</span>
+                                                <img
+                                                    src={track.album.images[0]?.url || "default-album.png"}
+                                                    alt={track.name}
+                                                    className="track-image"
+                                                    onClick={() => handlePlayTrack(track.uri)}
+                                                    style={{ margin: '10px 0', cursor: 'pointer' }}
+                                                />
+                                                <div className="track-info">
+                                                    <Link to={`/track/${track.id}`}>
+                                                        <span className="name-title">{track.album.name}</span>
+                                                    </Link>
+                                                    <p className="track-artists">
+                                                        {track.artists.map((artist: any) => (
+                                                            <Link key={artist.id} to={`/artist/${artist.id}`}>
+                                                                <span className='artist-name'>{artist.name}</span>
+                                                            </Link>
+                                                        ))}
+                                                    </p>
+                                                </div>
+                                                <div className="track-album">{track.popularity || 'N/A'}</div>
+                                                <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+                                                <button onClick={() => handleAddTrack(track.uri)}>
+                                                    <img src={Plus} alt="Library" className="plus-p" />
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </ul>
@@ -361,13 +474,12 @@ const PlaylistDetailsPage: React.FC = () => {
                 )}
 
                 {/* Виведення повідомлення про успішне додавання треку */}
-                {successMessage && <div className="success-message">{successMessage}</div>}
-
+                <div className='success'>
+                    {successMessage && <div className="success-message">{successMessage}</div>}
+                </div>
                 {/* Виведення треків у плейлисті */}
                 <div className="top-tracks-f">
-                    {tracks.length === 0 ? (
-                        <p>This playlist is empty</p>
-                    ) : (
+                    {(
                         <ul className="tracks-list-f">
                             {tracks.map((track, index) => (
                                 <li className="track-item" key={`${track.uri}-${index}`}>
@@ -404,17 +516,56 @@ const PlaylistDetailsPage: React.FC = () => {
                         </ul>
                     )}
                 </div>
+                <div className="seting" onClick={toggleDropdownT} >
+                    <h4 className='scr'>  Запропоновані популярні треки </h4>
 
-                {/* Кнопка для видалення вибраних треків */}
-                
+                </div>
+                {showDropdownT && (
+                    <div className="dropdown">
+                        <div className="top-tracks-f">
 
-                {/* Виведення 10 рекомендованих треків */}
+                            <ul className="tracks-list-f">
+                                {popularTracks.map((track: any, index) => (
+                                    <li className="track-item" key={`${track.uri}-${index}`}>
+                                        <span className="track-index">{index + 1}</span>
+                                        <img
+                                            src={track.album.images[0]?.url || "default-album.png"}
+                                            alt={track.name}
+                                            className="track-image"
+                                            onClick={() => handlePlayTrack(track.uri)}
+                                            style={{ margin: '10px 0', cursor: 'pointer' }}
+                                        />
+                                        <div className="track-info">
+                                            <Link to={`/track/${track.id}`}>
+                                                <span className="name-title">{track.album.name}</span>
+                                            </Link>
+                                            <p className="track-artists">
+                                                {track.artists.map((artist: any) => (
+                                                    <Link key={artist.id} to={`/artist/${artist.id}`}>
+                                                        <span className='artist-name'>{artist.name}</span>
+                                                    </Link>
+                                                ))}
+                                            </p>
+                                        </div>
+                                        <div className="track-album">{track.popularity || 'N/A'}</div>
+                                        <div className="track-duration">{formatDuration(track.duration_ms)}</div>
 
-
+                                        <button onClick={() => handleAddTrack(track.uri)}>
+                                            <img src={Plus} alt="Library" className="plus-p" />
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
                 <Footer />
             </div>
             <div className='add'><SearchBar /></div>
             <div className='nav'><TopNavigation /></div>
+            <div className='success'>
+                {successMessage && <h4 className='success-message' >{successMessage}</h4>}
+            </div>
         </div>
     );
 };
