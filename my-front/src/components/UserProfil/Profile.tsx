@@ -1,4 +1,3 @@
-// src/components/Profile.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,23 +13,25 @@ interface UserProfile {
   id: string;
   images: { url: string }[];
   uri: string;
+  product: string; // Для перевірки на Premium
 }
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isPremium, setIsPremium] = useState(false); // Статус Premium акаунта
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // Extract the token from the URL query parameters
+    // Витягуємо токен з URL або localStorage
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('access_token');
 
     if (token) {
       console.log('Access token found in URL:', token);
-      localStorage.setItem('spotifyAccessToken', token); // Store token in localStorage
+      localStorage.setItem('spotifyAccessToken', token); // Зберігаємо токен у localStorage
       fetchProfile(token);
     } else {
       const storedToken = localStorage.getItem('spotifyAccessToken');
@@ -39,7 +40,7 @@ const Profile: React.FC = () => {
         fetchProfile(storedToken);
       } else {
         console.error('No access token found, redirecting to login');
-        navigate('/');
+        navigate('/'); // Редірект на логін, якщо немає токена
       }
     }
   }, [location, navigate]);
@@ -51,12 +52,19 @@ const Profile: React.FC = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      setProfile(response.data);
+      const userProfile = response.data;
+      setProfile(userProfile);
+      setIsPremium(userProfile.product === 'premium'); // Перевірка на Premium акаунт
       setLoading(false);
-    } catch (error) {
-      console.error('Error fetching profile data', error);
-      setError('Failed to fetch profile data. Please try again.');
-      navigate('/');
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        console.error('Access denied. This token does not have permission.', error);
+        setError('Access denied. This functionality is restricted to Premium users or invalid token.');
+      } else {
+        console.error('Error fetching profile data', error);
+        setError('Failed to fetch profile data. Please try again.');
+      }
+      setLoading(false);
     }
   };
 
@@ -65,10 +73,29 @@ const Profile: React.FC = () => {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <h2>{error}</h2>
+        {/* Додаємо кнопку для переходу на сторінку Premium */}
+        <button
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#1DB954',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            window.location.href = 'https://www.spotify.com/premium/';
+          }}
+        >
+          Придбати Spotify Premium
+        </button>
+      </div>
+    );
   }
 
-  // Ensure that profile is not null before rendering the details
   if (!profile) {
     return <div>No profile data available.</div>;
   }
@@ -96,7 +123,35 @@ const Profile: React.FC = () => {
           </li>
           <li>Country: {profile.country}</li>
           <li>Followers: {profile.followers.total}</li>
+          <li>
+            Account Type: {isPremium ? 'Premium' : 'Free'} {/* Відображення типу акаунта */}
+          </li>
         </ul>
+
+        {/* Виведення повідомлення про Premium статус */}
+        {isPremium ? (
+          <div>Ви користувач Premium. Відтворення музики дозволено.</div>
+        ) : (
+          <div>
+            Ця функція доступна тільки для користувачів Premium.
+            <button
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#1DB954',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                marginTop: '20px',
+              }}
+              onClick={() => {
+                window.location.href = 'https://www.spotify.com/premium/';
+              }}
+            >
+              Придбати Spotify Premium
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
