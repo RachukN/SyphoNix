@@ -13,7 +13,7 @@ const TopNavigation: React.FC = () => {
   };
 
   const handleAccountClick = () => {
-    navigate('/account'); // Redirect to the account page
+    navigate('/profileseting'); // Redirect to the account page
   };
 
   const handleProfileClick = () => {

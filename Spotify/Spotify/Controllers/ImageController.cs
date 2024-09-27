@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Spotify.Models;
-
+using Spotify.Data;
 namespace Spotify.Controllers
 {
     [ApiController]

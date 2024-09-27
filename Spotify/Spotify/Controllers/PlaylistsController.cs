@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spotify.Models;
 using Spotify.DTOs; // Змінити на правильний простір імен для ваших DTO
-
+using Spotify.Data;
 
 namespace Spotify.Controllers
 {

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '../Navigation/NavBar';
+import './Profile.css'; // Додаємо окремий файл CSS для стилізації
+import Sidebar from '../Sidebar/Sidebar';
+import { Link } from 'react-router-dom';
 
 interface UserProfile {
   country: string;
@@ -25,7 +28,6 @@ const Profile: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Витягуємо токен з URL або localStorage
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('access_token');
 
@@ -74,18 +76,13 @@ const Profile: React.FC = () => {
 
   if (error) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
-        <h2>{error}</h2>
-        {/* Додаємо кнопку для переходу на сторінку Premium */}
+      <div className='page'>
+        <div className="subscription-card-d">
+        <h2 className='h2'>Схоже у вас безкоштовний обліковий запис</h2>
+        <h4 className='h22'>Для використання програми вам потрібно придбати PREMIUM</h4>
+       
         <button
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#1DB954',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          className="premium-btn-d"
           onClick={() => {
             window.location.href = 'https://www.spotify.com/premium/';
           }}
@@ -93,6 +90,8 @@ const Profile: React.FC = () => {
           Придбати Spotify Premium
         </button>
       </div>
+      </div>
+      
     );
   }
 
@@ -101,56 +100,52 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div>
-      <NavBar />
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
-        <h1>Profile of {profile.display_name}</h1>
-        {profile.images.length > 0 && (
-          <img
-            src={profile.images[0].url}
-            alt="Profile"
-            style={{ borderRadius: '50%', width: '200px', height: '200px' }}
-          />
-        )}
-        <ul>
-          <li>User ID: {profile.id}</li>
-          <li>Email: {profile.email}</li>
-          <li>
-            Spotify URI: <a href={profile.uri}>{profile.uri}</a>
-          </li>
-          <li>
-            Profile Link: <a href={profile.external_urls.spotify}>{profile.external_urls.spotify}</a>
-          </li>
-          <li>Country: {profile.country}</li>
-          <li>Followers: {profile.followers.total}</li>
-          <li>
-            Account Type: {isPremium ? 'Premium' : 'Free'} {/* Відображення типу акаунта */}
-          </li>
-        </ul>
-
-        {/* Виведення повідомлення про Premium статус */}
-        {isPremium ? (
-          <div>Ви користувач Premium. Відтворення музики дозволено.</div>
-        ) : (
-          <div>
-            Ця функція доступна тільки для користувачів Premium.
-            <button
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#1DB954',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                marginTop: '20px',
-              }}
-              onClick={() => {
-                window.location.href = 'https://www.spotify.com/premium/';
-              }}
-            >
-              Придбати Spotify Premium
-            </button>
-          </div>
+    <div >
+      <div className='page'>
+        <Sidebar/>
+        <h2 className='zah' >Керуйте своєю підпискою</h2>
+<div>
+        <div className="subscription-card">
+          <h3>Ваш план</h3>
+          <h1>{isPremium ? 'Spotify Premium' : 'SymphoNix безкоштовно'}</h1>
+          <ul>
+            {isPremium ? (
+              <>
+                <li>● Без реклами</li>
+                <li>● Відтворення музики без перерв</li>
+                <li>● Необмежений доступ до треків</li>
+                <li>● Висока якість звуку</li>
+              </>
+            ) : (
+              <>
+                <li>1 безкоштовний обліковий запис</li>
+                <li>Прослуховування музики з рекламними паузами</li>
+                <li>Лише потокове передавання</li>
+                <li>Пісні відтворюються у випадковому порядку</li>
+                <li>Базова якість звуку</li>
+              </>
+            )}
+          </ul>
+          <div className='cena'>{isPremium ? 'платно' : 'безкоштовно'}</div>
+        </div>
+        <Link to={`/home`}>
+        <button
+            className="premium-btn"
+           
+          >
+            Використовувати SyphoNix
+          </button>
+        </Link>
+        </div>
+        {!isPremium && (
+          <button
+            className="premium-btn"
+            onClick={() => {
+              window.location.href = 'https://www.spotify.com/premium/';
+            }}
+          >
+            Приєднатися до Premium
+          </button>
         )}
       </div>
     </div>

@@ -10,6 +10,8 @@ export default defineConfig({
         },
     },
     server: {
-        port: 1573
+        host: '0.0.0.0',
+        port: 1573,
       },
+      
 });

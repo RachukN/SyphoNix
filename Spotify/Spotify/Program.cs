@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Spotify.Models; // Ваші моделі
 using Microsoft.AspNetCore.Identity;
+using Spotify.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddScoped<UserService>();
+
+// Swagger конфігурація
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -48,6 +52,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddHttpClient();
 
+// Конфігурація CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -55,28 +60,32 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:1573")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials() // Якщо потрібні куки або авторизація
-              .WithExposedHeaders("Content-Disposition"); // Дозволяємо заголовки, які можуть бути потрібні
+              .AllowCredentials(); // Якщо потрібні куки або авторизація
     });
 });
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Use Developer Exception Page (для розробки)
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Spotify Auth API v1"));
 }
 
 app.UseHttpsRedirection();
+
+// Застосовуємо CORS політику
 app.UseCors("AllowFrontend");
 
-app.UseAuthentication(); // Додайте автентифікацію
+// Налаштування аутентифікації та авторизації
+app.UseAuthentication();
 app.UseAuthorization();
 
-// Add global error handling middleware
+// Додаємо глобальну обробку помилок
 app.Use(async (context, next) =>
 {
     try
@@ -85,12 +94,14 @@ app.Use(async (context, next) =>
     }
     catch (Exception ex)
     {
-        // Log the exception (consider using a logging framework)
+        // Логування помилки або відображення помилки
         context.Response.StatusCode = 500;
         await context.Response.WriteAsync("An unexpected error occurred.");
     }
 });
 
+// Маршрутизація контролерів
 app.MapControllers();
 
+// Запуск застосунку
 app.Run();
