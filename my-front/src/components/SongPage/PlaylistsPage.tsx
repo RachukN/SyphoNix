@@ -162,7 +162,7 @@ const PlaylistsPage: React.FC = () => {
                     <button className='button-m' onClick={openModal}>Create Playlist</button>
 
                     <h2 className='margine'>Your Playlists</h2>
-                    <div ref={playlistScrollRef} className="music-c-c-p" style={{ display: 'flex', overflowX: 'hidden' }}>
+                    <div className="music-c-c-p" >
                         {playlists.map((playlist) => (
                             <div key={playlist.id} className="marg-c-p">
                                 <img
@@ -174,8 +174,8 @@ const PlaylistsPage: React.FC = () => {
                                     {playlist.description.length > 16 ? `${playlist.description.substring(0, 12)}...` : playlist.description}
                                 </p>
                                 <p className="auth-p">
-            <Link to={`/playlist/${playlist.id}`}>{playlist.name}</Link>
-        </p>
+                                    <Link to={`/playlist/${playlist.id}`}>{playlist.name}</Link>
+                                </p>
                             </div>
                         ))}
                     </div>
@@ -198,7 +198,7 @@ const PlaylistsPage: React.FC = () => {
                             placeholder="Playlist Description"
                             value={newPlaylistDescription}
                             onChange={(e) => setNewPlaylistDescription(e.target.value)}
-                            
+
                         />
                         <label className="custom-checkbox">
                             <input
@@ -209,7 +209,7 @@ const PlaylistsPage: React.FC = () => {
                             />
                             <span className="checkbox-icon">
                                 {isPrivate ? (
-                                <img src={Check} alt="Checked" className="checked-icon" />
+                                    <img src={Check} alt="Checked" className="checked-icon" />
                                 ) : (
                                     <img src={Uncheck} alt="Unchecked" className="unchecked-icon" />
                                 )}

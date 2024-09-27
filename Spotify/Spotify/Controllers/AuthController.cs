@@ -83,32 +83,40 @@ namespace Spotify.Controllers
                 return BadRequest("Access token not found in response.");
             }
 
-            // Fetch Spotify profile
+            // Отримуємо профіль Spotify
             var spotifyProfile = await GetSpotifyProfile(accessToken);
             if (spotifyProfile == null)
             {
-                return BadRequest("Failed to fetch Spotify profile.");
+                // Якщо профіль не отримано, це означає, що користувач не має преміуму
+                return Redirect($"http://localhost:1573/premium-required");
             }
 
-            // Check if user already exists in the database
+            // Якщо користувач не має преміум-акаунта
+            if (spotifyProfile.Product != "premium")
+            {
+                return Redirect($"http://localhost:1573/premium-required");
+            }
+
+            // Інша логіка для преміум-користувачів
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == spotifyProfile.Email);
             if (user == null)
             {
-                // If user doesn't exist, create a new user
                 user = new ApplicationUser
                 {
                     Email = spotifyProfile.Email,
                     UserName = spotifyProfile.DisplayName,
-                    // Other profile details
                 };
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
             }
 
-            // Redirect to frontend with both userId and access token
+            // Перенаправляємо до профілю з access_token
             return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}");
         }
+
+
+
 
 
 
@@ -118,17 +126,25 @@ namespace Spotify.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await client.GetAsync("https://api.spotify.com/v1/me");
+
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Failed to fetch profile data. Status Code: {response.StatusCode}, Error: {errorContent}");
+
+                // Перевірка, чи користувач не має преміуму
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    Console.WriteLine("User does not have a premium account.");
+                    return null;
+                }
                 return null;
             }
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var profileData = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
 
-            // Map the Spotify API response to the SpotifyProfile class
+            // Створюємо об'єкт профілю
             SpotifyProfile profile = new SpotifyProfile
             {
                 DisplayName = profileData.display_name,
@@ -140,8 +156,18 @@ namespace Spotify.Controllers
                 ImageUrl = profileData.images != null && profileData.images.Count > 0 ? profileData.images[0].url : null
             };
 
+            // Перевірка, чи профіль є преміум
+            if (profile.Product != "premium")
+            {
+                Console.WriteLine("This user does not have premium.");
+                return profile; // Можемо повернути профіль без доступу до преміум-функцій
+            }
+
             return profile;
         }
+
+
+
 
         private async Task<string> GetAccessToken(string code)
         {

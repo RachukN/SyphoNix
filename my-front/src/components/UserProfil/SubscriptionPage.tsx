@@ -19,6 +19,7 @@ import Night from './Images/Frame 288.png';
 import Logo2 from './Images/Group (2).png'; 
 import TopNavigation from '../Navigation/TopNavigation';
 import { Link } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 
 
@@ -130,8 +131,9 @@ const SubscriptionPage: React.FC = () => {
                         <label htmlFor="dark-mode" className="toggle-label"></label>
                     </div>
                 </div>
+                
             </div>
-            
+            <div className="footer" ><Footer/></div>
         </div>
     );
 };
