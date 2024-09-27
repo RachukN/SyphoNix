@@ -20,6 +20,7 @@ import PlaylistsPage from './components/SongPage/PlaylistsPage';
 import PlaylistDetailsPage from './components/SongPage/PlaylistDetailsPage';
 import SubscriptionPage from './components/UserProfil/SubscriptionPage';
 import EditProfile from './components/UserProfil/EditProfile';
+import PremiumRequired from './components/UserProfil/PremiumRequired';
 const App: React.FC = () => {
   return (
 
@@ -45,6 +46,7 @@ const App: React.FC = () => {
         <Route path="/playlist/:id" element={<PlaylistDetailsPage/>} />
         <Route path="/profileseting" element={<SubscriptionPage/>} />
         <Route path="/editprofile" element={<EditProfile/>} />
+        <Route path="/premium-required" element={<PremiumRequired/>} />
         
         
         </Route>

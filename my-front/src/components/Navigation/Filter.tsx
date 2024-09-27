@@ -29,12 +29,6 @@ const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
         >
           Музика
         </button>
-        <button
-          className={`nav-button ${activeFilter === 'podcasts' ? 'active' : ''}`} // Apply 'active' class if 'podcasts' is selected
-          onClick={() => handleFilterClick('podcasts')}
-        >
-          Подкасти
-        </button>
       </div>
     </div>
   );

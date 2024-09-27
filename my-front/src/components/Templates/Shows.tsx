@@ -87,6 +87,7 @@ const Shows: React.FC = () => {
             ref={scrollRef}
             className='music-c'
             style={{
+              marginTop:'-20px',
               width: '1100px',
               overflowX: 'hidden',
               display: 'flex',

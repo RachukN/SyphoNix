@@ -96,7 +96,7 @@
   font-weight: 600;
   line-height: normal;
 }
-
+.sidebar-button:active,
 .sidebar-button:hover {
   display: flex;
   justify-content: center;
@@ -105,14 +105,23 @@
   background: var(--White, #FFF);
 
 }
-
+.sidebar-button.active{
+  background-color: #FFF;
+}
+.sidebar-contents,
 .sidebar-content {
   margin-top: 20px;
   overflow-y: auto;
   flex-grow: 1;
+  overflow-y: scroll;
   margin-left: 10px;
+  -ms-overflow-style: none;
+  /* Internet Explorer */
+  scrollbar-width: none;
 }
-
+.sidebar-contents{
+  margin-top: -10px;
+}
 .sidebar-item {
   display: flex;
   align-items: center;
@@ -175,19 +184,9 @@ margin-left: 10px;
   color: gray;
 }
 
-.sidebar-content {
-  overflow-y: scroll;
-  /* або auto, щоб показувати скрол тільки при потребі */
-}
+
 
 .sidebar-content::-webkit-scrollbar {
   display: none;
   /* Приховує скрол у браузерах на базі WebKit (Chrome, Safari) */
-}
-
-.sidebar-content {
-  -ms-overflow-style: none;
-  /* Internet Explorer */
-  scrollbar-width: none;
-  /* Firefox */
 }

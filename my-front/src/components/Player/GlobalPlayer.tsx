@@ -1,4 +1,3 @@
-// src/components/Player/GlobalPlayer.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 
@@ -11,6 +10,7 @@ interface GlobalPlayerContextType {
   previous: () => void;
   repeat: (mode: 'track' | 'context' | 'off') => void;
   shuffle: (state: boolean) => void;
+  setPlaybackVolume: (volumePercent: number) => void;
 }
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType>({
@@ -22,6 +22,7 @@ const GlobalPlayerContext = createContext<GlobalPlayerContextType>({
   previous: () => {},
   repeat: () => {},
   shuffle: () => {},
+  setPlaybackVolume: () => {},
 });
 
 interface GlobalPlayerProviderProps {
@@ -39,66 +40,55 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
       return;
     }
 
-    const script = document.createElement('script');
-    script.src = 'https://sdk.scdn.co/spotify-player.js';
-    script.async = true;
+    const loadSpotifySDK = () => {
+      if (!window.onSpotifyWebPlaybackSDKReady) {
+        // Define the global function expected by the SDK
+        window.onSpotifyWebPlaybackSDKReady = () => {
+          const spotifyPlayer = new window.Spotify.Player({
+            name: 'My Spotify Player',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5,
+          });
 
-    script.onload = () => {
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const spotifyPlayer = new window.Spotify.Player({
-          name: 'My Spotify Player',
-          getOAuthToken: cb => { cb(token); },
-          volume: 0.5,
-        });
+          setPlayer(spotifyPlayer);
 
-        setPlayer(spotifyPlayer);
+          spotifyPlayer.addListener('ready', ({ device_id }) => {
+            console.log('Player is ready with Device ID:', device_id);
+            setDeviceId(device_id); // Set the device ID
+          });
 
-        spotifyPlayer.addListener('ready', ({ device_id }) => {
-          console.log('Player is ready with Device ID:', device_id);
-          setDeviceId(device_id);
-        });
+          spotifyPlayer.addListener('not_ready', ({ device_id }) => {
+            console.log('Device went offline with Device ID:', device_id);
+            setDeviceId(null); // Unset the device ID when it's not ready
+          });
 
-        spotifyPlayer.addListener('not_ready', ({ device_id }) => {
-          console.log('Device went offline with Device ID:', device_id);
-          setDeviceId(null);
-        });
-
-        spotifyPlayer.addListener('initialization_error', ({ message }) => {
-          console.error('Initialization error:', message);
-        });
-
-        spotifyPlayer.addListener('authentication_error', ({ message }) => {
-          console.error('Authentication error:', message);
-        });
-
-        spotifyPlayer.addListener('account_error', ({ message }) => {
-          console.error('Account error:', message);
-        });
-
-        spotifyPlayer.addListener('playback_error', ({ message }) => {
-          console.error('Playback error:', message);
-        });
-
-        spotifyPlayer.addListener('player_state_changed', state => {
-          console.log('Player state changed:', state);
-        });
-
-        spotifyPlayer.connect().then(success => {
-          if (success) {
-            console.log('Spotify Player connected successfully');
-          } else {
-            console.error('Failed to connect Spotify Player');
-          }
-        });
-      };
+          spotifyPlayer.connect().then(success => {
+            if (success) {
+              console.log('Spotify Player connected successfully');
+            } else {
+              console.error('Failed to connect Spotify Player');
+            }
+          });
+        };
+      }
     };
 
-    document.body.appendChild(script);
+    const existingScript = document.getElementById('spotify-player');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.id = 'spotify-player';
+      script.src = 'https://sdk.scdn.co/spotify-player.js';
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = loadSpotifySDK; // Only load the player once the SDK script is loaded
+    } else {
+      loadSpotifySDK();
+    }
 
     return () => {
       player?.disconnect();
     };
-  }, []);
+  }, [player]);
 
   const play = () => {
     if (!player) {
@@ -107,7 +97,6 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
     }
     player.resume().catch(error => {
       console.error('Error playing track:', error);
-      refreshToken();
     });
   };
 
@@ -118,7 +107,6 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
     }
     player.pause().catch(error => {
       console.error('Error pausing track:', error);
-      refreshToken();
     });
   };
 
@@ -129,7 +117,6 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
     }
     player.nextTrack().catch(error => {
       console.error('Error skipping to next track:', error);
-      refreshToken();
     });
   };
 
@@ -140,7 +127,6 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
     }
     player.previousTrack().catch(error => {
       console.error('Error skipping to previous track:', error);
-      refreshToken();
     });
   };
 
@@ -162,7 +148,6 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
       }
     ).catch(error => {
       console.error('Error setting repeat mode:', error);
-      refreshToken();
     });
   };
 
@@ -184,17 +169,32 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
       }
     ).catch(error => {
       console.error('Error setting shuffle mode:', error);
-      refreshToken();
     });
   };
 
-  const refreshToken = async () => {
-    console.log('Attempting to refresh Spotify access token...');
-    // Implement the refresh token logic here
+  const setPlaybackVolume = (volumePercent: number) => {
+    const token = localStorage.getItem('spotifyAccessToken');
+    if (!token) {
+      console.error('No Spotify access token found for volume control');
+      return;
+    }
+
+    axios.put(
+      `https://api.spotify.com/v1/me/player/volume?volume_percent=${volumePercent}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).catch(error => {
+      console.error('Error setting playback volume:', error);
+    });
   };
 
   return (
-    <GlobalPlayerContext.Provider value={{ player, deviceId, play, pause, next, previous, repeat, shuffle }}>
+    <GlobalPlayerContext.Provider value={{ player, deviceId, play, pause, next, previous, repeat, shuffle, setPlaybackVolume }}>
       {children}
     </GlobalPlayerContext.Provider>
   );

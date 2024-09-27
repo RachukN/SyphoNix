@@ -60,7 +60,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:1573")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); // Якщо потрібні куки або авторизація
+              .AllowCredentials(); 
     });
 });
 

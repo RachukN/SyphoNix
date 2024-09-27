@@ -14,7 +14,7 @@
     background: var(--Black, #13191C);
   }
   .premium-btn-d:hover{
-    background-color: #0bb647;
+    background: var(--Green, #00FF03);
   }
   .zah{
     color: var(--White, #FFF);
@@ -30,7 +30,7 @@ margin-top: 180px;
     margin-top: 20px;
     margin-left: 20px ;
     border-radius: 25px;
-background: var(--green-less-saturated, #4BDD4C);
+    background: var(--Green, #00FF03);
 color: var(--Light-black, #1A2125);
 font-size: 24px;
 font-style: normal;
@@ -108,8 +108,8 @@ background: var(--white-19, rgba(255, 255, 255, 0.19));
     border: none;
     cursor: pointer;
 
-    background: var(--green-less-saturated, #4BDD4C);
-color: var(--Light-black, #1A2125);
+    background: var(--Green, #00FF03);
+    color: var(--Light-black, #1A2125);
 font-size: 20px;
 font-style: normal;
 font-weight: 600;
@@ -121,7 +121,7 @@ border-radius: 30px;
   }
   
   .premium-btn:hover {
-    background-color: #1aa34a;
+    background: var(--Green, #888988);
   }
   
   .error-container {

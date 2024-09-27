@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import NavBar from '../Navigation/NavBar';
 import './Profile.css'; // Додаємо окремий файл CSS для стилізації
 import Sidebar from '../Sidebar/Sidebar';
 import { Link } from 'react-router-dom';

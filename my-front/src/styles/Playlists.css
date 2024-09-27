@@ -122,7 +122,9 @@
     width: 140px; /* Define the max width */
     white-space: nowrap; /* Ensure text stays in one line */
     overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Show ellipsis (...) for overflowing text */
+    text-overflow: ellipsis; 
+    color: #f8f8f8;
+    /* Show ellipsis (...) for overflowing text */
   }
   
   .artist-name-p {
@@ -195,7 +197,6 @@ background: var(--white-19, rgba(255, 255, 255, 0.19));
   line-height: normal;
   border-radius: 12px;
   background: var(--green-less-saturated, #4BDD4C);
-  margin-left: -5%;
   margin-top: 30px;
 }
 .button-m {
@@ -221,8 +222,8 @@ background: var(--white-19, rgba(255, 255, 255, 0.19));
   border-radius: 12px;
   background: var(--green-less-saturated, #4BDD4C);
   display: flex;
-  margin-top: -22px;
-  margin-left: 270px;
+  margin-top: -2px;
+  margin-left: 150px;
 }
 
 .success-message {

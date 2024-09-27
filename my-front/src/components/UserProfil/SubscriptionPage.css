@@ -9,6 +9,7 @@ body {
 
 .subscription-page {
     margin-left: 600px;
+    margin-bottom: 100px;
 }
 .logo{
     display: flex;
@@ -78,16 +79,17 @@ background: var(--white-19, rgba(255, 255, 255, 0.19));
     height: 24px;
     fill: #fff;
 }
-
 .section {
     width: 600px;
-    background-color: #2a2a2a;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
     border-radius: 12px;
     background: var(--white-19, rgba(255, 255, 255, 0.19));
     
+}
+.footers{
+    margin-left: -262px;
 }
 .section h2{
     font-size: 20px;

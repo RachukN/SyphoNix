@@ -1,0 +1,38 @@
+.baner{
+    position: fixed;
+    height: 750px;
+    left: 0;
+    top: 0;
+    background: #13191C;
+}
+.logo{
+    position: fixed;
+    top: 140px;
+    left: -460px;
+}
+.logo1{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+.auth1{
+    position: fixed;
+    left: 700px;
+    top: 250px;
+    font-size: 40px;
+    width: 800px;
+    height: 500px;
+    color: aliceblue;
+}
+.p{
+    display: flex;
+    
+}
+.auth-b{
+    border-radius: 58px;
+background: var(--Green, #00FF03);
+padding: 10px 20px;
+margin-top: 40px;
+margin-left: 170px;
+color: var(--Black, #13191C);
+}

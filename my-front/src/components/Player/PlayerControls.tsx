@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useGlobalPlayer } from './GlobalPlayer';
 import axios from 'axios';
-import { useLocation, Link  } from 'react-router-dom'; // Import useLocation to detect the current route
+import { useLocation, Link } from 'react-router-dom'; // Import useLocation to detect the current route
 
 import '../../styles/PlayerControls.css'
 import PreviousIcon from './Images/Frame 105.png';
@@ -28,8 +28,8 @@ const debounce = (func: Function, delay: number) => {
   };
 };
 const PlayerControls: React.FC = () => {
-   const { player, repeat, shuffle } = useGlobalPlayer();
-  const token = localStorage.getItem('spotifyAccessToken')|| '';
+  const { player, repeat, shuffle } = useGlobalPlayer();
+  const token = localStorage.getItem('spotifyAccessToken') || '';
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [repeatMode, setRepeatMode] = useState<'off' | 'track' | 'context'>('off');
@@ -38,12 +38,13 @@ const PlayerControls: React.FC = () => {
     name: string;
     artist: string;
     albumImage: string;
-    
+
   } | null>(null);
   const [currentDeviceId, setCurrentDeviceId] = useState<string | null>(null); // State to store the current device ID
   const [position, setPosition] = useState<number>(0); // Track's current position
   const [duration, setDuration] = useState<number>(0); // Track's duration
   const location = useLocation();
+  const { setPlaybackVolume } = useGlobalPlayer();
   const intervalRef = useRef<NodeJS.Timeout | null>(null); // Store the interval ID in a ref
   useEffect(() => {
     // Initialize player and set up event listeners
@@ -67,12 +68,12 @@ const PlayerControls: React.FC = () => {
               name: track.name,
               artist: track.artists.map(artist => artist.name).join(', '),
               albumImage: track.album?.images[0]?.url || '', // Якщо album або images не існує, використовуйте опціональний ланцюжок
-              });
-            
-            
-            
+            });
 
 
+
+
+            setIsPlaying(!state.paused);
             // Calculate the actual position based on how long it's been since the timestamp
 
 
@@ -148,6 +149,30 @@ const PlayerControls: React.FC = () => {
   }, [player]);
 
 
+    // Handle volume change and update the slider background based on the current value
+    const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newVolume = Number(event.target.value);
+  
+      // Change background gradient depending on the route
+      const sliderClass = location.pathname === '/infomusic' ? 'volume-slider-white' : 'volume-slider-green';
+      const slider = document.querySelector(`.${sliderClass}`) as HTMLInputElement;
+      if (slider) {
+        const color = location.pathname === '/infomusic' ? '#fff' : '#00FF03';
+        slider.style.background = `linear-gradient(to right, ${color} ${newVolume}%, rgba(255, 255, 255, 0.52) ${newVolume}%)`;
+      }
+  
+      setPlaybackVolume(newVolume);
+    };
+  
+    useEffect(() => {
+      // Initialize the slider with the right background based on the route
+      const sliderClass = location.pathname === '/infomusic' ? 'volume-slider-white' : 'volume-slider-green';
+      const slider = document.querySelector(`.${sliderClass}`) as HTMLInputElement;
+      if (slider) {
+        const initialColor = location.pathname === '/infomusic' ? '#fff' : '#00FF03';
+        slider.style.background = `linear-gradient(to right, ${initialColor} 50%, #888 50%)`;
+      }
+    }, [location.pathname]);
 
   const skipToNext = useCallback(
     debounce(async () => {
@@ -305,6 +330,8 @@ const PlayerControls: React.FC = () => {
   const imagePathsA = generateImagePathsA();
   const imagePaths = generateImagePaths();
   const renderPlayerDesign = () => {
+    const sliderClass = location.pathname === '/infomusic' ? 'volume-slider-white' : 'volume-slider-green';
+
     if (location.pathname === '/infomusic') {
       return (
 
@@ -360,7 +387,17 @@ const PlayerControls: React.FC = () => {
                     </Link>
 
                     <div className="imgg">
-                      <img className="zvuk" src={VolumeIcon} alt="Volume" />
+                      <div className="volume-control">
+                        <img className="zvuk" src={VolumeIcon} alt="Volume" />
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="10"
+                          className={sliderClass}
+                          onChange={handleVolumeChange}
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -420,18 +457,29 @@ const PlayerControls: React.FC = () => {
                 </div>
               </div>
               <Link to="/infomusic" className="sidebar-link">
-            <img className="vic" src={Vic} alt="Vic" />
-          </Link>
-          <div className="sidebar-link">
-            <img className="zvuk" src={VolumeIcon} alt="Volume" />
+                <img className="vic" src={Vic} alt="Vic" />
 
-          </div>
+              </Link>
+              <div className="sidebar-link">
+                <img className="zvuk" src={VolumeIcon} alt="Volume" />
+                <div className="volume-control">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="10"
+                    defaultValue="50" // Default slider value to start at 50%
+                    onChange={handleVolumeChange} // Handles slider changes
+                    className={sliderClass}
+                  />
+                </div>
+              </div>
             </div>
 
           )}
 
 
-          
+
 
         </div>
       </div>
