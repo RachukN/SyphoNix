@@ -89,8 +89,8 @@ color: var(--Black, #13191C);
   
   .user-dropdown {
     position: absolute;
-    right: 25px;
-    top: 50px; /* Adjust for proper positioning under the profile icon */
+    right: 65px;
+    top: 90px; /* Adjust for proper positioning under the profile icon */
     background-color: #212121;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);

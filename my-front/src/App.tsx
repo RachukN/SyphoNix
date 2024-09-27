@@ -18,6 +18,8 @@ import TrackPage from './components/SongPage/TrackPage';
 import FavoritesPage from './components/SongPage/FavoritesPage';
 import PlaylistsPage from './components/SongPage/PlaylistsPage';
 import PlaylistDetailsPage from './components/SongPage/PlaylistDetailsPage';
+import SubscriptionPage from './components/UserProfil/SubscriptionPage';
+import EditProfile from './components/UserProfil/EditProfile';
 const App: React.FC = () => {
   return (
 
@@ -41,6 +43,10 @@ const App: React.FC = () => {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/playlists" element={<PlaylistsPage />} />
         <Route path="/playlist/:id" element={<PlaylistDetailsPage/>} />
+        <Route path="/profileseting" element={<SubscriptionPage/>} />
+        <Route path="/editprofile" element={<EditProfile/>} />
+        
+        
         </Route>
       </Routes>
     </Router>

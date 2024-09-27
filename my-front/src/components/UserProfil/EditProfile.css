@@ -1,0 +1,149 @@
+.edit-profile {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    color: white;
+    border-radius: 8px;
+}
+
+.edit-profile h2 {
+    text-align: left;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: #fff;
+
+}
+
+.edit-profile-form {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    margin-left: -70px;
+}
+
+.edit-profile-form label {
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.edit-profile-form input {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: var(--Black, #13191C);
+    color: white;
+    border-radius: 32px;
+    border: 1px solid var(--White, #FFF);
+    color: #FFF;
+    padding: 10px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 25px;
+    width: 520px;
+
+}
+
+.edit-profile-form select {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: var(--Black, #13191C);
+    border: none;
+    color: white;
+    border-radius: 32px;
+    border: 1px solid var(--White, #FFF);
+    color: #FFF;
+    padding: 10px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    margin-right: 10px;
+    margin-bottom: 25px;
+}
+
+.chol {
+    width: 127.5px;
+}
+
+.password-field {
+    display: flex;
+    align-items: center;
+}
+
+.password-field input {
+    flex: 1;
+}
+
+.password-field .toggle-password {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 8px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: right;
+}
+
+
+.cancel-button,
+.save-button {
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    width: 250px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.cancel-button {
+
+    font-weight: 600;
+    font-size: 22px;
+    margin-right: -50px;
+}
+
+.save-button {
+    border-radius: 20px;
+    background: var(--green-less-saturated, #4BDD4C);
+
+    color: var(--Black, #13191C);
+    font-size: 20px;
+    margin-right: 10px;
+
+}
+
+select option {
+    border-radius: 0px 0px 12px 12px;
+    background: var(--Light-black, #1A2125);
+    border: none;
+    width: 100%;
+    overflow-y: hidden;
+    min-height: 200px;
+    
+}
+
+
+select.chol option:checked {
+    background: var(--white-19, rgba(255, 255, 255, 0.19));
+
+}
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    width: 100%;
+}

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Spotify.Data;
+using Spotify.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -20,9 +23,16 @@ namespace Spotify.Controllers
         private readonly string redirectUri = "http://localhost:5059/Auth/callback";  // Ensure this matches the registered redirect URI
         private readonly string spotifyAuthUrl = "https://accounts.spotify.com/authorize";
         private readonly string spotifyTokenUrl = "https://accounts.spotify.com/api/token";
-
+        private readonly UserService _userService;
         // Store code_verifier in a way that is accessible between requests
         private static string codeVerifier;
+        private readonly ApplicationDbContext _context;
+        public AuthController(UserService userService, ApplicationDbContext context)
+        {
+            _userService = userService; 
+            _context = context;
+
+        }
 
         [HttpGet("login")]
         public IActionResult Login()
@@ -30,25 +40,7 @@ namespace Spotify.Controllers
             codeVerifier = GenerateCodeVerifier();
             string codeChallenge = GenerateCodeChallenge(codeVerifier);
             string state = GenerateRandomString(16);
-
             // Include all required scopes
-            var scopes = new List<string>
-    {
-        "user-read-private",
-        "user-read-email",
-        "user-modify-playback-state",
-        "user-read-playback-state",
-        "streaming",
-        "user-follow-read",
-        "user-follow-modify",
-        "user-library-modify",
-        "user-library-read",
-        "playlist-modify-public",
-        "playlist-modify-private",
-        "ugc-image-upload",
-        "playlist-read-collaborative"
-
-    };
 
             string scope = " playlist-read-collaborative ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
 
@@ -68,7 +60,6 @@ namespace Spotify.Controllers
 
             return Redirect(fullAuthUrl);
         }
-
 
 
 
@@ -92,16 +83,92 @@ namespace Spotify.Controllers
                 return BadRequest("Access token not found in response.");
             }
 
-            // Optionally handle refresh token
-            string refreshToken = tokenData.ContainsKey("refresh_token") ? tokenData["refresh_token"] : null;
+            // Fetch Spotify profile
+            var spotifyProfile = await GetSpotifyProfile(accessToken);
+            if (spotifyProfile == null)
+            {
+                return BadRequest("Failed to fetch Spotify profile.");
+            }
 
-            // You can store tokens in a secure way, like a server-side session or secure cookie
-            // Store access token securely, and use refresh tokens if available
+            // Check if user already exists in the database
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == spotifyProfile.Email);
+            if (user == null)
+            {
+                // If user doesn't exist, create a new user
+                user = new ApplicationUser
+                {
+                    Email = spotifyProfile.Email,
+                    UserName = spotifyProfile.DisplayName,
+                    // Other profile details
+                };
 
-            Console.WriteLine("Access Token Obtained: " + accessToken);
-            // Redirect to frontend with the access token
-            return Redirect($"http://localhost:1573/profile?access_token={accessToken}");
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
+
+            // Redirect to frontend with both userId and access token
+            return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}");
         }
+
+
+
+        private async Task<SpotifyProfile> GetSpotifyProfile(string accessToken)
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await client.GetAsync("https://api.spotify.com/v1/me");
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Failed to fetch profile data. Status Code: {response.StatusCode}, Error: {errorContent}");
+                return null;
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var profileData = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+
+            // Map the Spotify API response to the SpotifyProfile class
+            SpotifyProfile profile = new SpotifyProfile
+            {
+                DisplayName = profileData.display_name,
+                Email = profileData.email,
+                Country = profileData.country,
+                Product = profileData.product,
+                SpotifyUrl = profileData.external_urls.spotify,
+                Followers = profileData.followers.total,
+                ImageUrl = profileData.images != null && profileData.images.Count > 0 ? profileData.images[0].url : null
+            };
+
+            return profile;
+        }
+
+        private async Task<string> GetAccessToken(string code)
+        {
+            // Your logic to exchange the code for an access token
+            return "YourAccessToken";
+        }
+
+
+
+        private async Task<UserProfile> GetUserProfile(string accessToken)
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await client.GetAsync("https://api.spotify.com/v1/me");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Failed to get user profile. Status Code: {response.StatusCode}");
+                return null;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var userProfile = JsonConvert.DeserializeObject<UserProfile>(json);
+            return userProfile;
+        }
+
 
         private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)
         {
@@ -110,8 +177,9 @@ namespace Spotify.Controllers
             {
                 ["grant_type"] = "authorization_code",
                 ["code"] = code,
-                ["redirect_uri"] = redirectUri,
+                ["redirect_uri"] = "http://localhost:5059/Auth/callback",  // Замість цього URL використовуйте той, що зареєстрований
                 ["client_id"] = clientId,
+                ["client_secret"] = clientSecret,
                 ["code_verifier"] = codeVerifier
             };
 
@@ -131,7 +199,6 @@ namespace Spotify.Controllers
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Access Token Obtained Successfully");
                 return json;
             }
             catch (Exception ex)
@@ -140,6 +207,8 @@ namespace Spotify.Controllers
                 return null;
             }
         }
+
+
 
 
         private static string GenerateRandomString(int length)

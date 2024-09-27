@@ -207,7 +207,7 @@ const NewReleases: React.FC = () => {
               }
               return (
                 <div
-
+                key={album.id}
                   className="img-container"
 
                 >
