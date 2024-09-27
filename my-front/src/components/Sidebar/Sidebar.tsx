@@ -26,7 +26,7 @@ interface Artist {
 interface Playlist {
   id: string;
   name: string;
-  images: { url: string }[];
+  images: { url: string }[]; 
 }
 
 const Sidebar: React.FC = () => {
@@ -34,7 +34,13 @@ const Sidebar: React.FC = () => {
   const [favoriteTracksCount, setFavoriteTracksCount] = useState<number>(0);
   const [favoriteArtists, setFavoriteArtists] = useState<Artist[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [activeFilter, setActiveFilter] = useState<'albums' | 'artists' | 'playlists'>('albums'); // За замовчуванням альбоми
+  
+  // Стан для відстеження активних кнопок
+  const [activeFilters, setActiveFilters] = useState({
+    playlists: true,
+    artists: true,
+    albums: true,
+  });
 
   useEffect(() => {
     const fetchSavedAlbumsTracksAndArtists = async () => {
@@ -71,9 +77,10 @@ const Sidebar: React.FC = () => {
         const playlistsResponse = await axios.get('https://api.spotify.com/v1/me/playlists', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const playlists = playlistsResponse.data.items;
+        const playlists = playlistsResponse.data.items.filter(
+          (playlist: Playlist) => playlist.images && playlist.images.length > 0
+        );
         setPlaylists(playlists);
-
       } catch (error) {
         console.error('Failed to fetch saved albums, tracks, artists, or playlists:', error);
       }
@@ -86,56 +93,57 @@ const Sidebar: React.FC = () => {
     if ('images' in item && Array.isArray(item.images) && item.images.length > 0) {
       return item.images[0].url;
     }
-    return 'default-image.png'; // Значення за замовчуванням
+    return 'default-image.png'; 
+  };
+
+  const toggleFilter = (filter: keyof typeof activeFilters) => {
+    setActiveFilters((prev) => ({ ...prev, [filter]: !prev[filter] }));
   };
 
   const renderFilteredContent = () => {
-    if (activeFilter === 'albums') {
-      return (
-        <>
-          <h4>Альбоми</h4>
-          {savedAlbums.map((album) => (
-            <div key={album.id} className="sidebar-item">
-              <img src={getImageUrl(album)} alt={album.name} className="sidebar-item-img" />
-              <div>
-                <p className="sidebar-item-title">{album.name}</p>
-                <p className="sidebar-item-subtitle">
-                  {'artists' in album && album.artists.map((artist) => artist.name).join(', ')}
-                </p>
+    return (
+      <>
+        {activeFilters.albums && (
+          <>
+            {savedAlbums.map((album) => (
+              <div key={album.id} className="sidebar-item">
+                <img src={getImageUrl(album)} alt={album.name} className="sidebar-item-img" />
+                <div>
+                  <p className="sidebar-item-title">{album.name}</p>
+                  <p className="sidebar-item-subtitle">
+                    {'artists' in album && album.artists.map((artist) => artist.name).join(', ')}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </>
-      );
-    } else if (activeFilter === 'artists') {
-      return (
-        <>
-          <h4>Улюблені артисти</h4>
-          {favoriteArtists.map((artist) => (
-            <div key={artist.id} className="sidebar-item">
-              <img src={getImageUrl(artist)} alt={artist.name} className="sidebar-item-img" />
-              <div>
-                <p className="sidebar-item-title">{artist.name}</p>
+            ))}
+          </>
+        )}
+        {activeFilters.artists && (
+          <>
+            {favoriteArtists.map((artist) => (
+              <div key={artist.id} className="sidebar-item">
+                <img src={getImageUrl(artist)} alt={artist.name} style={{borderRadius:'50%'}} className="sidebar-item-img" />
+                <div>
+                  <p className="sidebar-item-title">{artist.name}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </>
-      );
-    } else if (activeFilter === 'playlists') {
-      return (
-        <>
-          <h4>Плейлісти</h4>
-          {playlists.map((playlist) => (
-            <div key={playlist.id} className="sidebar-item">
-              <img src={getImageUrl(playlist)} alt={playlist.name} className="sidebar-item-img" />
-              <div>
-                <p className="sidebar-item-title">{playlist.name}</p>
+            ))}
+          </>
+        )}
+        {activeFilters.playlists && (
+          <>
+            {playlists.map((playlist) => (
+              <div key={playlist.id} className="sidebar-item">
+                <img src={getImageUrl(playlist)} alt={playlist.name} className="sidebar-item-img" />
+                <div>
+                  <p className="sidebar-item-title">{playlist.name}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </>
-      );
-    }
+            ))}
+          </>
+        )}
+      </>
+    );
   };
 
   return (
@@ -169,9 +177,24 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
       <div className="sidebar-buttons">
-        <button className="sidebar-button" onClick={() => setActiveFilter('playlists')}>Плейлісти</button>
-        <button className="sidebar-button" onClick={() => setActiveFilter('artists')}>Артисти</button>
-        <button className="sidebar-button" onClick={() => setActiveFilter('albums')}>Альбоми</button>
+        <button
+          className={`sidebar-button ${activeFilters.playlists ? 'active' : ''}`}
+          onClick={() => toggleFilter('playlists')}
+        >
+          Плейлісти
+        </button>
+        <button
+          className={`sidebar-button ${activeFilters.artists ? 'active' : ''}`}
+          onClick={() => toggleFilter('artists')}
+        >
+          Артисти
+        </button>
+        <button
+          className={`sidebar-button ${activeFilters.albums ? 'active' : ''}`}
+          onClick={() => toggleFilter('albums')}
+        >
+          Альбоми
+        </button>
       </div>
 
       <div className="sidebar-item">
@@ -186,9 +209,7 @@ const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      <section className="sidebar-content">
-        {renderFilteredContent()}
-      </section>
+      <section className="sidebar-contents">{renderFilteredContent()}</section>
     </div>
   );
 };

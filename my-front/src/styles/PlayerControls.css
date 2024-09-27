@@ -114,37 +114,50 @@ button {
   cursor: pointer;
 }
 
-/* Styling for the volume slider */
-.volume-slider {
+/* Default green volume slider for other pages */
+.volume-slider-green {
   position: fixed;
-  right: 140px;
+  right: 130px;
   bottom: 40px;
-    -webkit-appearance: none; /* Remove default appearance */
-    appearance: none;
-    width: 120px;
-    height: 5px;
-    border-radius: 5px;
-    background: linear-gradient(to right,  #00FF03 50%, rgba(255, 255, 255, 0.52) 50%); /* Initial gradient with 50% green and 50% gray */
-    outline: none;
-    transition: background 0.2s ease;
-  }
-  
-  .volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .volume-slider::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #00FF03;
-    cursor: pointer;
-  }
+  -webkit-appearance: none;
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(to right, #00FF03 50%, #888 50%);
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+/* White volume slider for /infomusic */
+.volume-slider-white {
+  position: fixed;
+  right: 130px;
+  bottom: 65px;
+  height: 3px;
+  -webkit-appearance: none;
+  width: 120px;
+  background: linear-gradient(to right, #fff 50%, #888 50%);
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+/* Slider thumb */
+.volume-slider-green::-webkit-slider-thumb,
+.volume-slider-white::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.volume-slider-green::-moz-range-thumb,
+.volume-slider-white::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
 
 
 /* Dynamically updating the slider background with JavaScript */

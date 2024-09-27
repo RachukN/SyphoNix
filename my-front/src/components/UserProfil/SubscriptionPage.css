@@ -79,7 +79,6 @@ background: var(--white-19, rgba(255, 255, 255, 0.19));
     height: 24px;
     fill: #fff;
 }
-.footer,
 .section {
     width: 600px;
     padding: 15px;
@@ -89,8 +88,8 @@ background: var(--white-19, rgba(255, 255, 255, 0.19));
     background: var(--white-19, rgba(255, 255, 255, 0.19));
     
 }
-.footer{
-background:none;
+.footers{
+    margin-left: -262px;
 }
 .section h2{
     font-size: 20px;

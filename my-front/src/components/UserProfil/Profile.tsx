@@ -55,15 +55,8 @@ const Profile: React.FC = () => {
       });
       const userProfile = response.data;
       setProfile(userProfile);
-
-      // Перевірка, чи користувач є преміум
-      if (userProfile.product === 'premium') {
-        setIsPremium(true);
-        setLoading(false);
-      } else {
-        // Якщо користувач не преміум, перенаправляємо на сторінку покупки преміуму
-        navigate('/premium-required');
-      }
+      setIsPremium(userProfile.product === 'premium'); // Перевірка на Premium акаунт
+      setLoading(false);
     } catch (error: any) {
       if (error.response && error.response.status === 403) {
         console.error('Access denied. This token does not have permission.', error);
@@ -84,18 +77,20 @@ const Profile: React.FC = () => {
     return (
       <div className='page'>
         <div className="subscription-card-d">
-          <h2 className='h2'>Схоже у вас безкоштовний обліковий запис</h2>
-          <h4 className='h22'>Для використання програми вам потрібно придбати PREMIUM</h4>
-          <button
-            className="premium-btn-d"
-            onClick={() => {
-              window.location.href = 'https://www.spotify.com/premium/';
-            }}
-          >
-            Придбати Spotify Premium
-          </button>
-        </div>
+        <h2 className='h2'>Схоже у вас безкоштовний обліковий запис</h2>
+        <h4 className='h22'>Для використання програми вам потрібно придбати PREMIUM</h4>
+       
+        <button
+          className="premium-btn-d"
+          onClick={() => {
+            window.location.href = 'https://www.spotify.com/premium/';
+          }}
+        >
+          Придбати Spotify Premium
+        </button>
       </div>
+      </div>
+      
     );
   }
 
@@ -104,37 +99,42 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div>
+    <div >
       <div className='page'>
-        <Sidebar />
-        <h2 className='zah'>Керуйте своєю підпискою</h2>
-        <div>
-          <div className="subscription-card">
-            <h3>Ваш план</h3>
-            <h1>{isPremium ? 'Spotify Premium' : 'SymphoNix безкоштовно'}</h1>
-            <ul>
-              {isPremium ? (
-                <>
-                  <li>● Без реклами</li>
-                  <li>● Відтворення музики без перерв</li>
-                  <li>● Необмежений доступ до треків</li>
-                  <li>● Висока якість звуку</li>
-                </>
-              ) : (
-                <>
-                  <li>1 безкоштовний обліковий запис</li>
-                  <li>Прослуховування музики з рекламними паузами</li>
-                  <li>Лише потокове передавання</li>
-                  <li>Пісні відтворюються у випадковому порядку</li>
-                  <li>Базова якість звуку</li>
-                </>
-              )}
-            </ul>
-            <div className='cena'>{isPremium ? 'платно' : 'безкоштовно'}</div>
-          </div>
-          <Link to={`/home`}>
-            <button className="premium-btn">Використовувати SyphoNix</button>
-          </Link>
+        <Sidebar/>
+        <h2 className='zah' >Керуйте своєю підпискою</h2>
+<div>
+        <div className="subscription-card">
+          <h3>Ваш план</h3>
+          <h1>{isPremium ? 'Spotify Premium' : 'SymphoNix безкоштовно'}</h1>
+          <ul>
+            {isPremium ? (
+              <>
+                <li>● Без реклами</li>
+                <li>● Відтворення музики без перерв</li>
+                <li>● Необмежений доступ до треків</li>
+                <li>● Висока якість звуку</li>
+              </>
+            ) : (
+              <>
+                <li>1 безкоштовний обліковий запис</li>
+                <li>Прослуховування музики з рекламними паузами</li>
+                <li>Лише потокове передавання</li>
+                <li>Пісні відтворюються у випадковому порядку</li>
+                <li>Базова якість звуку</li>
+              </>
+            )}
+          </ul>
+          <div className='cena'>{isPremium ? 'платно' : 'безкоштовно'}</div>
+        </div>
+        <Link to={`/home`}>
+        <button
+            className="premium-btn"
+           
+          >
+            Використовувати SyphoNix
+          </button>
+        </Link>
         </div>
         {!isPremium && (
           <button

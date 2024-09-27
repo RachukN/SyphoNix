@@ -5,7 +5,7 @@ import '../../styles/Playlists.css';
 import BGimage from '../../images/Vector 1.png';
 import TopNavigation from '../Navigation/TopNavigation';
 import SearchBar from '../Search/SearchBar';
-import Default from '../../images/Rectangle 2 (4).png';
+import Default from '../Sidebar/Frame 560.png';
 import Check from '../../images/Property 1=Variant2.png'
 import Uncheck from '../../images/Property 1=Default (1).png'
 interface Playlist {
@@ -173,9 +173,13 @@ const PlaylistsPage: React.FC = () => {
                                 <p style={{ fontSize: 'small', color: '#666' }}>
                                     {playlist.description.length > 16 ? `${playlist.description.substring(0, 12)}...` : playlist.description}
                                 </p>
-                                <p className="auth-p">
-                                    <Link to={`/playlist/${playlist.id}`}>{playlist.name}</Link>
-                                </p>
+                                
+                                    <Link to={`/playlist/${playlist.id}`}>
+                                    <p className="auth-p">
+                                    {playlist.name}
+                                    </p>
+                                    </Link>
+                                
                             </div>
                         ))}
                     </div>
@@ -207,14 +211,7 @@ const PlaylistsPage: React.FC = () => {
                                 onChange={() => setIsPrivate(!isPrivate)}
                                 className="checkbox-input"
                             />
-                            <span className="checkbox-icon">
-                                {isPrivate ? (
-                                    <img src={Check} alt="Checked" className="checked-icon" />
-                                ) : (
-                                    <img src={Uncheck} alt="Unchecked" className="unchecked-icon" />
-                                )}
-                            </span>
-                            Private Playlist
+                           
                         </label>
 
                         <input className='button-f-f' type="file" accept="image/*" onChange={handleImageUpload} />

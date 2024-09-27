@@ -1,6 +1,9 @@
 // src/components/Login.tsx
 import React from 'react';
-
+import './Login.css';
+import Baner from './Vector 1 (1).png';
+import Logo from './Group (3).png';
+import Logo1 from './Group (4).png';
 // Define the backend URL directly in your code
 const BACKEND_URL = 'http://localhost:5059'; // Update this URL to your backend's actual URL
 
@@ -12,11 +15,17 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Spotify Authorization </h1>
-      <button onClick={handleLogin} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}>
-        Login with Spotify
+    <div className='conteiner'>
+      
+      <img className='baner' src={Baner} alt="Baner" />
+      <img className='logo' src={Logo} alt="Logo" />
+      <img className='logo1' src={Logo1} alt="Logo1" />
+    <div className='auth1'>
+      <div className='p'>Авторизуватися за допомогою Spotify </div>
+      <button className='auth-b' onClick={handleLogin} >
+        Авторизуватися
       </button>
+    </div>
     </div>
   );
 };

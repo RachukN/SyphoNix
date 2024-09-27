@@ -153,22 +153,26 @@ const PlayerControls: React.FC = () => {
     const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const newVolume = Number(event.target.value);
   
-      // Dynamically update the slider background with a new gradient
-      event.target.style.background = `linear-gradient(to right, #00FF03 ${newVolume}%, rgba(255, 255, 255, 0.52) ${newVolume}%)`;
+      // Change background gradient depending on the route
+      const sliderClass = location.pathname === '/infomusic' ? 'volume-slider-white' : 'volume-slider-green';
+      const slider = document.querySelector(`.${sliderClass}`) as HTMLInputElement;
+      if (slider) {
+        const color = location.pathname === '/infomusic' ? '#fff' : '#00FF03';
+        slider.style.background = `linear-gradient(to right, ${color} ${newVolume}%, rgba(255, 255, 255, 0.52) ${newVolume}%)`;
+      }
   
-      setPlaybackVolume(newVolume); // Assuming this function handles setting the volume in Spotify
+      setPlaybackVolume(newVolume);
     };
   
-    // Initialize the slider background when the component mounts
     useEffect(() => {
-      const volumeSlider = document.querySelector('.volume-slider') as HTMLInputElement;
-      
-      if (volumeSlider) {
-        // Set the initial gradient to 50% green and 50% gray
-        const initialVolume = 50; // Default volume is set to 50%
-        volumeSlider.style.background = `linear-gradient(to right, #1DB954 ${initialVolume}%, #888 ${initialVolume}%)`;
+      // Initialize the slider with the right background based on the route
+      const sliderClass = location.pathname === '/infomusic' ? 'volume-slider-white' : 'volume-slider-green';
+      const slider = document.querySelector(`.${sliderClass}`) as HTMLInputElement;
+      if (slider) {
+        const initialColor = location.pathname === '/infomusic' ? '#fff' : '#00FF03';
+        slider.style.background = `linear-gradient(to right, ${initialColor} 50%, #888 50%)`;
       }
-    }, []);
+    }, [location.pathname]);
 
   const skipToNext = useCallback(
     debounce(async () => {
@@ -326,6 +330,8 @@ const PlayerControls: React.FC = () => {
   const imagePathsA = generateImagePathsA();
   const imagePaths = generateImagePaths();
   const renderPlayerDesign = () => {
+    const sliderClass = location.pathname === '/infomusic' ? 'volume-slider-white' : 'volume-slider-green';
+
     if (location.pathname === '/infomusic') {
       return (
 
@@ -387,9 +393,9 @@ const PlayerControls: React.FC = () => {
                           type="range"
                           min="0"
                           max="100"
-                          step="1"
+                          step="10"
+                          className={sliderClass}
                           onChange={handleVolumeChange}
-                          className="volume-slider"
                         />
                       </div>
                     </div>
@@ -461,10 +467,10 @@ const PlayerControls: React.FC = () => {
                     type="range"
                     min="0"
                     max="100"
-                    step="1"
+                    step="10"
                     defaultValue="50" // Default slider value to start at 50%
                     onChange={handleVolumeChange} // Handles slider changes
-                    className="volume-slider"
+                    className={sliderClass}
                   />
                 </div>
               </div>

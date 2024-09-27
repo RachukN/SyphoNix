@@ -133,7 +133,7 @@ const SubscriptionPage: React.FC = () => {
                 </div>
                 
             </div>
-            <div className="footer" ><Footer/></div>
+            <div className="footers" ><Footer/></div>
         </div>
     );
 };
