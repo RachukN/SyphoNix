@@ -404,9 +404,7 @@ h2 {
     color: #ffffff;
 }
 
-.track-name:hover {
-    transform: scale(1.1);
-}
+
 
 .play-button {
     display: flex;

@@ -11,6 +11,7 @@ interface GlobalPlayerContextType {
   previous: () => void;
   repeat: (mode: 'track' | 'context' | 'off') => void;
   shuffle: (state: boolean) => void;
+  setPlaybackVolume: (volumePercent: number) => void; 
 }
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType>({
@@ -22,6 +23,7 @@ const GlobalPlayerContext = createContext<GlobalPlayerContextType>({
   previous: () => {},
   repeat: () => {},
   shuffle: () => {},
+  setPlaybackVolume: () => {},
 });
 
 interface GlobalPlayerProviderProps {
@@ -187,14 +189,33 @@ export const GlobalPlayerProvider: React.FC<GlobalPlayerProviderProps> = ({ chil
       refreshToken();
     });
   };
-
+  const setPlaybackVolume = (volumePercent: number) => {
+    const token = localStorage.getItem('spotifyAccessToken');
+    if (!token) {
+      console.error('No Spotify access token found for volume control');
+      return;
+    }
+  
+    axios.put(
+      `https://api.spotify.com/v1/me/player/volume?volume_percent=${volumePercent}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).catch(error => {
+      console.error('Error setting playback volume:', error);
+    });
+  };
   const refreshToken = async () => {
     console.log('Attempting to refresh Spotify access token...');
     // Implement the refresh token logic here
   };
 
   return (
-    <GlobalPlayerContext.Provider value={{ player, deviceId, play, pause, next, previous, repeat, shuffle }}>
+    <GlobalPlayerContext.Provider value={{ player, deviceId, play, pause, next, previous, repeat, shuffle,setPlaybackVolume }}>
       {children}
     </GlobalPlayerContext.Provider>
   );
