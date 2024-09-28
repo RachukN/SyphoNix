@@ -104,12 +104,12 @@ const UserProfile: React.FC = () => {
          
         </div>
         <div className='cont'>
-        <h2 className="section-title, m-5">Публічні плейлісти</h2>
-         <div className="h2"><PublicPlaylists/></div>
+        <h2 className="section-title">Публічні плейлісти</h2>
+         <div className="h22"><PublicPlaylists/></div>
         </div>
         <div className='cont'>
         <h2 className="section-title, m-5">Підписки</h2>
-         <div className="h2"><FollowedArtists/></div>
+         <div className="hh-2"><FollowedArtists/></div>
         </div>
         <Footer/>
         
