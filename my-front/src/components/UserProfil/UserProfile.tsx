@@ -14,6 +14,7 @@ import PublicPlaylists from '../Templates/PublicPlaylists';
 import FollowedArtists from '../ArtistsPage/FollowedArtists';
 import PlayerControls from '../Player/PlayerControls';
 import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
+import LoadingPageWithSidebarA from '../Loading/LoadingTrackPageA';
 
 interface UserProfile {
   display_name: string;
@@ -58,7 +59,7 @@ const UserProfile: React.FC = () => {
   }
 
   if (!user) {
-    return <div>Loading user profile...</div>;
+    return <div><LoadingPageWithSidebarA/></div>;
   }
 
   // Use the user's profile image or a default image if none is available

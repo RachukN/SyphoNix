@@ -21,6 +21,8 @@ import PlaylistDetailsPage from './components/SongPage/PlaylistDetailsPage';
 import SubscriptionPage from './components/UserProfil/SubscriptionPage';
 import EditProfile from './components/UserProfil/EditProfile';
 import PremiumRequired from './components/UserProfil/PremiumRequired';
+import LoadingCard from './components/Loading/LoadingPage';
+import LoadingTrackPage from './components/Loading/LoadingTrackPage';
 const App: React.FC = () => {
   return (
 
@@ -47,6 +49,8 @@ const App: React.FC = () => {
         <Route path="/profileseting" element={<SubscriptionPage/>} />
         <Route path="/editprofile" element={<EditProfile/>} />
         <Route path="/premium-required" element={<PremiumRequired/>} />
+        <Route path="/loading" element={<LoadingTrackPage/>} />
+        
         
         
         </Route>

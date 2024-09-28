@@ -14,6 +14,7 @@ import RightGreen from '../Main/Images/Frame 72.png';
 import Play from '../../images/Frame 76.png';
 import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
 import '../../styles/ArtistPage.css';
+import LoadingPageWithSidebarA from '../Loading/LoadingTrackPageA';
 
 interface Artist {
   id: string;
@@ -339,7 +340,7 @@ const ArtistPage: React.FC = () => {
   }
 
   if (!artist) {
-    return <div>Loading artist data...</div>;
+    return <div><LoadingPageWithSidebarA/></div>;
   }
 
   const profileImageUrl = artist.images.length > 0 ? artist.images[0].url : '';

@@ -3,7 +3,9 @@
     padding: 20px;
     text-align: center;
   }
-  
+  .ds{
+    background-color: #13191c55;
+  }
   .categories-title {
     color: #00ff00; /* Green color for the title */
     font-size: 30px;
