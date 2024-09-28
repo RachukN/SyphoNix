@@ -7,6 +7,7 @@ import LeftGreen from '../Main/Images/Frame 73 (1).png';
 import RightGreen from '../Main/Images/Frame 72.png';
 import Play from '../../images/Frame 76.png';
 import '../../styles/Music.css';
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 interface Track {
   id: string;
@@ -172,7 +173,7 @@ const NewTracks: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading new tracks...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

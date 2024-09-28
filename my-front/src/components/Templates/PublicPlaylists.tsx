@@ -5,6 +5,7 @@ import Left from '../Main/Images/Frame 73.png';
 import Right from '../Main/Images/Frame 72.png';
 import '../../styles/Music.css';
 import Play from '../../images/Frame 76.png'
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 // Define the interfaces for types used in this component
 interface Playlist {
@@ -148,7 +149,7 @@ const PublicPlaylists: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading public playlists...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

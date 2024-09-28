@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Skeleton, Box, Typography, List, ListItem, Divider } from '@mui/material';
-import Photo from './Знімок екрана 2024-09-28 162713.png';
+import { Skeleton, Box, Typography, List} from '@mui/material';
 import {
   sidebarStyles,
   mainContentStyles,

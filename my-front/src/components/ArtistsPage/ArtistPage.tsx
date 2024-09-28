@@ -383,7 +383,7 @@ const ArtistPage: React.FC = () => {
             {isFollowing ? 'Підписаний' : 'Підписатися'}
           </button>
         </div>
-
+        <h2 className="popularity">Tоп треки виконавця</h2>
         <ul className="tracks-list">
   {topTracks.map((track, index) => (
     <li key={`${track.id}-${index}`} className="track-item"> {/* Ensure the key is unique */}

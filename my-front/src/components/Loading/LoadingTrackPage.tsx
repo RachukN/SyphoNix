@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Skeleton, Button, List, ListItem, Avatar } from '@mui/material';
-import trackImage from './Знімок екрана 2024-09-28 180551.png'
+import { Box, Typography, Skeleton,  List, ListItem } from '@mui/material';
 import {
     sidebarStyles,
   } from './loadingPageStyles';
@@ -15,6 +14,7 @@ const LoadingSidebar: React.FC = () => {
     return (
       <Box sx={sidebarStyles}>
         {/* Лого або заглушка лого */}
+        
          <Box  sx={{ display: 'flex', alignItems: 'center', marginBottom: '-7px',marginLeft: '15px' }}>
               <Skeleton  sx={{borderRadius:'10px'}} variant="rectangular" width={55} height={100}  animation="wave" />
              <Skeleton sx={{borderRadius:'10px', marginLeft: '10px'}} variant="rectangular" width={150} height={40} animation="wave" />
@@ -55,6 +55,7 @@ const LoadingTrackPage: React.FC = () => {
             {/* Верхня секція з треком */}
             <Box sx={{ display: 'flex', paddingTop: '170px', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
                 {/* Зображення треку та інформація */}
+                <Skeleton variant="rectangular" width={1150} height={300} sx={{ right:'30px',top:'80px', borderRadius: '10px', position:'fixed' }} animation="wave" />
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Skeleton variant="rectangular" width={160} height={160} sx={{ marginRight: '20px', borderRadius: '10px' }} animation="wave" />
                     <Box>

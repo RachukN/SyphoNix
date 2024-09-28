@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import '../../styles/Music.css';
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 interface Show {
   id: string;
@@ -67,7 +68,7 @@ const Shows: React.FC = () => {
 
 
   if (loading) {
-    return <div>Loading shows...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SpotifyContentListAlbum from './SpotifyContentListAlbum';
 import { handlePlayAlbum } from '../../utils/SpotifyPlayer';
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 const NewReleases: React.FC = () => {
   const [albums, setAlbums] = useState([]);
@@ -34,7 +35,7 @@ const NewReleases: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {
