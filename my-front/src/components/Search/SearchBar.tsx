@@ -43,11 +43,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ query: initialQuery = '' }) => {
         <button className="search-button green" onClick={handleSearch}>
           <img src={SearchIcon} alt="Search" className="search-icon" />
         </button>
-        <div className="home">
-          <Link to="/home">
-            <img src={HomeIcon} alt="Home" />
-          </Link>
-        </div>
       </div>
     </div>
   );
