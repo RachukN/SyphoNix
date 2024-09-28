@@ -379,7 +379,7 @@ const SearchResults: React.FC = () => {
                       style={{ width: '140px', height: '140px', borderRadius: '10px',cursor: 'pointer' }}
                       className="marg-c"
                     />
-                    <Link key={track.id} to={`/album/${track.id}`}>
+                    <Link key={track.id} to={`/track/${track.id}`}>
                       <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
                         {track.name.length > 16 ? `${track.name.substring(0, 12)}...` : track.name}
                       </span>

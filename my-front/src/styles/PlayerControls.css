@@ -146,6 +146,9 @@ button {
 .volume-slider-green::-webkit-slider-thumb,
 .volume-slider-white::-webkit-slider-thumb {
   -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -162,15 +165,7 @@ button {
 
 /* Dynamically updating the slider background with JavaScript */
 
-input[type="range"]::-ms-fill-lower {
-  background: #00FF03;
-  border-radius: 10px;
-}
 
-input[type="range"]::-ms-fill-upper {
-  background: #787272;
-  border-radius: 10px;
-}
 
 .vic {
   position: fixed;

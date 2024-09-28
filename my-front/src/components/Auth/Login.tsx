@@ -18,7 +18,7 @@ const Login: React.FC = () => {
     <div className='conteiner'>
       
       <img className='baner' src={Baner} alt="Baner" />
-      <img className='logo' src={Logo} alt="Logo" />
+      <img className='logo2' src={Logo} alt="Logo" />
       <img className='logo1' src={Logo1} alt="Logo1" />
     <div className='auth1'>
       <div className='p'>Авторизуватися за допомогою Spotify </div>

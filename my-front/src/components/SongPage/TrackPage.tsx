@@ -14,6 +14,8 @@ import LeftGreen from '../Main/Images/Frame 73 (1).png';
 import RightGreen from '../Main/Images/Frame 72.png';
 import Setting1 from '../../images/Frame 160 (1).png';
 import '../../styles/SongPage.css';
+import LoadingPage from '../Loading/LoadingPage';
+import LoadingPageWithSidebarT from '../Loading/LoadingTrackPage';
 
 interface Device {
     id: string;
@@ -253,7 +255,7 @@ const TrackPage: React.FC = () => {
     };
 
     if (loading) {
-        return <div>Loading track data...</div>;
+        return <div><LoadingPageWithSidebarT/></div>;
     }
 
     if (!track) {

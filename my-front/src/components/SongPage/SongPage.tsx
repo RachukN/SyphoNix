@@ -13,6 +13,8 @@ import RightGray from '../Main/Images/Frame 72 (1).png';
 import LeftGreen from '../Main/Images/Frame 73 (1).png';
 import RightGreen from '../Main/Images/Frame 72.png';
 import '../../styles/SongPage.css'; // Використовуємо стилі сторінки артиста
+import LoadingPage from '../Loading/LoadingPage';
+import LoadingPageWithSidebarT from '../Loading/LoadingTrackPage';
 
 interface Album {
   id: string;
@@ -325,7 +327,7 @@ const SongPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading album data...</div>;
+    return <div><LoadingPageWithSidebarT/></div>;
   }
 
   if (!album) {
