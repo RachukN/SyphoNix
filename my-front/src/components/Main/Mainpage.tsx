@@ -13,23 +13,36 @@ import Footer from '../Footer/Footer';
 import Filter from '../Navigation/Filter';
 import NewTracks from '../Templates/NewTrack';
 import TopArtists from '../Templates/TopArtists';
+import LoadingPageWithSidebar from '../Loading/LoadingPage';
 
 const MainPage: React.FC = () => {
   const [filter, setFilter] = useState<string>('all'); // Track the current filter ("all", "music", etc.)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Перевіряємо, чи було вже перезавантаження сторінки /home
+    // Check if the page has been reloaded once already
     const isHomeReloaded = localStorage.getItem('isHomeReloaded');
 
     if (!isHomeReloaded) {
-      localStorage.setItem('isHomeReloaded', 'true'); // Встановлюємо флаг про перезавантаження
-      window.location.reload(); // Перезавантажуємо сторінку один раз
+      // Set the flag in localStorage to avoid further reloads
+      localStorage.setItem('isHomeReloaded', 'true');
+      // Reload the page
+      window.location.reload();
+    } else {
+      // Show the loading screen for 1 second
+      setTimeout(() => {
+        setLoading(false); // Hide the loading screen after 1 second
+      }, 300);
     }
   }, []);
 
   const handleFilterChange = (newFilter: string) => {
     setFilter(newFilter); // Update the filter state when a new filter is selected
   };
+
+  if (loading) {
+    return <div><LoadingPageWithSidebar /></div>;
+  }
 
   return (
     <div className="main-container">
@@ -75,7 +88,6 @@ const MainPage: React.FC = () => {
         <div className='cont'>
           <PopularRadio />
         </div>
-
 
         <div className='filter'><TopNavigation /></div>
         <div className='filter-f'>

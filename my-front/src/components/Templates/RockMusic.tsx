@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SpotifyContentListTrack from './SpotifyContentListTrack'; // Use the track list component
 import { handlePlayTrackList } from '../../utils/SpotifyPlayer'; // Import the new function
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 const RockMusic: React.FC = () => {
   const [tracks, setTracks] = useState([]); // Store tracks
@@ -42,7 +43,7 @@ const RockMusic: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

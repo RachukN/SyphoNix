@@ -55,7 +55,7 @@ const SpotifyContentListArtist: React.FC<SpotifyContentListArtistProps> = ({ art
           <div className='main-title'>{title}</div>
 
           <div ref={scrollRef} className='music-c' onScroll={updateArrows}>
-          {artists.map((artist, index) => (
+            {artists.map((artist, index) => (
               <div key={`${artist.id}-${index}`} className="img-container">
                 <div className='img-content'>
                   <img
@@ -66,14 +66,13 @@ const SpotifyContentListArtist: React.FC<SpotifyContentListArtistProps> = ({ art
                   />
                 </div>
                 <div>
-                  <p>
-                    <Link to={`/artist/${artist.id}`}>
-                      <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
-                        {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
-                      </span>
-                    </Link>
-                    <p style={{ fontSize: 'small', color: '#666' }}>Виконавець</p>
-                  </p>
+                  {/* Замість вкладених <p>, використовуємо <div> або <span> */}
+                  <Link to={`/artist/${artist.id}`}>
+                    <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                      {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                    </span>
+                  </Link>
+                  <div style={{ fontSize: 'small', color: '#666' }}>Виконавець</div>
                 </div>
               </div>
             ))}

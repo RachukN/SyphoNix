@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SpotifyContentListPlaylist from './SpotifyContentListPlaylist'; // Import the reusable component
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 const PopularRadio: React.FC = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
@@ -50,7 +51,7 @@ const PopularRadio: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading popular radio...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

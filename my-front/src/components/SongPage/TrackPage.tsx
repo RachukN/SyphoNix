@@ -6,7 +6,7 @@ import TopNavigation from '../Navigation/TopNavigation';
 import Footer from '../Footer/Footer';
 import PlayerControls from '../Player/PlayerControls';
 import Play from '../../images/Frame 76.png';
-import Seting from '../Home/Images/Frame 129 (2).png';
+import Seting from '../Home/Images/Frame 129.png';
 import bannerImage from '../Home/Images/Frame 148 (2).png';
 import LeftGray from '../Main/Images/Frame 73.png';
 import RightGray from '../Main/Images/Frame 72 (1).png';

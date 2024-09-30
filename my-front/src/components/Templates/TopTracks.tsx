@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useGlobalPlayer } from '../Player/GlobalPlayer'; // Import the global player context
 import '../../styles/Music.css'; // Ensure this file exists with the styles
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 interface Track {
   id: string;
@@ -66,7 +67,7 @@ const TopTracks: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading recommended tracks...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

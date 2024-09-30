@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SpotifyContentListArtist from './SpotifyContentListArtist'; // The component you created
+import LoadingArtists from '../Loading/LoadingArtists';
 
 const TopArtists: React.FC = () => {
   const [artists, setArtists] = useState([]); // State to hold artist data
@@ -43,7 +44,7 @@ const TopArtists: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading artists...</div>;
+    return <div><LoadingArtists/></div>;
   }
 
   if (error) {

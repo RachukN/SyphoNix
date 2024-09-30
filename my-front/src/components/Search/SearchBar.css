@@ -5,7 +5,14 @@
   align-items: center;
   justify-content: center;
 }
+.search-input::placeholder {
+  color: #ccc; /* Стиль для тексту підказки */
+}
 
+.search-input:focus {
+  outline: none;
+  border-color: green; /* Зелена рамка при фокусі */
+}
 .search-input {
   display: flex;
   justify-content: center;
@@ -18,9 +25,12 @@
   border-radius: 12px;
   border: 2px solid var(--Green, #00FF03);
   background: var(--Black, #13191C);
+  color: #00FF03; 
 
 }
-
+.search-input::placeholder {
+  color: #00FF03; /* Сірий колір для тексту підказки */
+}
 .search-button {
   background: none;
   border: none;

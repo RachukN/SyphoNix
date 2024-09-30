@@ -4,6 +4,7 @@ import axios from 'axios';
 import Left from './Main/Frame 73.png';
 import Right from './Main/Frame 72.png';
 import '../../styles/Music.css';
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 interface Track {
   id: string;
@@ -156,7 +157,7 @@ const Music: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading tracks...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

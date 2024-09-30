@@ -7,7 +7,6 @@ import TopNavigation from '../Navigation/TopNavigation';
 
 const EditProfile = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [gender, setGender] = useState('Жінка');
   const [day, setDay] = useState(15);
   const [month, setMonth] = useState('Березень');
@@ -60,12 +59,25 @@ const EditProfile = () => {
     }
   };
 
-  return (
+  // Function to handle country selection and auto-assign region
+  const handleCountryChange = (selectedCountry: string) => {
+    setCountry(selectedCountry);
+  
+    if (['США', 'Канада', 'Мексика'].includes(selectedCountry)) {
+      setRegion('Північна Америка');
+    } else if (['Чехія', 'Німеччина', 'Україна'].includes(selectedCountry)) {
+      setRegion('Європа');
+    } else {
+      setRegion('');
+    }
+  };
+  
 
-    <div className='content' >
+  return (
+    <div className='content'>
       <Sidebar />
 
-      <div className="edit-profile" >
+      <div className="edit-profile">
         <TopNavigation />
         <h2>Редагувати профіль</h2>
         <form className="edit-profile-form">
@@ -78,11 +90,9 @@ const EditProfile = () => {
             disabled
           />
 
-
-
           <label>Стать та дата народження</label>
           <div className="row">
-            <select  className='chol' value={gender} onChange={(e) => setGender(e.target.value)}>
+            <select className='chol' value={gender} onChange={(e) => setGender(e.target.value)}>
               <option value="Жінка">Жінка</option>
               <option value="Чоловік">Чоловік</option>
               <option value="Небінарний">Небінарний</option>
@@ -118,21 +128,26 @@ const EditProfile = () => {
               ))}
             </select>
           </div>
-          
-            <label htmlFor="country">Країна </label>
-            <select  id="country" value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="Україна">Україна</option>
-            </select>
 
-            <label htmlFor="region">Регіон</label>
+          <label htmlFor="country">Країна</label>
+          <select id="country" value={country} onChange={(e) => handleCountryChange(e.target.value)}>
+            <option value="Україна">Україна</option>
+            <option value="США">США</option>
+            <option value="Канада">Канада</option>
+            <option value="Мексика">Мексика</option>
+            <option value="Чехія">Чехія</option>
+            <option value="Німеччина">Німеччина</option>
+          </select>
 
-            <select
-              id="region"
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-            >
-              <option value="Європа">Європа</option>
-            </select>
+          <label htmlFor="region">Регіон</label>
+          <input
+            type="text"
+            id="region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+            disabled
+          />
+
           <div className="buttons">
             <button type="button" className="cancel-button">Скасувати</button>
             <button type="button" className="save-button" onClick={handleSave}>
@@ -141,9 +156,7 @@ const EditProfile = () => {
           </div>
         </form>
         <div className='footer'><Footer /></div>
-
       </div>
-
     </div>
   );
 };

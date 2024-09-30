@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SpotifyContentListAlbum from './SpotifyContentListAlbum';
 import { handlePlayAlbum } from '../../utils/SpotifyPlayer';
+import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum';
 
 // Define the Album interface based on Spotify's API structure
 interface Album {
@@ -67,7 +68,7 @@ const PopularAlbums: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><LoadingTrackAlbum/></div>;
   }
 
   if (error) {

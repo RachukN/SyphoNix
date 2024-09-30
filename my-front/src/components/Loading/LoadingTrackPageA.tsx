@@ -55,6 +55,8 @@ const LoadingTrackPage: React.FC = () => {
             {/* Верхня секція з треком */}
             <Box sx={{ display: 'flex', paddingTop: '170px', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
                 {/* Зображення треку та інформація */}
+                <Skeleton variant="rectangular" width={1150} height={300} sx={{ right:'30px',top:'80px', borderRadius: '10px', position:'fixed' }} animation="wave" />
+               
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Skeleton variant="rectangular" width={160} height={160} sx={{ marginRight: '20px', borderRadius: '50%' }} animation="wave" />
                     <Box>
