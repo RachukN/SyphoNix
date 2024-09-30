@@ -1,5 +1,5 @@
-import React from 'react';
-import './SubscriptionPage.css'; // Файл зі стилями
+import React, { useState, useEffect } from 'react';
+import './SubscriptionPage.css'; 
 import Frame217 from './Images/Frame 217.png';
 import Frame218 from './Images/Frame 218.png';
 import Frame219 from './Images/Frame 219.png';
@@ -21,119 +21,131 @@ import TopNavigation from '../Navigation/TopNavigation';
 import { Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 
-
-
 const SubscriptionPage: React.FC = () => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }, [isDarkMode]);
+
+    const handleThemeToggle = () => {
+        setIsDarkMode(!isDarkMode);
+    };
+
     return (
-        <div className="subscription-page">
-            <Sidebar/>
-            <TopNavigation/>
-            
-            <div className="subscription-header">
-                <h3 className='plan'>Ваш план</h3>
-              
+        <div className={`subscription-page ${isDarkMode ? 'dark' : 'light'}`}>
+            <Sidebar />
+            <TopNavigation />
+
+            <div className={`subscription-header ${isDarkMode ? 'dark-header' : 'light-header'}`}>
+                <h3 className={`plan ${isDarkMode ? 'dark' : 'light'}`}>Ваш план</h3>
                 <h1 className="plan-title">SymphoNix PREMIUM</h1>
-           <span> <span className='logo'><img src={Logo2} alt="Support" /></span>
-           </span>
+                <span><span className='logo'><img src={Logo2} alt="Support" /></span></span>
             </div>
 
-            <div className="section">
-                <h2>Обліковий запис</h2>
-                <Link  to={`/profile`}>
-                <div className="section-item">
-                
-                    <span className='frame'><img src={Logo} alt="Manage Subscription" /></span>
-                    <span className='left'>Керуйте своєю підпискою</span>
-                    <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
-               
-                </div>
+            <div className={`section ${isDarkMode ? 'dark-section' : 'light-section'}`}>
+                <h2 className={`sectio-h2 ${isDarkMode ? 'dark' : 'light'}`} >Обліковий запис</h2>
+                <Link to={`/profile`} className={`dark ${isDarkMode ? 'dark' : 'light'}`}>
+                    <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                        <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Logo} alt="Manage Subscription" /></span>
+                        <span className='left'>Керуйте своєю підпискою</span>
+                        <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
+                    </div>
                 </Link>
-                <Link  to={`/editprofile`}>
-                <div className="section-item">
-                    <span className='frame'><img src={Edit} alt="Edit Profile" /></span>
-                    <span className='left'>Редагувати профіль</span>
-                    <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
-                </div>
+                <Link to={`/editprofile`} className={`dark ${isDarkMode ? 'dark' : 'light'}`}>
+                    <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Edit} alt="Edit Profile" /></span>
+                        <span className='left'>Редагувати профіль</span>
+                        <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
+                    </div>
                 </Link>
-                <div className="section-item">
-                    <span className='frame'><img src={PlusIcon} alt="Restore Playlists" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={PlusIcon} alt="Restore Playlists" /></span>
                     <span className='left'>Відновлення списків відтворення</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
             </div>
 
-            <div className="section">
-                <h2>Оплата</h2>
-                <div className="section-item">
-                    <span className='frame'><img src={History} alt="Order History" /></span>
+            <div className={`section ${isDarkMode ? 'dark-section' : 'light-section'}`}>
+                <h2 className={`sectio-h2 ${isDarkMode ? 'dark' : 'light'}`}>Оплата</h2>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={History} alt="Order History" /></span>
                     <span className='left'>Історія замовлень</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Saved} alt="Saved Payment Cards" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Saved} alt="Saved Payment Cards" /></span>
                     <span className='left'>Збережені платіжні картки</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Salled} alt="Redeem" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Salled} alt="Redeem" /></span>
                     <span className='left'>Викупити</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
             </div>
 
-            <div className="section">
-                <h2>Безпека та конфіденційність</h2>
-                <div className="section-item">
-                    <span className='frame'><img src={Change} alt="Change Password" /></span>
+            <div className={`section ${isDarkMode ? 'dark-section' : 'light-section'}`}>
+                <h2 className={`sectio-h2 ${isDarkMode ? 'dark' : 'light'}`}>Безпека та конфіденційність</h2>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Change} alt="Change Password" /></span>
                     <span className='left'>Змінити пароль</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Bods} alt="Manage Apps" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Bods} alt="Manage Apps" /></span>
                     <span className='left'>Керувати програмами</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Bell} alt="Notification Settings" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Bell} alt="Notification Settings" /></span>
                     <span className='left'>Налаштування сповіщень</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Frame217} alt="Privacy Settings" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Frame217} alt="Privacy Settings" /></span>
                     <span className='left'>Налаштування конфіденційності</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Frame218} alt="Edit Login Methods" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Frame218} alt="Edit Login Methods" /></span>
                     <span className='left'>Редагувати методи входу</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                    <span className='frame'><img src={Frame219} alt="Log Out Everywhere" /></span>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Frame219} alt="Log Out Everywhere" /></span>
                     <span className='left'>Вийдіть скрізь</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
             </div>
 
-            <div className="section">
-                <h2>Довідка</h2>
-                <div className="section-item">
-                    <span className='frame'><img src={Pyt} alt="Support" /></span>
+            <div className={`section ${isDarkMode ? 'dark-section' : 'light-section'}`}>
+                <h2 className={`sectio-h2 ${isDarkMode ? 'dark' : 'light'}`}>Довідка</h2>
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Pyt} alt="Support" /></span>
                     <span className='left'>Підтримка SymphoNix</span>
                     <span className='right'><img src={Frame216} alt="Right Arrow" /></span>
                 </div>
-                <div className="section-item">
-                <span className='frame'><img src={Night} alt="Support" /></span>
-                   
+                <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
+                    <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}><img src={Night} alt="Support" /></span>
                     <span className='left'>Вигляд: Темна тема</span>
-                    <div className="toggle-switch" >
-                        <input type="checkbox" id="dark-mode" className="toggle-checkbox" />
+                    <div className="toggle-switch">
+                        <input
+                            type="checkbox"
+                            id="dark-mode"
+                            className="toggle-checkbox"
+                            checked={isDarkMode}
+                            onChange={handleThemeToggle}
+                        />
                         <label htmlFor="dark-mode" className="toggle-label"></label>
                     </div>
                 </div>
-                
             </div>
-            <div className="footers" ><Footer/></div>
+            <div className="footers"><Footer /></div>
         </div>
     );
 };

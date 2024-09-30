@@ -15,6 +15,10 @@ builder.Logging.AddConsole();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Додати сервіс для ImgServerDbContext (ImgServer)
+builder.Services.AddDbContext<ImgServerDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ImgServerConnection")));
+
 // Налаштуйте Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -25,6 +29,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Spotify Auth API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -48,6 +53,7 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+    c.OperationFilter<MultipleFileUploadOperation>();
 });
 
 builder.Services.AddHttpClient();
@@ -77,7 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 // Застосовуємо CORS політику
 app.UseCors("AllowFrontend");
 
