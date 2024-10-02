@@ -48,7 +48,7 @@ const MainPage: React.FC = () => {
 
     <div className={`main-container ${isDarkMode ? 'dark' : 'light'}`}>
 
-      <div className='sidebar'><Sidebar  /></div>
+      <div className='sidebar'><Sidebar isDarkMode={isDarkMode} /></div>
       
       <div className={`content ${isDarkMode ? 'dark' : 'light'}`}>
   
@@ -93,11 +93,11 @@ const MainPage: React.FC = () => {
           <PopularRadio />
         </div>
 
-        <div className='filter'><TopNavigation   /></div>
+        <div className='filter'><TopNavigation isDarkMode={isDarkMode} /></div>
         <div className='filter-f'>
           <Filter onFilterChange={handleFilterChange} /> {/* Pass the handler to Filter */}
         </div>
-        <Footer />
+        <Footer isDarkMode={isDarkMode} />
       </div>
     </div>
   );
