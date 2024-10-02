@@ -42,7 +42,7 @@ namespace Spotify.Controllers
             string state = GenerateRandomString(16);
             // Include all required scopes
 
-            string scope = " playlist-read-collaborative ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
+            string scope = "user-read-currently-playing playlist-read-collaborative ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
 
 
             var queryParams = new Dictionary<string, string>
@@ -112,7 +112,7 @@ namespace Spotify.Controllers
             }
 
             // Перенаправляємо до профілю з access_token
-            return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}");
+            return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}&scope=user-read-playback-state%20user-modify-playback-state%20streaming");
         }
 
 
@@ -177,7 +177,7 @@ namespace Spotify.Controllers
 
 
 
-        private async Task<UserProfile> GetUserProfile(string accessToken)
+        private async Task<ApplicationUser> GetUserProfile(string accessToken)
         {
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -191,7 +191,7 @@ namespace Spotify.Controllers
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var userProfile = JsonConvert.DeserializeObject<UserProfile>(json);
+            var userProfile = JsonConvert.DeserializeObject<ApplicationUser>(json);
             return userProfile;
         }
 
