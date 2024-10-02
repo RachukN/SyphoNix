@@ -13,8 +13,8 @@ import RightGray from '../Main/Images/Frame 72 (1).png';
 import LeftGreen from '../Main/Images/Frame 73 (1).png';
 import RightGreen from '../Main/Images/Frame 72.png';
 import '../../styles/SongPage.css'; // Використовуємо стилі сторінки артиста
-import LoadingPage from '../Loading/LoadingPage';
 import LoadingPageWithSidebarT from '../Loading/LoadingTrackPage';
+import { useTheme } from '../../services/ThemeContext';
 
 interface Album {
   id: string;
@@ -70,7 +70,8 @@ const SongPage: React.FC = () => {
   const [rightArrowSingles, setRightArrowSingles] = useState(RightGreen);
   const [leftArrowRelated, setLeftArrowRelated] = useState(LeftGray);
   const [rightArrowRelated, setRightArrowRelated] = useState(RightGreen);
-
+  const { isDarkMode } = useTheme();
+ 
   const [isAlbumSaved, setIsAlbumSaved] = useState(false);
 
 
@@ -338,11 +339,12 @@ const SongPage: React.FC = () => {
   return (
     <div className="main-container-s">
       <div className="sidebar-s">
-        <Sidebar />
+        <Sidebar isDarkMode={isDarkMode}/>
       </div>
 
-      <div className="content-s">
-        <TopNavigation />
+      <div className={`content-s ${isDarkMode ? 'dark' : 'light'}`}
+      >
+        <TopNavigation isDarkMode={isDarkMode}/>
 
         {/* Album Banner */}
         <div className="banner-container-user-s">
@@ -529,11 +531,11 @@ const SongPage: React.FC = () => {
           </div>
         </div>
 
-        <Footer />
+        <Footer isDarkMode={isDarkMode}/>
       </div>
 
       <div className="filter-user-s">
-        <TopNavigation />
+        <TopNavigation isDarkMode={isDarkMode}/>
       </div>
 
       <div className="player-s">

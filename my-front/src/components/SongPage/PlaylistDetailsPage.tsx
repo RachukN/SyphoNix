@@ -9,6 +9,8 @@ import bannerImage from '../Home/Images/Frame 148.png';
 import SearchBar from '../Search/SearchBar';
 import Plus from '../../images/plus-square_svgrepo.com.png';
 import Play from '../../images/Circle play.png';
+import { useTheme } from '../../services/ThemeContext';
+
 interface Track {
     id: string;
     name: string;
@@ -33,7 +35,8 @@ const PlaylistDetailsPage: React.FC = () => {
     const [popularTracks, setPopularTracks] = useState<Track[]>([]); // Зберігаємо популярні треки
     const [showDropdown, setShowDropdown] = useState(false); // Контроль відображення випадаючого списку
     const [showDropdownT, setShowDropdownT] = useState(false); // Контроль відображення випадаючого списку
-
+    const { isDarkMode } = useTheme();
+ 
     const [recommendedTracks, setRecommendedTracks] = useState<Track[]>([]); // Зберігаємо рекомендовані треки
     const [selectedTracks, setSelectedTracks] = useState<string[]>([]); // Зберігаємо вибрані для видалення треки
     const [error, setError] = useState<string | null>(null);
@@ -384,9 +387,10 @@ const PlaylistDetailsPage: React.FC = () => {
 
     return (
         <div className="main-container-s">
-            <div className='sidebar'><Sidebar /></div>
+            <div className='sidebar'><Sidebar isDarkMode={isDarkMode}/></div>
 
-            <div className="content-s-p">
+            <div className={`content-s-p ${isDarkMode ? 'dark' : 'light'}`}
+            >
                 <div className="banner-container-user-s">
                     <img src={bannerImage} alt="Banner" className="banner-image-user" />
                 </div>
@@ -559,10 +563,10 @@ const PlaylistDetailsPage: React.FC = () => {
                         </div>
                     </div>
                 )}
-                <Footer />
+                <Footer isDarkMode={isDarkMode} />
             </div>
             <div className='add'><SearchBar /></div>
-            <div className='nav'><TopNavigation /></div>
+            <div className='nav'><TopNavigation isDarkMode={isDarkMode}/></div>
             <div className='success'>
                 {successMessage && <h4 className='success-message' >{successMessage}</h4>}
             </div>

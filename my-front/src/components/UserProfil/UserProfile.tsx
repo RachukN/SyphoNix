@@ -16,6 +16,7 @@ import PlayerControls from '../Player/PlayerControls';
 import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
 import LoadingPageWithSidebarA from '../Loading/LoadingTrackPageA';
 
+
 interface UserProfile {
   display_name: string;
   email: string;
@@ -28,7 +29,7 @@ interface UserProfile {
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [error, setError] = useState('');
-
+ 
   useEffect(() => {
     const fetchUserProfile = async () => {
       const token = localStorage.getItem('spotifyAccessToken');
@@ -59,7 +60,7 @@ const UserProfile: React.FC = () => {
   }
 
   if (!user) {
-    return <div><LoadingPageWithSidebarA/></div>;
+    return <div><LoadingPageWithSidebarA /></div>;
   }
 
   // Use the user's profile image or a default image if none is available
@@ -68,57 +69,57 @@ const UserProfile: React.FC = () => {
   return (
     <div className="main-container">
       <div className='sidebar'><Sidebar /></div>
-      
+
       <div className="content">
-        
+
         <div className="banner-container-user">
           <img src={bannerImage} alt="Banner" className="banner-image-user" />
         </div>
         <div className='inf'>
-        <img
-          src={profileImageUrl}
-          alt="Profile"
-          className="profile-image"
-        />
-        <div className='name'>
-        <div className='title'>Профіль</div>
-        <div className="profile-details"> 
-          <h1>{user.display_name}</h1>
-        </div>
-        </div>
+          <img
+            src={profileImageUrl}
+            alt="Profile"
+            className="profile-image"
+          />
+          <div className='name'>
+            <div className='title'>Профіль</div>
+            <div className="profile-details">
+              <h1>{user.display_name}</h1>
+            </div>
+          </div>
         </div>
         <div className='seting'>
-        <img src={Seting} alt="Seting" className="seting-img" />
-        
+          <img src={Seting} alt="Seting" className="seting-img" />
+
         </div>
         <div className='cont'>
-        <h2 className="section-title">Топ артисти цього місяця</h2>
-        <h3 className="section-titleh ">Бачите лише ви</h3>
-        
-         <div className="h2"><TopArtists/></div>
-         </div>
-        <div className='cont'>
-        <h2 className="section-title, h2">Топ треки цього місяця</h2>
-        <h3 className="section-titleh">Бачите лише ви</h3>
-        
-         <div className="h2"><TopTracks/></div>
-         
+          <h2 className="section-title">Топ артисти цього місяця</h2>
+          <h3 className="section-titleh ">Бачите лише ви</h3>
+
+          <div className="h2"><TopArtists /></div>
+        </div>
+        <div className='contik'>
+          <h2 className="section-title, h2">Топ треки цього місяця</h2>
+          <h3 className="section-titleh">Бачите лише ви</h3>
+
+          <div className="h2"><TopTracks /></div>
+
         </div>
         <div className='cont'>
-        <h2 className="section-title">Публічні плейлісти</h2>
-         <div className="h22"><PublicPlaylists/></div>
+          <h2 className="section-title"></h2>
+          <div className="h22"><PublicPlaylists /></div>
         </div>
         <div className='cont'>
-        <h2 className="section-title, m-5">Підписки</h2>
-         <div className="hh-2"><FollowedArtists/></div>
+          <h2 className="section-title, m-5"></h2>
+          <div className="hh-2"><FollowedArtists /></div>
         </div>
-        <Footer/>
-        
+        <Footer />
+
       </div>
       <div className='filter-user'><TopNavigation /></div>
       <GlobalPlayerProvider>
 
-      <div className='player'><PlayerControls/></div>
+        <div className='player'><PlayerControls /></div>
       </GlobalPlayerProvider>
     </div>
   );

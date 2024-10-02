@@ -15,6 +15,7 @@ import Play from '../../images/Frame 76.png';
 import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
 import '../../styles/ArtistPage.css';
 import LoadingPageWithSidebarA from '../Loading/LoadingTrackPageA';
+import { useTheme } from '../../services/ThemeContext';
 
 interface Artist {
   id: string;
@@ -69,8 +70,9 @@ const ArtistPage: React.FC = () => {
   const [leftArrowRelated, setLeftArrowRelated] = useState(LeftGray);
   const [rightArrowRelated, setRightArrowRelated] = useState(RightGreen);
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
-  
-  
+  const { isDarkMode } = useTheme();
+
+
   const scrollRefSingles = useRef<HTMLDivElement>(null);
   const scrollRefRelated = useRef<HTMLDivElement>(null);
 
@@ -340,7 +342,7 @@ const ArtistPage: React.FC = () => {
   }
 
   if (!artist) {
-    return <div><LoadingPageWithSidebarA/></div>;
+    return <div><LoadingPageWithSidebarA /></div>;
   }
 
   const profileImageUrl = artist.images.length > 0 ? artist.images[0].url : '';
@@ -348,17 +350,18 @@ const ArtistPage: React.FC = () => {
   return (
     <div className="main-container-a">
       <div className="sidebar-a">
-        <Sidebar />
+        <Sidebar isDarkMode={isDarkMode}/>
       </div>
 
-      <div className="content-a">
+      <div  className={`content-a ${isDarkMode ? 'dark' : 'light'}`}
+      >
         <div className="banner-container-user-a">
           <img src={bannerImage} alt="Banner" className="banner-image-user-a" />
         </div>
 
         <div className="inf-a">
           <img
-          key={artist.id}
+            key={artist.id}
             src={profileImageUrl}
             alt={artist.name}
             className="profile-image-a"
@@ -373,7 +376,7 @@ const ArtistPage: React.FC = () => {
         </div>
 
         <div className="seting-a">
-          
+
           <img src={Seting} alt="Seting" className="seting-img" />
           <button
 
@@ -385,32 +388,32 @@ const ArtistPage: React.FC = () => {
         </div>
         <h2 className="popularity">Tоп треки виконавця</h2>
         <ul className="tracks-list">
-  {topTracks.map((track, index) => (
-    <li key={`${track.id}-${index}`} className="track-item"> {/* Ensure the key is unique */}
-      <span className="track-index">{index + 1}</span>
-      <img
-        onClick={() => handlePlayTrack(track.uri)}
-        src={track.album.images[0]?.url || "default-album.png"}
-        alt={track.name}
-        className="track-image"
-      />
-      <div className="track-info">
-        <p className="track-name">
-          <Link to={`/track/${track.id}`}>
-            <span className="name-title" style={{ margin: '10px 0', cursor: 'pointer' }}>
-              {track.name}
-            </span>
-          </Link>
-        </p>
-      </div>
-      <div className="track-album">{track.popularity}</div>
-      <div className="track-duration">{formatDuration(track.duration_ms)}</div>
-      <div onClick={() => handlePlayAlbum(track.uri)} className="play-icona">
-        <img src={Play} alt="Play" />
-      </div>
-    </li>
-  ))}
-</ul>
+          {topTracks.map((track, index) => (
+            <li key={`${track.id}-${index}`} className="track-item"> {/* Ensure the key is unique */}
+              <span className="track-index">{index + 1}</span>
+              <img
+                onClick={() => handlePlayTrack(track.uri)}
+                src={track.album.images[0]?.url || "default-album.png"}
+                alt={track.name}
+                className="track-image"
+              />
+              <div className="track-info">
+                <p className="track-name">
+                  <Link to={`/track/${track.id}`}>
+                    <span className="name-title" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                      {track.name}
+                    </span>
+                  </Link>
+                </p>
+              </div>
+              <div className="track-album">{track.popularity}</div>
+              <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+              <div onClick={() => handlePlayAlbum(track.uri)} className="play-icona">
+                <img src={Play} alt="Play" />
+              </div>
+            </li>
+          ))}
+        </ul>
 
 
         {/* Singles Section with Scroll */}
@@ -430,31 +433,31 @@ const ArtistPage: React.FC = () => {
               onClick={scrollRightSingles}
             />
             <div
-  ref={scrollRefSingles}
-  className="music-c"
-  onScroll={updateArrowsSingles}
->
-  {singles.map((single) => (
-    <div key={single.id} className="img-container">
-      <div className="img-content">
-        <img
-          src={single.images[0]?.url || "default-single.png"}
-          alt={single.name}
-          className="m-5m"
-        />
-        <div onClick={() => handlePlayAlbum(single.uri)} className="play-icona">
-          <img src={Play} alt="Play" />
-        </div>
-        <Link to={`/album/${single.id}`}>
-          <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
-            {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
-          </span>
-        </Link>
-        <p className="release-date">{single.release_date}</p>
-      </div>
-    </div>
-  ))}
-</div>
+              ref={scrollRefSingles}
+              className="music-c"
+              onScroll={updateArrowsSingles}
+            >
+              {singles.map((single) => (
+                <div key={single.id} className="img-container">
+                  <div className="img-content">
+                    <img
+                      src={single.images[0]?.url || "default-single.png"}
+                      alt={single.name}
+                      className="m-5m"
+                    />
+                    <div onClick={() => handlePlayAlbum(single.uri)} className="play-icona">
+                      <img src={Play} alt="Play" />
+                    </div>
+                    <Link to={`/album/${single.id}`}>
+                      <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                        {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
+                      </span>
+                    </Link>
+                    <p className="release-date">{single.release_date}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
           </div>
         </div>
@@ -476,39 +479,39 @@ const ArtistPage: React.FC = () => {
               onClick={scrollRightRelated}
             />
             <div
-  ref={scrollRefRelated}
-  className="music-c"
-  onScroll={updateArrowsRelated}
->
-  {relatedArtists.map((artist) => (
-    <div key={artist.id} className="img-container">
-      <div className="img-contenta">
-        <img
-          src={artist.images[0]?.url || "default-artist.png"}
-          alt={artist.name}
-          className="m5m"
-        />
-      </div>
-      <Link to={`/artist/${artist.id}`}>
-        <div className="play-iconaa" />
-      </Link>
-      <Link to={`/artist/${artist.id}`}>
-        <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
-          {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
-        </span>
-      </Link>
-    </div>
-  ))}
-</div>
+              ref={scrollRefRelated}
+              className="music-c"
+              onScroll={updateArrowsRelated}
+            >
+              {relatedArtists.map((artist) => (
+                <div key={artist.id} className="img-container">
+                  <div className="img-contenta">
+                    <img
+                      src={artist.images[0]?.url || "default-artist.png"}
+                      alt={artist.name}
+                      className="m5m"
+                    />
+                  </div>
+                  <Link to={`/artist/${artist.id}`}>
+                    <div className="play-iconaa" />
+                  </Link>
+                  <Link to={`/artist/${artist.id}`}>
+                    <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                      {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                    </span>
+                  </Link>
+                </div>
+              ))}
+            </div>
 
           </div>
         </div>
 
-        <Footer />
+        <Footer isDarkMode={isDarkMode}/>
       </div>
 
       <div className="filter-user-a">
-        <TopNavigation />
+        <TopNavigation isDarkMode={isDarkMode}/>
       </div>
 
       <GlobalPlayerProvider>

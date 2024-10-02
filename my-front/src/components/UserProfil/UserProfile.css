@@ -56,8 +56,13 @@ h2{
 margin-left: 30px;
 }
 .cont{
-  margin-top: 0px;
+  margin-top: 10px;
   margin-left: 30px;
+  
+}
+.contik{
+  margin-left: 30px;
+  padding-bottom: 50px;
   
 }
 .section-titleh{

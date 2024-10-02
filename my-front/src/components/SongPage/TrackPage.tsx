@@ -14,8 +14,8 @@ import LeftGreen from '../Main/Images/Frame 73 (1).png';
 import RightGreen from '../Main/Images/Frame 72.png';
 import Setting1 from '../../images/Frame 160 (1).png';
 import '../../styles/SongPage.css';
-import LoadingPage from '../Loading/LoadingPage';
 import LoadingPageWithSidebarT from '../Loading/LoadingTrackPage';
+import { useTheme } from '../../services/ThemeContext';
 
 interface Device {
     id: string;
@@ -88,7 +88,8 @@ const TrackPage: React.FC = () => {
     const [showDropdown, setShowDropdown] = useState<{ [key: number]: boolean }>({});
     const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null);
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
+    const { isDarkMode } = useTheme();
+ 
     
     useEffect(() => {
         const fetchTrackData = async () => {
@@ -441,13 +442,14 @@ const TrackPage: React.FC = () => {
     };
 
     return (
-        <div className="main-container-s">
+        <div className="main-container-s" >
             <div className="sidebar-s">
-                <Sidebar />
+                <Sidebar isDarkMode={isDarkMode}/>
             </div>
 
-            <div className="content-s">
-                <TopNavigation />
+            <div  className={`content-s ${isDarkMode ? 'dark' : 'light'}`}
+ >
+                <TopNavigation isDarkMode={isDarkMode} />
 
                 {/* Track Banner */}
                 <div className="banner-container-user-s">
@@ -702,7 +704,7 @@ const TrackPage: React.FC = () => {
                     </div>
                 </div>
 
-                <Footer />
+                <Footer isDarkMode={isDarkMode} />
             </div>
 
             <div className="player-s">
