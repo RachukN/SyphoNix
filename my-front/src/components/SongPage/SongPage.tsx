@@ -339,12 +339,12 @@ const SongPage: React.FC = () => {
   return (
     <div className="main-container-s">
       <div className="sidebar-s">
-        <Sidebar isDarkMode={isDarkMode}/>
+        <Sidebar />
       </div>
 
       <div className={`content-s ${isDarkMode ? 'dark' : 'light'}`}
       >
-        <TopNavigation isDarkMode={isDarkMode}/>
+        <TopNavigation/>
 
         {/* Album Banner */}
         <div className="banner-container-user-s">
@@ -531,11 +531,11 @@ const SongPage: React.FC = () => {
           </div>
         </div>
 
-        <Footer isDarkMode={isDarkMode}/>
+        <Footer/>
       </div>
 
       <div className="filter-user-s">
-        <TopNavigation isDarkMode={isDarkMode}/>
+        <TopNavigation/>
       </div>
 
       <div className="player-s">
