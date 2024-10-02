@@ -15,6 +15,8 @@ import FollowedArtists from '../ArtistsPage/FollowedArtists';
 import PlayerControls from '../Player/PlayerControls';
 import { GlobalPlayerProvider } from '../Player/GlobalPlayer';
 import LoadingPageWithSidebarA from '../Loading/LoadingTrackPageA';
+import { useTheme } from '../../services/ThemeContext';
+
 
 
 interface UserProfile {
@@ -29,6 +31,7 @@ interface UserProfile {
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [error, setError] = useState('');
+  const { isDarkMode } = useTheme();
  
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -70,7 +73,7 @@ const UserProfile: React.FC = () => {
     <div className="main-container">
       <div className='sidebar'><Sidebar /></div>
 
-      <div className="content">
+      <div className={`content ${isDarkMode ? 'dark' : 'light'}`} >
 
         <div className="banner-container-user">
           <img src={bannerImage} alt="Banner" className="banner-image-user" />
@@ -92,15 +95,13 @@ const UserProfile: React.FC = () => {
           <img src={Seting} alt="Seting" className="seting-img" />
 
         </div>
-        <div className='cont'>
-          <h2 className="section-title">Топ артисти цього місяця</h2>
-          <h3 className="section-titleh ">Бачите лише ви</h3>
-
+        <div className='conter'>
+          
           <div className="h2"><TopArtists /></div>
         </div>
         <div className='contik'>
-          <h2 className="section-title, h2">Топ треки цього місяця</h2>
-          <h3 className="section-titleh">Бачите лише ви</h3>
+          <h2  className={`section-title ${isDarkMode ? 'dark' : 'light'}`}>Топ треки цього місяця</h2>
+          <h3  className={`section-titleh ${isDarkMode ? 'dark' : 'light'}`}>Бачите лише ви</h3>
 
           <div className="h2"><TopTracks /></div>
 

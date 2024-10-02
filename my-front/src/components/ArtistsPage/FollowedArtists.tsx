@@ -68,7 +68,7 @@ const FollowedArtists: React.FC = () => {
 
   return (
     <div>
-      <SpotifyContentListArtist artists={artists} title="Followed Artists" />
+      <SpotifyContentListArtist artists={artists} title="Підписані артисти" />
     </div>
   );
 };

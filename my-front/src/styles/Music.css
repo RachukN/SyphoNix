@@ -94,40 +94,33 @@ line-height: normal;
   transform: scale(1.1);
 }
 
-.auth {
+.auth.dark {
   color: var(--Green, #00FF03);
 font-size: 20px;
 font-style: normal;
 font-weight: 600;
 line-height: normal;
 }
-.name-title{
+.name-title.dark{
   
   font-size: 18px;
   font-weight: 600;
-  color: #FFF;
+  color: #fff;
 }
-.result-name{
-  font-size: 14px;
-  color: var(--gray-white, #CECECE);
-}
-.result-name{
+.name-title.light{
   
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-  color: var(--gray-white, #CECECE);
+  font-size: 18px;
+  font-weight: 600;
+ 
 }
-.result-name.light{
-  color: var(--Light-black, #1A2125);
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+.track-info{
+  color: #0B9F0D;
 }
+
+
+
 .auth:hover {
-  color: #00FF03;
+  
   transform: scale(1.1);
 }
 .hover:hover{
@@ -137,7 +130,7 @@ line-height: normal;
   transform: scale(1.1);
 }
 
-.main-title{
+.main-title.dark{
   position: absolute;
   left: 3px;
   top: -60px;
@@ -150,13 +143,34 @@ line-height: normal;
   color: #00FF03;
 }
 .main-title.light{
+    position: absolute;
+    left: 3px;
+    top: -60px;
+    margin-right: 65px;
+    display: block;
+    font-size: 35px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   color: #0B9F0D;
-}
+  }
 .result-name{
   color: var(--gray-white, #CECECE);
 
   /* txt16 (regular) */
-  margin-top: -3px;
+
+  font-weight: 400;
+  font-size: 17px;
+  line-height: normal;
+}
+.result-name.light{
+  color: var(--Light-black, #1A2125);
   font-weight: 400;
   line-height: normal;
+  
+}
+
+.top-tracks{
+  margin-top: -40px;
+  
 }

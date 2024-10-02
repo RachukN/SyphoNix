@@ -68,11 +68,10 @@ margin-left: 30px;
     object-fit: cover; /* Це забезпечить правильне масштабування зображення */
     margin-bottom: 50px;
   }
-  .section-title{
+  .section-title.dark{
    
-    color: var(--green-less-saturated, #4BDD4C);
-
-    font-size: 32px;
+    color: #00FF03;
+    font-size: 35px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;

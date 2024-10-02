@@ -357,8 +357,8 @@ const SongPage: React.FC = () => {
           <div className="name-s">
             <div className="title-s">Альбом</div>
             <h1>{album.name}</h1>
-            <div className="profile-details-s">
-              <p className="title-s">
+            <div className={`profile-details-s ${isDarkMode ? 'dark' : 'light'}`}
+                        >  <p className="title-s">
                 {album.artists.map((artist) => artist.name).join(', ')}
                 <div className="marg-5">|</div>
               </p>
@@ -367,14 +367,9 @@ const SongPage: React.FC = () => {
                 <div className="marg-5">|</div>
               </p>
               <p>{`${album.release_date}`}
-                <div className="marg-5">|</div>
+                
               </p>
-              {album.tracks.items.map((track) => (
-                <p key={track.uri}>
-                  {formatDuration(track.duration_ms)}
-                  <div className="marg-5">|</div>
-                </p>
-              ))}
+              
             </div>
           </div>
         </div>
@@ -395,10 +390,10 @@ const SongPage: React.FC = () => {
         {/* Recommendations Section */}
         <div className="cont-a">
           <div className="top-tracks">
-            <h2 className="popularity">Рекомендації на основі треку</h2>
-            <ul className="tracks-list">
+          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Рекомендації на основі альбому</h2>
+          <ul className="tracks-list">
               {recommendations.slice(0, 5).map((rec, index) => (
-                <li  className="track-item"  // Play track on image click
+                <li className={` track-item ${isDarkMode ? 'dark' : 'light'}`}  // Play track on image click
                 key={`${rec.id}-${index}`}
                 >
                   <span className="track-index">{index + 1}</span>
@@ -414,22 +409,24 @@ const SongPage: React.FC = () => {
                   <div className="track-info">
 
                     <Link key={rec.album.id} to={`/album/${rec.album.id}`}>
-                      <span className="name-title" style={{ margin: '10px 0', cursor: 'pointer' }}>
-                        {rec.album.name}
+                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                    {rec.album.name}
                       </span>
                     </Link>
                     <p className="track-artists">
                       {rec.artists.map(artist => (
                         <Link key={artist.id} to={`/artist/${artist.id}`}>
-                          <span className="result-name" style={{ cursor: 'pointer' }}>
-                            {artist.name}
+                           <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>
+                           {artist.name}
                           </span>
                         </Link>
                       ))}
                     </p>
                   </div>
-                  <div className="track-album">{rec.popularity || 'N/A'}</div>
-                  <div className="track-duration">{rec.duration_ms ? formatDuration(rec.duration_ms) : 'Unknown'}</div>
+                  <div className={`track-album ${isDarkMode ? 'dark' : 'light'}`}
+                                    >{rec.popularity}</div>
+                                    
+                                    <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>{rec.duration_ms ? formatDuration(rec.duration_ms) : 'Unknown'}</div>
                   <div onClick={() => handlePlayTrack(rec.uri)} className="play-icona">
                     <img src={Play} alt="Play" />
                   </div>
@@ -440,8 +437,8 @@ const SongPage: React.FC = () => {
         </div>
 
         {/* Singles Section with Scroll */}
-        <h2 className="popularity">Сингли</h2>
-        <div className="cont-sa">
+        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Сингли</h2>
+               <div className="cont-sa">
           <div style={{ position: "relative", width: "100%" }}>
             <img
               src={leftArrowSingles}
@@ -474,8 +471,8 @@ const SongPage: React.FC = () => {
                       <img src={Play} alt="Play" />
                     </div>
                     <Link key={single.id} to={`/album/${single.id}`}>
-                      <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
-                      {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
+                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                    {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
                       </span>
                     </Link>
                     <p className="release-date">{single.release_date}</p>
@@ -487,8 +484,8 @@ const SongPage: React.FC = () => {
         </div>
 
         {/* Related Artists Section with Scroll */}
-        <h2 className="popularity">Схожі артисти</h2>
-        <div className="cont-sa">
+        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Схожі артисти</h2>
+                <div className="cont-sa">
           <div style={{ position: "relative", width: "100%" }}>
             <img
               src={leftArrowRelated}
@@ -520,8 +517,8 @@ const SongPage: React.FC = () => {
         <div className="play-iconaa" />
       </Link>
       <Link to={`/artist/${artist.id}`}>
-        <span className="auth" style={{ margin: '10px 0', cursor: 'pointer' }}>
-          {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+      {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
         </span>
       </Link>
     </div>

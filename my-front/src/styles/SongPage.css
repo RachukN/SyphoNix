@@ -10,7 +10,10 @@
     top: 0;
 
 }
+.profile-details-s.light{
+    color: var(--Light-black, #1A2125);
 
+}
 .success {
     position: fixed;
     top: 10px;
@@ -144,7 +147,9 @@
     text-align: center;
     position: relative;
 }
-
+.modal-p.light{
+    background-color: #D1D1D6;
+}
 .tracks-list-f-p {
     position: fixed;
     top: 0;
@@ -465,6 +470,9 @@ h2 {
 .profile-details-f {
     display: grid;
     margin-top: -160px;
+}
+.profile-details-f.light{
+    color: var(--Light-black, #1A2125);
 }
 
 .play-iconaa {

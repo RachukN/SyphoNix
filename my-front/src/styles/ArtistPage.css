@@ -18,6 +18,18 @@
     position: fixed;
     bottom: 0;
   }
+  .tracks-list{
+    width: 1150px;
+  }
+  .results-section-a{
+margin-left: 38px;
+  }
+  .track-item.light:hover {
+    cursor: pointer;
+    border-radius: 12px;
+    background: var(--white-19, rgb(184, 184, 184));
+  color: #FFF;
+  }
   .content-a {
     margin-top: -65px;
     margin-left: 320px; /* Sidebar width */
@@ -28,7 +40,7 @@
     right: 0;
     width: 1199px;
     }
-    .content-a{
+    .content-a.light{
       background-color: #D1D1D6;
 
     }
@@ -39,12 +51,7 @@
     
     overflow: hidden;
 }
-h2{
-  margin-left: 20px;
-  color: #00FF03;
-  margin-bottom: -10px;
-  font-size: 30px;
-}
+
 .music-a{
 margin-left: 30px;
 }
@@ -75,6 +82,7 @@ margin-left: 25px;
     margin-bottom: 50px;
   }
 .inf-a{
+  position: absolute;
     margin-left: 50px;
     margin-top: -270px;
 }
@@ -103,6 +111,14 @@ margin-left: 25px;
 }
 .popularity{
 margin-left: 60px;
+font-size: 32px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+color: #00FF03;
+}
+.popularity.light{
+  color: #0B9F0D;
 }
 .profile-image-a{
     width: 150px;
@@ -111,6 +127,7 @@ margin-left: 60px;
     overflow: hidden;
     margin-right: 20px;
 }
+
 .profile-details-a{
     margin-top: -30px;
     color: var(--White, #FFF);
@@ -120,9 +137,19 @@ font-size: 16px;
 font-weight: 600;
 
 }
+.profile-details-a.light{
+  color: var(--Light-black, #1A2125);
+}
 .name-a{
     margin-left: 170px;
-    margin-top: -100px;
+    margin-top: -135px;
+    
+}
+.name-a.light{
+  margin-left: 170px;
+  margin-top: -135px;
+  color: var(--Light-black, #1A2125);
+  
 }
 .play-icona {
   position: absolute;
@@ -173,7 +200,7 @@ font-weight: 600;
     align-items: center;
     gap: 6px;
     flex-shrink: 0;
-    margin-top: 55px;
+    margin-top: -55px;
 }
 .seting-img-a{
     margin-left: -320px;

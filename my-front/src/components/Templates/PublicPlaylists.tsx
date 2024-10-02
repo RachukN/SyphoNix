@@ -63,7 +63,7 @@ const PublicPlaylists: React.FC = () => {
     <SpotifyContentListPlaylist
       items={playlists} // Pass the playlist data
       handlePlay={handlePlay} // Pass the play function
-      title="Public Playlists"
+      title="Публічні плейлисти"
     />
   );
 };

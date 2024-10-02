@@ -387,7 +387,7 @@ const PlaylistDetailsPage: React.FC = () => {
 
     return (
         <div className="main-container-s">
-            <div className='sidebar'><Sidebar isDarkMode={isDarkMode}/></div>
+            <div className='sidebar'><Sidebar /></div>
 
             <div className={`content-s-p ${isDarkMode ? 'dark' : 'light'}`}
             >
@@ -405,7 +405,7 @@ const PlaylistDetailsPage: React.FC = () => {
                                 alt="Playlist"
                             />
                             <div className='name'>
-                                <div className="profile-details-f">
+                                <div className={`profile-details-f ${isDarkMode ? 'dark' : 'light'}`}>
                                     <h3 className='title-f'>Плейліст</h3>
                                     <h1 className="minmar">{playlist.name}</h1>
                                     <h3 className="minmar">Кількість: {tracks.length} треків</h3>
@@ -435,15 +435,16 @@ const PlaylistDetailsPage: React.FC = () => {
 
                             <div className="tracks-list-f-p">
 
-                                <div className='modal-p'>
+                                <div  className={`modal-p ${isDarkMode ? 'dark' : 'light'}`}>
                                     <ul className="tracks-list-f">
                                         <h2>Recommended Tracks</h2>
                                         <button onClick={toggleDropdown} className="close-dropdown-btn">
                                             ✕
                                         </button>
                                         {recommendedTracks.map((track, index) => (
-                                            <li className="track-item" key={`${track.uri}-${index}`}>
-                                                <span className="track-index">{index + 1}</span>
+                                             <li className={` track-item ${isDarkMode ? 'dark' : 'light'}`}  // Play track on image click
+                                             key={`${track.id}-${index}`}
+                                             >      <span className="track-index">{index + 1}</span>
                                                 <img
                                                     src={track.album.images[0]?.url || "default-album.png"}
                                                     alt={track.name}
@@ -453,18 +454,20 @@ const PlaylistDetailsPage: React.FC = () => {
                                                 />
                                                 <div className="track-info">
                                                     <Link to={`/track/${track.id}`}>
-                                                        <span className="name-title">{track.album.name}</span>
+                                                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                                                    {track.album.name}</span>
                                                     </Link>
                                                     <p className="track-artists">
                                                         {track.artists.map((artist: any) => (
                                                             <Link key={artist.id} to={`/artist/${artist.id}`}>
-                                                                <span className='artist-name'>{artist.name}</span>
+                                                                <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>
+                                                                {artist.name}</span>
                                                             </Link>
                                                         ))}
                                                     </p>
                                                 </div>
-                                                <div className="track-album">{track.popularity || 'N/A'}</div>
-                                                <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+                                                <div className={`track-album ${isDarkMode ? 'dark' : 'light'}`}>{track.popularity || 'N/A'}</div>
+                                                <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>{formatDuration(track.duration_ms)}</div>
                                                 <button onClick={() => handleAddTrack(track.uri)}>
                                                     <img src={Plus} alt="Library" className="plus-p" />
                                                 </button>
@@ -486,8 +489,9 @@ const PlaylistDetailsPage: React.FC = () => {
                     {(
                         <ul className="tracks-list-f">
                             {tracks.map((track, index) => (
-                                <li className="track-item" key={`${track.uri}-${index}`}>
-                                    <span className="track-index">{index + 1}</span>
+                                <li className={` track-item ${isDarkMode ? 'dark' : 'light'}`}  // Play track on image click
+                                key={`${track.id}-${index}`}
+                                >       <span className="track-index">{index + 1}</span>
                                     <img
                                         src={track.album.images[0]?.url || "default-album.png"}
                                         alt={track.name}
@@ -497,18 +501,18 @@ const PlaylistDetailsPage: React.FC = () => {
                                     />
                                     <div className="track-info">
                                         <Link to={`/track/${track.id}`}>
-                                            <span className="name-title">{track.album.name}</span>
+                                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{track.album.name}</span>
                                         </Link>
                                         <p className="track-artists">
                                             {track.artists.map((artist: any) => (
                                                 <Link key={artist.id} to={`/artist/${artist.id}`}>
-                                                    <span className='artist-name'>{artist.name}</span>
+                                                    <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>{artist.name}</span>
                                                 </Link>
                                             ))}
                                         </p>
                                     </div>
-                                    <div className="track-album">{track.popularity || 'N/A'}</div>
-                                    <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+                                    <div className={`track-album ${isDarkMode ? 'dark' : 'light'}`}>{track.popularity || 'N/A'}</div>
+                                    <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>{formatDuration(track.duration_ms)}</div>
 
                                     <input
                                         type="checkbox"
@@ -530,8 +534,9 @@ const PlaylistDetailsPage: React.FC = () => {
 
                             <ul className="tracks-list-f">
                                 {popularTracks.map((track: any, index) => (
-                                    <li className="track-item" key={`${track.uri}-${index}`}>
-                                        <span className="track-index">{index + 1}</span>
+                                   <li className={` track-item ${isDarkMode ? 'dark' : 'light'}`}  // Play track on image click
+                                   key={`${track.id}-${index}`}
+                                   >    <span className="track-index">{index + 1}</span>
                                         <img
                                             src={track.album.images[0]?.url || "default-album.png"}
                                             alt={track.name}
@@ -541,18 +546,18 @@ const PlaylistDetailsPage: React.FC = () => {
                                         />
                                         <div className="track-info">
                                             <Link to={`/track/${track.id}`}>
-                                                <span className="name-title">{track.album.name}</span>
+                                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{track.album.name}</span>
                                             </Link>
                                             <p className="track-artists">
                                                 {track.artists.map((artist: any) => (
                                                     <Link key={artist.id} to={`/artist/${artist.id}`}>
-                                                        <span className='artist-name'>{artist.name}</span>
+                                                        <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>{artist.name}</span>
                                                     </Link>
                                                 ))}
                                             </p>
                                         </div>
-                                        <div className="track-album">{track.popularity || 'N/A'}</div>
-                                        <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+                                        <div className={`track-album ${isDarkMode ? 'dark' : 'light'}`}>{track.popularity || 'N/A'}</div>
+                                    <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>{formatDuration(track.duration_ms)}</div>
 
                                         <button onClick={() => handleAddTrack(track.uri)}>
                                             <img src={Plus} alt="Library" className="plus-p" />
@@ -563,10 +568,10 @@ const PlaylistDetailsPage: React.FC = () => {
                         </div>
                     </div>
                 )}
-                <Footer isDarkMode={isDarkMode} />
+                <Footer/>
             </div>
             <div className='add'><SearchBar /></div>
-            <div className='nav'><TopNavigation isDarkMode={isDarkMode}/></div>
+            <div className='nav'><TopNavigation /></div>
             <div className='success'>
                 {successMessage && <h4 className='success-message' >{successMessage}</h4>}
             </div>

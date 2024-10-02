@@ -5,6 +5,9 @@ import Setting1 from '../../images/Frame 160 (1).png'; // Settings icon
 import LoadingTrackAlbum from '../Loading/LoadingTrackAlbum'; // Import the loading component
 import '../../styles/Music.css'; // Ensure your styles are loaded
 import { handlePlayTrack, formatDuration } from '../../utils/SpotifyPlayer';
+import { useTheme } from '../../services/ThemeContext';
+
+
 interface Track {
     id: string;
     name: string;
@@ -33,7 +36,7 @@ const TopTracks: React.FC = () => {
     const [showPlaylists, setShowPlaylists] = useState(false);
     const [showDropdown, setShowDropdown] = useState<{ [key: number]: boolean }>({});
     const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null);
-
+    const { isDarkMode } = useTheme();
     useEffect(() => {
         const fetchRecommendedTracks = async () => {
             const token = localStorage.getItem('spotifyAccessToken');
@@ -142,8 +145,8 @@ const TopTracks: React.FC = () => {
             <div className="top-tracks">
                 <ul className="tracks-list">
                     {recommendations.slice(0, 10).map((rec, index) => (
-                        <li className="track-item" key={`${rec.id}-${index}`}>
-                            <span className="track-index">{index + 1}</span>
+                        <li key={`${rec.id}-${index}`} className={` track-item ${isDarkMode ? 'dark' : 'light'}`}>
+                                    <span className="track-index">{index + 1}</span>
                             <img
                                 src={rec.album.images[0]?.url || "default-album.png"}
                                 alt={rec.name}
@@ -154,22 +157,23 @@ const TopTracks: React.FC = () => {
                             />
                             <div className="track-info">
                                 <Link key={rec.album.id} to={`/album/${rec.album.id}`}>
-                                    <span className="name-title" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
                                         {rec.name}
                                     </span>
                                 </Link>
                                 <p className="track-artists">
                                     {rec.artists.map(artist => (
                                         <Link key={artist.id} to={`/artist/${artist.id}`}>
-                                            <span className="result-name" style={{ cursor: 'pointer' }}>
+                                             <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>
                                                 {artist.name}
                                             </span>
                                         </Link>
                                     ))}
                                 </p>
                             </div>
-                            <div className="track-album">{rec.popularity || 'N/A'}</div>
-                            <div className="track-duration">
+                            <div className={`track-album ${isDarkMode ? 'dark' : 'light'}`}
+                                    >{rec.popularity}</div>
+                           <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>
                                 <img
                                     src={Setting1}
                                     alt="Settings"

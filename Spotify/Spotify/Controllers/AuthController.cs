@@ -18,8 +18,8 @@ namespace Spotify.Controllers
     [Route("auth")]
     public class AuthController : ControllerBase
     {
-        private readonly string clientId = "32a1d43f4fa647679d7cc61420bf6aaf";  // Replace with your actual Client ID
-        private readonly string clientSecret = "c9bf5dc65c83448b98afc451d2754f0e";  // Keep this secure
+        private readonly string clientId = "643893a26f2546f8b9c41161d476bdc5";  // Replace with your actual Client ID
+        private readonly string clientSecret = "a1cc5561cdce41a0900f1e420cf141d6";  // Keep this secure
         private readonly string redirectUri = "http://localhost:5059/Auth/callback";  
         private readonly string spotifyAuthUrl = "https://accounts.spotify.com/authorize";
         private readonly string spotifyTokenUrl = "https://accounts.spotify.com/api/token";

@@ -7,12 +7,10 @@ import RightGreen from '../Main/Images/Frame 72.png';
 import '../../styles/Music.css';
 import { useTheme } from '../../services/ThemeContext';
 
-
 interface Artist {
   id: string;
   name: string;
   images: { url: string }[];
-  uri: string;
 }
 
 interface SpotifyContentListArtistProps {
@@ -25,7 +23,7 @@ const SpotifyContentListArtist: React.FC<SpotifyContentListArtistProps> = ({ art
   const [leftArrow, setLeftArrow] = useState(LeftGray);
   const [rightArrow, setRightArrow] = useState(RightGreen);
   const { isDarkMode } = useTheme();
- 
+
   const updateArrows = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -55,8 +53,9 @@ const SpotifyContentListArtist: React.FC<SpotifyContentListArtistProps> = ({ art
         <div style={{ position: 'relative', width: '100%' }}>
           <img src={leftArrow} alt="Scroll Left" className="img-l" onClick={scrollLeft} />
           <img src={rightArrow} alt="Scroll Right" className="img-r" onClick={scrollRight} />
-          <div className={`main-title ${isDarkMode ? 'dark' : 'light'}`}
-          >{title}</div>
+          <div className={`main-title ${isDarkMode ? 'dark' : 'light'}`}>
+            {title}
+          </div>
           <div ref={scrollRef} className='music-c' onScroll={updateArrows}>
             {artists.map((artist, index) => (
               <div key={`${artist.id}-${index}`} className="img-container">
@@ -67,20 +66,15 @@ const SpotifyContentListArtist: React.FC<SpotifyContentListArtistProps> = ({ art
                     className='m-5-artist'
                     style={{ borderRadius: '50%', width: '140px', height: '140px' }} // Circular artist image
                   />
-                  <div  className="play-icon-arti">
-                   
-                  </div>
                 </div>
                 <div className="hover">
-                  {/* Замість вкладених <p>, використовуємо <div> або <span> */}
                   <Link to={`/artist/${artist.id}`} >
                     <span className={`auth ${isDarkMode ? 'dark' : 'light'}`} style={{ margin: '10px 0', cursor: 'pointer' }}>
                       {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
                     </span>
                   </Link>
-                  </div>
-                  <div className={`result-name ${isDarkMode ? 'dark' : 'light'}`} style={{ marginTop:'10px', cursor: 'pointer' }}>Виконавець</div>
-                
+                </div>
+                <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>Виконавець</span>
               </div>
             ))}
           </div>
