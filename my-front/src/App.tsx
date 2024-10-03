@@ -24,13 +24,15 @@ import PremiumRequired from './components/UserProfil/PremiumRequired';
 import LoadingTrackPage from './components/Loading/LoadingTrackPage';
 import UploadImages from './services/UploadImages';
 import { ThemeProvider } from './services/ThemeContext';
+import { LanguageProvider } from './services/LanguageContext';
 
 const App: React.FC = () => {
   
   return (
+    <LanguageProvider>
     <ThemeProvider>
     <GlobalPlayerProvider>
-      
+    
     <Router>
       <Routes>
       <Route path="/" element={<Layout />}>
@@ -60,9 +62,10 @@ const App: React.FC = () => {
         </Route>
       </Routes>
     </Router>
-   
+    
     </GlobalPlayerProvider>
     </ThemeProvider>
+    </LanguageProvider>
   );
 };
 

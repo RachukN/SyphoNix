@@ -52,6 +52,9 @@
    
     <PackageReference Include="Microsoft.Net.Http.Headers" Version="8.0.8" />
    
+   
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+   
        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
    
        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
@@ -59,5 +62,7 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
+		<UserSecretsId>f8b123db-839f-48fd-997e-55b94fb2adef</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	</PropertyGroup>
 </Project>
