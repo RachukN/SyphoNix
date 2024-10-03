@@ -15,6 +15,10 @@ import RightGreen from '../Main/Images/Frame 72.png';
 import '../../styles/SongPage.css'; // Використовуємо стилі сторінки артиста
 import LoadingPageWithSidebarT from '../Loading/LoadingTrackPage';
 import { useTheme } from '../../services/ThemeContext';
+import { useLanguage } from '../../services/LanguageContext'; // Import language hook
+
+
+
 
 interface Album {
   id: string;
@@ -71,7 +75,7 @@ const SongPage: React.FC = () => {
   const [leftArrowRelated, setLeftArrowRelated] = useState(LeftGray);
   const [rightArrowRelated, setRightArrowRelated] = useState(RightGreen);
   const { isDarkMode } = useTheme();
- 
+  const { language } = useLanguage();
   const [isAlbumSaved, setIsAlbumSaved] = useState(false);
 
 
@@ -355,7 +359,7 @@ const SongPage: React.FC = () => {
         <div className="inf-s">
           <img src={profileImageUrl} alt={album.name} className="profile-image-s" />
           <div className="name-s">
-            <div className="title-s">Альбом</div>
+            <div className="title-s">{language.albums}</div>
             <h1>{album.name}</h1>
             <div className={`profile-details-s ${isDarkMode ? 'dark' : 'light'}`}
                         >  <p className="title-s">
@@ -381,7 +385,7 @@ const SongPage: React.FC = () => {
             onClick={handleSaveOrRemoveAlbum}
             className={isAlbumSaved ? 'subscribed-s' : 'subscribe-button-s'}
           >
-            {isAlbumSaved ? 'Видалити з улюблених' : 'Додати до улюблених'}
+            {isAlbumSaved ? language.removeFromFavorites : language.addToFavorites }
           </button>
         </div>
 
@@ -390,7 +394,7 @@ const SongPage: React.FC = () => {
         {/* Recommendations Section */}
         <div className="cont-a">
           <div className="top-tracks">
-          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Рекомендації на основі альбому</h2>
+          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.recommendationsBasedOnTrack}</h2>
           <ul className="tracks-list">
               {recommendations.slice(0, 5).map((rec, index) => (
                 <li className={` track-item ${isDarkMode ? 'dark' : 'light'}`}  // Play track on image click
@@ -437,7 +441,7 @@ const SongPage: React.FC = () => {
         </div>
 
         {/* Singles Section with Scroll */}
-        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Сингли</h2>
+        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.singles}</h2>
                <div className="cont-sa">
           <div style={{ position: "relative", width: "100%" }}>
             <img
@@ -484,7 +488,7 @@ const SongPage: React.FC = () => {
         </div>
 
         {/* Related Artists Section with Scroll */}
-        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Схожі артисти</h2>
+        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.similarArtists}</h2>
                 <div className="cont-sa">
           <div style={{ position: "relative", width: "100%" }}>
             <img

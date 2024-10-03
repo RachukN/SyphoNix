@@ -32,3 +32,22 @@ font-size: 32px;
 font-style: normal;
 font-weight: 600;
 line-height: normal;
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { useLanguage } from '../../services/LanguageContext'; // Import language hook
+
+
+const { language } = useLanguage();
+   
+{language.}
