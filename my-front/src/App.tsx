@@ -25,6 +25,7 @@ import LoadingTrackPage from './components/Loading/LoadingTrackPage';
 import UploadImages from './services/UploadImages';
 import { ThemeProvider } from './services/ThemeContext';
 import { LanguageProvider } from './services/LanguageContext';
+import AdminPanel from './components/Admin/AdminPanel';
 
 const App: React.FC = () => {
   
@@ -38,6 +39,7 @@ const App: React.FC = () => {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Login />} />
         <Route path="/callback" element={<Callback />} />
+        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/home" element={<MainPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/categories" element={<Categories />} /> 
