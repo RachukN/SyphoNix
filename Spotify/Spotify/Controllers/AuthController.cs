@@ -18,33 +18,33 @@ namespace Spotify.Controllers
     [Route("auth")]
     public class AuthController : ControllerBase
     {
-        private readonly string clientId = "643893a26f2546f8b9c41161d476bdc5";  // Replace with your actual Client ID
-        private readonly string clientSecret = "a1cc5561cdce41a0900f1e420cf141d6";  // Keep this secure
-        private readonly string redirectUri = "http://localhost:5059/Auth/callback";  
+        private readonly string clientId = "643893a26f2546f8b9c41161d476bdc5";  // Замініть на свій реальний Client ID
+        private readonly string clientSecret = "a1cc5561cdce41a0900f1e420cf141d6";  // Тримайте це в безпеці
+        private readonly string redirectUri = "http://localhost:5059/Auth/callback";
         private readonly string spotifyAuthUrl = "https://accounts.spotify.com/authorize";
         private readonly string spotifyTokenUrl = "https://accounts.spotify.com/api/token";
         private readonly UserService _userService;
-        // Store code_verifier in a way that is accessible between requests
-        private static string codeVerifier;
+        private static string codeVerifier;  // Зберігання code_verifier між запитами
         private readonly ApplicationDbContext _context;
+
         public AuthController(UserService userService, ApplicationDbContext context)
         {
-            _userService = userService; 
+            _userService = userService;
             _context = context;
-
         }
 
+        // Авторизація через Spotify
         [HttpGet("login")]
         public IActionResult Login()
         {
-            codeVerifier = GenerateCodeVerifier();
-            string codeChallenge = GenerateCodeChallenge(codeVerifier);
-            string state = GenerateRandomString(16);
-            // Include all required scopes
+            codeVerifier = GenerateCodeVerifier();  // Генеруємо унікальний code_verifier
+            string codeChallenge = GenerateCodeChallenge(codeVerifier);  // Створюємо code_challenge на основі code_verifier
+            string state = GenerateRandomString(16);  // Генерація унікального стану (state)
 
+            // Spotify scopes
             string scope = "user-read-currently-playing playlist-read-collaborative ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
 
-
+            // Параметри запиту
             var queryParams = new Dictionary<string, string>
             {
                 ["client_id"] = clientId,
@@ -56,13 +56,13 @@ namespace Spotify.Controllers
                 ["code_challenge"] = codeChallenge
             };
 
+            // Створюємо повний URL для авторизації
             string fullAuthUrl = QueryHelpers.AddQueryString(spotifyAuthUrl, queryParams);
 
             return Redirect(fullAuthUrl);
         }
 
-
-
+        // Метод зворотного виклику після авторизації
         [HttpGet("callback")]
         public async Task<IActionResult> Callback(string code, string state)
         {
@@ -71,81 +71,94 @@ namespace Spotify.Controllers
                 return BadRequest("Invalid request: Missing code or state.");
             }
 
-            var tokenResponse = await ExchangeCodeForToken(code, codeVerifier);
-            if (tokenResponse == null)
+            try
             {
-                return BadRequest("Failed to obtain access token.");
-            }
-
-            var tokenData = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenResponse);
-            if (!tokenData.TryGetValue("access_token", out string accessToken))
-            {
-                return BadRequest("Access token not found in response.");
-            }
-
-            // Отримуємо профіль Spotify
-            var spotifyProfile = await GetSpotifyProfile(accessToken);
-            if (spotifyProfile == null)
-            {
-                // Якщо профіль не отримано, це означає, що користувач не має преміуму
-                return Redirect($"http://localhost:1573/premium-required");
-            }
-
-            // Якщо користувач не має преміум-акаунта
-            if (spotifyProfile.Product != "premium")
-            {
-                return Redirect($"http://localhost:1573/premium-required");
-            }
-
-            // Інша логіка для преміум-користувачів
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == spotifyProfile.Email);
-            if (user == null)
-            {
-                user = new ApplicationUser
+                // Обмін отриманого коду на токен
+                var tokenResponse = await ExchangeCodeForToken(code, codeVerifier);
+                if (tokenResponse == null)
                 {
-                    Email = spotifyProfile.Email,
-                    UserName = spotifyProfile.DisplayName,
-                };
+                    return BadRequest("Failed to obtain access token.");
+                }
 
-                _context.Users.Add(user);
+                var tokenData = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenResponse);
+                if (!tokenData.TryGetValue("access_token", out string accessToken) || !tokenData.TryGetValue("refresh_token", out string refreshToken))
+                {
+                    return BadRequest("Access or refresh token not found in response.");
+                }
+
+                // Отримуємо профіль користувача Spotify
+                var spotifyProfile = await GetSpotifyProfile(accessToken);
+                if (spotifyProfile == null)
+                {
+                    return Redirect($"http://localhost:1573/premium-required");
+                }
+
+                // Додаємо або оновлюємо користувача в базі даних
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == spotifyProfile.Email);
+                if (user == null)
+                {
+                    // Якщо користувач не знайдений, додаємо нового
+                    user = new ApplicationUser
+                    {
+                        Email = spotifyProfile.Email,
+                        UserName = spotifyProfile.DisplayName,
+                        AccessToken = accessToken,
+                        RefreshToken = refreshToken,
+                        TokenExpiration = DateTime.UtcNow.AddSeconds(int.Parse(tokenData["expires_in"]))
+                    };
+
+                    _context.Users.Add(user);
+                }
+                else
+                {
+                    // Якщо користувач існує, оновлюємо токени
+                    user.AccessToken = accessToken;
+                    user.RefreshToken = refreshToken;
+                    user.TokenExpiration = DateTime.UtcNow.AddSeconds(int.Parse(tokenData["expires_in"]));
+                    _context.Users.Update(user);
+                }
+
+                // Зберігаємо зміни в базу
                 await _context.SaveChangesAsync();
-            }
 
-            // Перенаправляємо до профілю з access_token
-            return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}&scope=user-read-playback-state%20user-modify-playback-state%20streaming");
+                // Перенаправляємо до профілю
+                return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}");
+            }
+            catch (Exception ex)
+            {
+                // Логування помилки з повним повідомленням про помилку та трасуванням стека
+                Console.WriteLine($"Error processing user data: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return StatusCode(500, $"An error occurred while processing the request: {ex.Message}");
+            }
         }
 
-
-
-
-
-
+        // Отримання профілю користувача з Spotify
         private async Task<SpotifyProfile> GetSpotifyProfile(string accessToken)
         {
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var response = await client.GetAsync("https://api.spotify.com/v1/me");
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Profile request response: {responseContent}");
 
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Failed to fetch profile data. Status Code: {response.StatusCode}, Error: {errorContent}");
 
-                // Перевірка, чи користувач не має преміуму
                 if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
-                    Console.WriteLine("User does not have a premium account.");
+                    Console.WriteLine("User does not have a premium account or lacks required permissions.");
                     return null;
                 }
                 return null;
             }
 
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var profileData = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+            var profileData = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
-            // Створюємо об'єкт профілю
-            SpotifyProfile profile = new SpotifyProfile
+            var profile = new SpotifyProfile
             {
                 DisplayName = profileData.display_name,
                 Email = profileData.email,
@@ -156,57 +169,19 @@ namespace Spotify.Controllers
                 ImageUrl = profileData.images != null && profileData.images.Count > 0 ? profileData.images[0].url : null
             };
 
-            // Перевірка, чи профіль є преміум
-            if (profile.Product != "premium")
-            {
-                Console.WriteLine("This user does not have premium.");
-                return profile; // Можемо повернути профіль без доступу до преміум-функцій
-            }
-
             return profile;
         }
 
-
-
-
-        private async Task<string> GetAccessToken(string code)
-        {
-            // Your logic to exchange the code for an access token
-            return "YourAccessToken";
-        }
-
-
-
-        private async Task<ApplicationUser> GetUserProfile(string accessToken)
-        {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            var response = await client.GetAsync("https://api.spotify.com/v1/me");
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine($"Failed to get user profile. Status Code: {response.StatusCode}");
-                return null;
-            }
-
-            var json = await response.Content.ReadAsStringAsync();
-            var userProfile = JsonConvert.DeserializeObject<ApplicationUser>(json);
-            return userProfile;
-        }
-
-
-        private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)
+        // Метод для оновлення Access Token за допомогою Refresh Token
+        private async Task<string> RefreshAccessToken(string refreshToken)
         {
             using var client = new HttpClient();
             var postData = new Dictionary<string, string>
             {
-                ["grant_type"] = "authorization_code",
-                ["code"] = code,
-                ["redirect_uri"] = redirectUri,  // Замість цього URL використовуйте той, що зареєстрований
+                ["grant_type"] = "refresh_token",
+                ["refresh_token"] = refreshToken,
                 ["client_id"] = clientId,
-                ["client_secret"] = clientSecret,
-                ["code_verifier"] = codeVerifier
+                ["client_secret"] = clientSecret
             };
 
             var request = new HttpRequestMessage(HttpMethod.Post, spotifyTokenUrl)
@@ -220,23 +195,72 @@ namespace Spotify.Controllers
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Failed to obtain access token. Status Code: {response.StatusCode}, Error: {errorContent}");
+                    Console.WriteLine($"Failed to refresh access token. Status Code: {response.StatusCode}, Error: {errorContent}");
                     return null;
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-                return json;
+                var tokenData = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+                if (tokenData.TryGetValue("access_token", out string newAccessToken))
+                {
+                    return newAccessToken;
+                }
+                else
+                {
+                    Console.WriteLine("New access token not found in response.");
+                    return null;
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception occurred: {ex.Message}");
+                Console.WriteLine($"Exception occurred while refreshing access token: {ex.Message}");
                 return null;
             }
         }
 
+        // Обмін отриманого коду на токен
+        private async Task<string> ExchangeCodeForToken(string code, string codeVerifier)
+        {
+            using var client = new HttpClient();
+            var postData = new Dictionary<string, string>
+            {
+                ["grant_type"] = "authorization_code",
+                ["code"] = code,
+                ["redirect_uri"] = redirectUri,
+                ["client_id"] = clientId,
+                ["client_secret"] = clientSecret,
+                ["code_verifier"] = codeVerifier
+            };
 
+            var request = new HttpRequestMessage(HttpMethod.Post, spotifyTokenUrl)
+            {
+                Content = new FormUrlEncodedContent(postData)
+            };
 
+            try
+            {
+                var response = await client.SendAsync(request);
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Token exchange response: {json}");
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Failed to obtain access token. Status Code: {response.StatusCode}, Error: {json}");
+                    return null;
+                }
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during token exchange: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return null;
+            }
+        }
+
+        // Генерація випадкових рядків для state та інших параметрів
         private static string GenerateRandomString(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";

@@ -9,5 +9,8 @@ public class ApplicationUser : IdentityUser
     public string? Region { get; set; }
     public string? Gender { get; set; }
     public string? FullName { get; set; }
+    public string AccessToken { get; set; } // Поле для збереження AccessToken
+    public string RefreshToken { get; set; } // Поле для збереження RefreshToken, якщо потрібно
+    public DateTime TokenExpiration { get; set; } // Поле для збереження часу закінчення токена
 }
 

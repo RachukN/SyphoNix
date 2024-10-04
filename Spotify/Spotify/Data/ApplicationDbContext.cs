@@ -10,6 +10,7 @@ namespace Spotify.Data
             : base(options)
         {
         }
+        public DbSet<PlayedTrack> PlayedTracks { get; set; }
 
     }
 }
