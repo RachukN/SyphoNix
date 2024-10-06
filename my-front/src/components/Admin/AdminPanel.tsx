@@ -337,7 +337,7 @@ const AdminPanel: React.FC = () => {
       <ul className="admin-panel-list">
         {currentUsers.map((user) => (
           <li key={user.id} className="admin-panel-item">
-            <strong>{user.email}</strong>
+            <strong></strong>
             <button onClick={() => handleUserSelect(user)}>View Playlists</button>
           </li>
         ))}

@@ -332,7 +332,7 @@ const SongPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div><LoadingPageWithSidebarT/></div>;
+    return <div><LoadingPageWithSidebarT /></div>;
   }
 
   if (!album) {
@@ -348,7 +348,7 @@ const SongPage: React.FC = () => {
 
       <div className={`content-s ${isDarkMode ? 'dark' : 'light'}`}
       >
-        <TopNavigation/>
+        <TopNavigation />
 
         {/* Album Banner */}
         <div className="banner-container-user-s">
@@ -362,7 +362,7 @@ const SongPage: React.FC = () => {
             <div className="title-s">{language.albums}</div>
             <h1>{album.name}</h1>
             <div className={`profile-details-s ${isDarkMode ? 'dark' : 'light'}`}
-                        >  <p className="title-s">
+            >  <p className="title-s">
                 {album.artists.map((artist) => artist.name).join(', ')}
                 <div className="marg-5">|</div>
               </p>
@@ -371,9 +371,9 @@ const SongPage: React.FC = () => {
                 <div className="marg-5">|</div>
               </p>
               <p>{`${album.release_date}`}
-                
+
               </p>
-              
+
             </div>
           </div>
         </div>
@@ -385,20 +385,20 @@ const SongPage: React.FC = () => {
             onClick={handleSaveOrRemoveAlbum}
             className={isAlbumSaved ? 'subscribed-s' : 'subscribe-button-s'}
           >
-            {isAlbumSaved ? language.removeFromFavorites : language.addToFavorites }
+            {isAlbumSaved ? language.removeFromFavorites : language.addToFavorites}
           </button>
         </div>
 
-      
+
 
         {/* Recommendations Section */}
         <div className="cont-a">
           <div className="top-tracks">
-          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.recommendationsBasedOnTrack}</h2>
-          <ul className="tracks-list">
+            <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.recommendationsBasedOnTrack}</h2>
+            <ul className="tracks-list">
               {recommendations.slice(0, 5).map((rec, index) => (
                 <li className={` track-item ${isDarkMode ? 'dark' : 'light'}`}  // Play track on image click
-                key={`${rec.id}-${index}`}
+                  key={`${rec.id}-${index}`}
                 >
                   <span className="track-index">{index + 1}</span>
                   <img
@@ -413,24 +413,24 @@ const SongPage: React.FC = () => {
                   <div className="track-info">
 
                     <Link key={rec.album.id} to={`/album/${rec.album.id}`}>
-                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-                    {rec.album.name}
+                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                        {rec.album.name}
                       </span>
                     </Link>
                     <p className="track-artists">
                       {rec.artists.map(artist => (
                         <Link key={artist.id} to={`/artist/${artist.id}`}>
-                           <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>
-                           {artist.name}
+                          <span className={`result-name ${isDarkMode ? 'dark' : 'light'}`}>
+                            {artist.name}
                           </span>
                         </Link>
                       ))}
                     </p>
                   </div>
                   <div className={`track-album ${isDarkMode ? 'dark' : 'light'}`}
-                                    >{rec.popularity}</div>
-                                    
-                                    <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>{rec.duration_ms ? formatDuration(rec.duration_ms) : 'Unknown'}</div>
+                  >{rec.popularity}</div>
+
+                  <div className={`track-duration ${isDarkMode ? 'dark' : 'light'}`}>{rec.duration_ms ? formatDuration(rec.duration_ms) : 'Unknown'}</div>
                   <div onClick={() => handlePlayTrack(rec.uri)} className="play-icona">
                     <img src={Play} alt="Play" />
                   </div>
@@ -442,7 +442,7 @@ const SongPage: React.FC = () => {
 
         {/* Singles Section with Scroll */}
         <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.singles}</h2>
-               <div className="cont-sa">
+        <div className="cont-sa">
           <div style={{ position: "relative", width: "100%" }}>
             <img
               src={leftArrowSingles}
@@ -475,8 +475,8 @@ const SongPage: React.FC = () => {
                       <img src={Play} alt="Play" />
                     </div>
                     <Link key={single.id} to={`/album/${single.id}`}>
-                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-                    {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
+                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                        {single.name.length > 16 ? `${single.name.substring(0, 12)}...` : single.name}
                       </span>
                     </Link>
                     <p className="release-date">{single.release_date}</p>
@@ -489,7 +489,7 @@ const SongPage: React.FC = () => {
 
         {/* Related Artists Section with Scroll */}
         <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>{language.similarArtists}</h2>
-                <div className="cont-sa">
+        <div className="cont-sa">
           <div style={{ position: "relative", width: "100%" }}>
             <img
               src={leftArrowRelated}
@@ -504,39 +504,39 @@ const SongPage: React.FC = () => {
               onClick={scrollRightRelated}
             />
             <div
-  ref={scrollRefRelated}
-  className="music-c"
-  onScroll={updateArrowsRelated}
->
-  {relatedArtists.map((artist) => (
-    <div key={artist.id} className="img-container">
-      <div className="img-contenta">
-        <img
-          src={artist.images[0]?.url || "default-artist.png"}
-          alt={artist.name}
-          className="m5m"
-        />
-      </div>
-      <Link to={`/artist/${artist.id}`}>
-        <div className="play-iconaa" />
-      </Link>
-      <Link to={`/artist/${artist.id}`}>
-      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-      {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
-        </span>
-      </Link>
-    </div>
-  ))}
-</div>
+              ref={scrollRefRelated}
+              className="music-c"
+              onScroll={updateArrowsRelated}
+            >
+              {relatedArtists.map((artist) => (
+                <div key={artist.id} className="img-container">
+                  <div className="img-contenta">
+                    <img
+                      src={artist.images[0]?.url || "default-artist.png"}
+                      alt={artist.name}
+                      className="m5m"
+                    />
+                  </div>
+                  <Link to={`/artist/${artist.id}`}>
+                    <div className="play-iconaa" />
+                  </Link>
+                  <Link to={`/artist/${artist.id}`}>
+                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                      {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                    </span>
+                  </Link>
+                </div>
+              ))}
+            </div>
 
           </div>
         </div>
 
-        <Footer/>
+        <Footer />
       </div>
 
       <div className="filter-user-s">
-        <TopNavigation/>
+        <TopNavigation />
       </div>
 
       <div className="player-s">
