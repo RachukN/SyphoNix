@@ -42,7 +42,7 @@ namespace Spotify.Controllers
             string state = GenerateRandomString(16);  // Генерація унікального стану (state)
 
             // Spotify scopes
-            string scope = "user-read-currently-playing playlist-read-collaborative ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
+            string scope = " user-top-read user-read-currently-playing playlist-read-collaborative ugc-image-upload playlist-modify-public playlist-modify-private user-read-private user-library-read user-library-modify user-follow-read user-follow-modify user-read-email user-modify-playback-state user-read-playback-state streaming";
 
             // Параметри запиту
             var queryParams = new Dictionary<string, string>
