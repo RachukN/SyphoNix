@@ -134,6 +134,54 @@ public class UserProfileController : ControllerBase
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
+        [HttpGet("{userId}/top-items")]
+        public async Task<IActionResult> GetUserTopItems(string userId, string type = "tracks", string time_range = "medium_term", int limit = 20, int offset = 0)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || string.IsNullOrEmpty(user.AccessToken))
+            {
+                return NotFound("User not found or no access token available.");
+            }
+
+            try
+            {
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", user.AccessToken);
+
+                // Запит до Spotify API для отримання топ-елементів
+                var url = $"https://api.spotify.com/v1/me/top/{type}?time_range={time_range}&limit={limit}&offset={offset}";
+                var response = await client.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode((int)response.StatusCode, "Failed to retrieve top items.");
+                }
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var topItems = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+
+                return Ok(topItems);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User deleted successfully" });
+        }
 
         [HttpGet("{userId}/token")]
         public async Task<IActionResult> GetUserToken(string userId)
