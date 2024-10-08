@@ -1,0 +1,118 @@
+.category-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .pisen-g{
+    position: absolute;
+    top: 120px;
+    left: 960px;
+  }
+  .track-item-g:hover{
+    background: var(--bright-topic, #68686c9b);
+border-radius: 12px;
+
+  }
+  .track-item-g.light:hover{
+    background: var(--bright-topic, #cacacdd0);
+border-radius: 12px;
+
+  }
+  .search-g{
+    margin-left: 30px;
+    position: absolute;
+    top: 0;
+    background: var(--Black, #13191C);
+    left: 290px;
+    right: 500px;
+    width: 1200px;
+    margin-left: 30px;
+    position: fixed;
+    right: 500px;
+  }
+  .search-g.light{
+    background: var(--bright-topic, #D1D1D6);
+    margin-left: 30px;
+    position: absolute;
+    top: 0;
+    left: 290px;
+    right: 500px;
+    width: 1200px;
+    margin-left: 30px;
+    position: fixed;
+    right: 500px;
+  }
+  .pagination-controls{
+    position: absolute;
+    margin-top: -40px;
+    margin-left: 145px;
+  }
+  .pagination-controls-g{
+    position: absolute;
+    margin-top: 37px;
+    margin-left: 150px;
+  }
+  button {
+    /* Забезпечує правильне відображення padding і border */
+    cursor: pointer; /* Вказівник на кнопці */
+}
+
+/* Додатково можна додати стилі для ховера або фокуса */
+button:hover, button:focus {
+    outline: none; /* Видаляє дефолтний фокус кнопки */
+}
+  .track-item-g {
+    padding-right: 30px;
+    height: 40px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    padding-right: 20px;
+   
+    font-size: 14px;
+}
+.tracks-list-g{
+width: 450px;
+border-radius: 15px;
+background: var(--bright-topic, #4d4d4fc0);
+padding: 20px 25px;
+margin-left: 40px;
+}
+.tracks-list-g.light{
+    background: var(--bright-topic, #86868957);
+}
+
+  .category-image-large {
+    margin-left: -40px;
+    width: 630px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .best-name-pisen-n{
+    position: absolute;
+    top: -95px;
+    left: -60px;
+    color: var(--green-less-saturated, #4BDD4C);
+  /* txt32 (semi bold) */
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  }
+  .best-name-pisen-n.light{
+    color: #0B9F0D;
+  }
+  .grid{
+    margin-left: -35px;
+  }
+  .playlists-section, .tracks-section {
+    margin-top: 20px;
+  }
+  
+  .playlist-card, .track-card {
+    margin-bottom: 10px;
+  }
+  
