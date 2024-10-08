@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Skeleton, Button, List, ListItem, Avatar } from '@mui/material';
-import trackImage from './Знімок екрана 2024-09-28 180551.png'
 import {
     sidebarStyles,
   } from './loadingPageStyles';

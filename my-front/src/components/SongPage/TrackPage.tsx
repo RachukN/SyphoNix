@@ -507,15 +507,16 @@ const TrackPage: React.FC = () => {
                                         src={rec.album.images[0]?.url || "default-album.png"}
                                         alt={rec.name}
                                         className="track-image"
+                                        
                                         key={rec.id}
                                         onClick={() => handlePlayTrack(rec.uri)}
-                                        style={{ margin: '10px 0', cursor: 'pointer' }}
+                                        style={{ margin: '10px 0', cursor: 'pointer',width:"50px" }}
                                     // Optionally change the cursor to indicate the image is clickable
                                     />
                                     <div className="track-info">
 
                                         <Link key={rec.album.id} to={`/album/${rec.album.id}`}>
-                                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                                            <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>
                                                 {rec.name}
                                             </span>
                                         </Link>
@@ -597,13 +598,14 @@ const TrackPage: React.FC = () => {
                                         src={track.album.images[0]?.url || "default-album.png"}
                                         alt={track.name}
                                         className="track-image"
+                                        style={{width:"50px"}}
                                         key={track.id}
                                         onClick={() => handlePlayTrack(track.uri)}
                                     />
                                     <div className="track-info">
                                         <p className="track-name">
                                             <Link to={`/track/${track.id}`}>
-                                                <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                                                <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>
                                                     {track.name}
                                                 </span>
                                             </Link>

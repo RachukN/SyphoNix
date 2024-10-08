@@ -8,6 +8,42 @@
   margin-top: 20px;
   
 }
+.musicgrid{
+  width: 650px;
+  padding: 15px 0;
+  scroll-behavior: smooth;
+  margin-top: 20px;
+  
+}
+.musicgri{
+  width: 650px;
+  padding: 15px 0;
+  scroll-behavior: smooth;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+  justify-content: right;
+}
+.img-container-g{
+  width: 153px;
+  height: 250px;
+  text-align: center;
+ margin-top: 2px;
+  cursor: pointer;
+  margin: 0 4px;
+}
+.play-icon-g {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  top: 15px;
+}
 .auth.light{
   font-size: 20px;
 font-style: normal;
@@ -18,7 +54,7 @@ line-height: normal;
 .img-container {
   width: 153px;
   text-align: center;
-  display: inline-block;
+  
   cursor: pointer;
   position: relative;
   margin: 0 4px;
@@ -109,7 +145,20 @@ line-height: normal;
   
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: #00FF03;
+}
+.name-title-e.dark{
+  
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+.name-title-e.light{
+  
+  font-size: 18px;
+  font-weight: 600;
+  color: #1A2125;
+ 
 }
 .name-title.light{
   

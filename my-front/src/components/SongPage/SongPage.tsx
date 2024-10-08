@@ -413,7 +413,7 @@ const SongPage: React.FC = () => {
                   <div className="track-info">
 
                     <Link key={rec.album.id} to={`/album/${rec.album.id}`}>
-                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                      <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>
                         {rec.album.name}
                       </span>
                     </Link>
@@ -518,7 +518,7 @@ const SongPage: React.FC = () => {
                     />
                   </div>
                   <Link to={`/artist/${artist.id}`}>
-                    <div className="play-iconaa" />
+                    <div className="play-icona-aa" />
                   </Link>
                   <Link to={`/artist/${artist.id}`}>
                     <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>

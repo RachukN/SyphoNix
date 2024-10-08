@@ -112,39 +112,53 @@ const Sidebar: React.FC = () => {
         {activeFilters.albums && (
           <>
             {savedAlbums.map((album) => (
+               <Link key={album.id} to={`/album/${album.id}`}>
               <div key={album.id} className="sidebar-item">
                 <img src={getImageUrl(album)} alt={album.name} className="sidebar-item-img" />
                 <div>
-                  <p className="sidebar-item-title">{album.name}</p>
+                  
+                 
+                                            <span className="sidebar-item-title">
+                                                {album.name}
+                                            </span>
+                                        
                   <p className="sidebar-item-subtitle">
                     {'artists' in album && album.artists.map((artist) => artist.name).join(', ')}
                   </p>
                 </div>
               </div>
+              </Link>
             ))}
           </>
         )}
         {activeFilters.artists && (
           <>
             {favoriteArtists.map((artist) => (
+              <Link key={artist.id} to={`/artist/${artist.id}`}>
+                                                
               <div key={artist.id} className="sidebar-item">
                 <img src={getImageUrl(artist)} alt={artist.name} style={{borderRadius:'50%'}} className="sidebar-item-img" />
                 <div>
                   <p className="sidebar-item-title">{artist.name}</p>
                 </div>
               </div>
+              </Link>
             ))}
           </>
         )}
         {activeFilters.playlists && (
           <>
             {playlists.map((playlist) => (
+                <Link to={`/playlist/${playlist.id}`}>
+                                   
               <div key={playlist.id} className="sidebar-item">
                 <img src={getImageUrl(playlist)} alt={playlist.name} className="sidebar-item-img" />
                 <div>
                   <p className="sidebar-item-title">{playlist.name}</p>
                 </div>
               </div>
+              </Link>
+                                    
             ))}
           </>
         )}

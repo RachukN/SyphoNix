@@ -57,9 +57,13 @@
   border-radius: 5px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   }
+  .seting-img{
+    margin-left: -310px;
+  }
   .seting-imgg{
     margin-right: 20px;
     margin-bottom: 3px;
+    width: 10px;
   }
   .dropdown-menu ul {
     list-style: none;
@@ -245,19 +249,61 @@
 
     overflow: hidden;
 }
-
+.re{
+    display: block;
+    margin-left: 50px;
+}
 h2 {
     margin-left: 20px;
     color: #00FF03;
     margin-bottom: -10px;
     font-size: 30px;
 }
+.play-icona-aa {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: rgba(8, 8, 8, 0.5);
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    margin-top: -147px;
+    margin-left: 1px;
+    border-radius: 50%;
+  }
 .track-duration.light,
 .track-album.light,
 .name-title.light{
     color: var(--Light-black, #1A2125);
 
 }
+.name-title-e.dark{
+  
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  .name-title-e.light{
+    
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A2125;
+   
+  }
+  .name-title-e.dark{
+  
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  
+  .name-title.light{
+    
+    font-size: 18px;
+    font-weight: 600;
+   
+  }
 .music-s {
     margin-left: 30px;
 }
@@ -326,8 +372,10 @@ h2 {
     border-radius: 8px;
 }
 
-.popularity {
+.popularity.dark {
     margin-left: 60px;
+    margin-top: 50px;
+    color: #00FF03;
 }
 
 .profile-image-s {
@@ -368,7 +416,7 @@ h2 {
 }
 
 .tracks-list {
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .title-s:hover {
@@ -513,7 +561,7 @@ h2 {
     padding-top: 0px;
     right: 0;
 }
-.content-s-p{
+.content-s-p.light{
     background-color: #D1D1D6;
 
 }
@@ -525,7 +573,7 @@ h2 {
 
 }
 
-.img-container:hover .play-iconaa {
+.img-container:hover .play-icona-aa {
     display: flex;
     /* Show on hover */
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
@@ -625,7 +673,9 @@ h2 {
     font-size: 0.9em;
     color: #aaa;
 }
-
+.popularity{
+    margin-top: 50px;
+}
 .recommendation-popularity {
     flex: 1;
     text-align: right;
