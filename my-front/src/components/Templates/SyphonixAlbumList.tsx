@@ -12,8 +12,9 @@ interface PlaylistItem {
   id: string;
   name: string;
   images: { url: string }[]; // Playlist cover image
-  owner: { display_name: string }; // Playlist owner info
   uri: string;
+  customImage?: string;
+  customName?: string; // Custom name for the playlist
 }
 
 interface SpotifyContentListProps {
@@ -22,7 +23,7 @@ interface SpotifyContentListProps {
   title: string;
 }
 
-const SpotifyContentListPlaylist: React.FC<SpotifyContentListProps> = ({ items = [], handlePlay, title }) => {
+const SyphonixAlbumList: React.FC<SpotifyContentListProps> = ({ items, handlePlay, title }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [leftArrow, setLeftArrow] = useState(LeftGray);
   const [rightArrow, setRightArrow] = useState(RightGreen);
@@ -51,11 +52,6 @@ const SpotifyContentListPlaylist: React.FC<SpotifyContentListProps> = ({ items =
     }
   };
 
-  // Handle empty or null items list
-  if (!items || items.length === 0) {
-    return <div>No playlists available</div>;
-  }
-
   return (
     <div className='music-c'>
       <div style={{ padding: '20px', textAlign: 'center' }}>
@@ -68,8 +64,8 @@ const SpotifyContentListPlaylist: React.FC<SpotifyContentListProps> = ({ items =
               <div key={item.id} className="img-container">
                 <div className='img-content'>
                   <img
-                    src={item.images?.[0]?.url || 'default-playlist.png'} // Check if images exist
-                    alt={item.name}
+                    src={item.customImage || item.images[0]?.url || 'default-album.png'} // Use custom image, fallback to Spotify image
+                    alt={item.customName || item.name} // Use custom name for alt text
                     className='m-5'
                   />
                   <div onClick={() => handlePlay(item.uri)} className="play-icon">
@@ -78,16 +74,14 @@ const SpotifyContentListPlaylist: React.FC<SpotifyContentListProps> = ({ items =
                 </div>
                 <div>
                   <div className="hover">
-                    <Link to={`/playlist/${item.id}`}>
+                    <Link to={`/playlistdetails/${item.id}`}>
                       <span className={`auth ${isDarkMode ? 'dark' : 'light'}`} style={{ margin: '10px 0', cursor: 'pointer' }}>
-                        {item.name.length > 16 ? `${item.name.substring(0, 12)}...` : item.name}
+                        {item.customName ? item.customName : item.name.length > 16 ? `${item.name.substring(0, 12)}...` : item.name} {/* Custom name */}
                       </span>
                     </Link>
                   </div>
                   <div className={`result-name ${isDarkMode ? 'dark' : 'light'}`} style={{ cursor: 'pointer' }}>
-                    {item.owner?.display_name?.length > 16
-                      ? `${item.owner.display_name.substring(0, 12)}...`
-                      : item.owner.display_name || 'Unknown'}
+                    SuphoNix
                   </div>
                 </div>
               </div>
@@ -99,4 +93,4 @@ const SpotifyContentListPlaylist: React.FC<SpotifyContentListProps> = ({ items =
   );
 };
 
-export default SpotifyContentListPlaylist;
+export default SyphonixAlbumList;

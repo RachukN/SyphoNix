@@ -456,7 +456,7 @@ const PlaylistDetailsPage: React.FC = () => {
                                                 />
                                                 <div className="track-info">
                                                     <Link to={`/track/${track.id}`}>
-                                                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                                                    <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>
                                                     {track.album.name}</span>
                                                     </Link>
                                                     <p className="track-artists">
@@ -503,7 +503,7 @@ const PlaylistDetailsPage: React.FC = () => {
                                     />
                                     <div className="track-info">
                                         <Link to={`/track/${track.id}`}>
-                                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{track.album.name}</span>
+                                            <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.album.name}</span>
                                         </Link>
                                         <p className="track-artists">
                                             {track.artists.map((artist: any) => (
@@ -548,7 +548,7 @@ const PlaylistDetailsPage: React.FC = () => {
                                         />
                                         <div className="track-info">
                                             <Link to={`/track/${track.id}`}>
-                                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{track.album.name}</span>
+                                            <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.album.name}</span>
                                             </Link>
                                             <p className="track-artists">
                                                 {track.artists.map((artist: any) => (

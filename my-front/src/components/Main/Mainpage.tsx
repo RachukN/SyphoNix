@@ -85,7 +85,7 @@ const MainPage: React.FC = () => {
         </div>
 
         <div className='cont'>
-           <h2 className={`section-title ${isDarkMode ? 'dark' : 'light'}`}>{language.topCharts}</h2>
+           
             <SymphoNixAlbums />
         </div>
 

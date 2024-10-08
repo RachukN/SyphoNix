@@ -31,18 +31,22 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('access_token');
+    const userId = queryParams.get('userId');  // Витягуємо userId з URL
 
-    if (token) {
-      console.log('Access token found in URL:', token);
+    if (token && userId) {
+      console.log('Access token and userId found in URL:', token, userId);
       localStorage.setItem('spotifyAccessToken', token); // Зберігаємо токен у localStorage
+      localStorage.setItem('spotifyUserId', userId); // Зберігаємо userId у localStorage
       fetchProfile(token);
     } else {
       const storedToken = localStorage.getItem('spotifyAccessToken');
-      if (storedToken) {
-        console.log('Access token found in localStorage:', storedToken);
+      const storedUserId = localStorage.getItem('spotifyUserId');
+
+      if (storedToken && storedUserId) {
+        console.log('Access token and userId found in localStorage:', storedToken, storedUserId);
         fetchProfile(storedToken);
       } else {
-        console.error('No access token found, redirecting to login');
+        console.error('No access token or userId found, redirecting to login');
         navigate('/'); // Редірект на логін, якщо немає токена
       }
     }
@@ -92,7 +96,6 @@ const Profile: React.FC = () => {
           </button>
         </div>
       </div>
-
     );
   }
 
@@ -101,12 +104,12 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div >
+    <div>
       <div className={`page ${isDarkMode ? 'dark' : 'light'}`}>
         <Sidebar />
         <h2 className={`zah ${isDarkMode ? 'dark' : 'light'}`}>Керуйте своєю підпискою</h2>
         <div>
-          <div  className={`subscription-card ${isDarkMode ? 'dark' : 'light'}`}>
+          <div className={`subscription-card ${isDarkMode ? 'dark' : 'light'}`}>
             <h3>Ваш план</h3>
             <h1>{isPremium ? 'Spotify Premium' : 'SymphoNix безкоштовно'}</h1>
             <ul>
@@ -130,10 +133,7 @@ const Profile: React.FC = () => {
             <div className='cena'>{isPremium ? 'платно' : 'безкоштовно'}</div>
           </div>
           <Link to={`/home`}>
-            <button
-              className="premium-btn"
-
-            >
+            <button className="premium-btn">
               Використовувати SyphoNix
             </button>
           </Link>

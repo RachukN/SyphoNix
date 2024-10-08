@@ -5,15 +5,11 @@
   align-items: center;
   justify-content: center;
 }
-.search-input::placeholder {
-  color: #ccc; /* Стиль для тексту підказки */
-}
-
 .search-input:focus {
   outline: none;
   border-color: green; /* Зелена рамка при фокусі */
 }
-.search-input {
+.search-input.dark {
   display: flex;
   justify-content: center;
   width: 400px;
@@ -26,14 +22,32 @@
   border: 2px solid var(--Green, #00FF03);
   background: var(--Black, #13191C);
   color: #00FF03; 
-
+  font-size: 20px;
 }
-.search-input{
-  background-color: #D1D1D6;
+.search-input.light::placeholder,
+.search-input.light{
+  color: #0B9F0D;
+}
+.search-input.light{
+  background: #D1D1D6;
   border: 2.5px solid #0B9F0D;
-}
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    height: 15px;
+    padding: 10px 10px 10px 40px;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    border: 2px solid  #0B9F0D;
+    
+    font-size: 20px;
+  }
 .search-input::placeholder {
   color: #00FF03; /* Сірий колір для тексту підказки */
+font-size: 20px;
+margin-top: 5px;
 }
 .search-button {
   background: none;

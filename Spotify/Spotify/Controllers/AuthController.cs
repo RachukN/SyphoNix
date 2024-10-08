@@ -97,7 +97,6 @@ namespace Spotify.Controllers
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == spotifyProfile.Email);
                 if (user == null)
                 {
-                    // Якщо користувач не знайдений, додаємо нового
                     user = new ApplicationUser
                     {
                         Email = spotifyProfile.Email,
@@ -108,19 +107,24 @@ namespace Spotify.Controllers
                     };
 
                     _context.Users.Add(user);
+                    Console.WriteLine("User added to database.");
                 }
                 else
                 {
-                    // Якщо користувач існує, оновлюємо токени
+                    // Оновлення даних користувача
                     user.AccessToken = accessToken;
                     user.RefreshToken = refreshToken;
                     user.TokenExpiration = DateTime.UtcNow.AddSeconds(int.Parse(tokenData["expires_in"]));
                     _context.Users.Update(user);
+                    Console.WriteLine("User updated in database.");
                 }
+
+
 
                 // Зберігаємо зміни в базу
                 await _context.SaveChangesAsync();
-
+                Console.WriteLine($"UserId: {user.Id}, AccessToken: {accessToken}");
+                Console.WriteLine($"User saved with ID: {user.Id}");
                 // Перенаправляємо до профілю
                 return Redirect($"http://localhost:1573/profile?userId={user.Id}&access_token={accessToken}");
             }

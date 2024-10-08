@@ -8,17 +8,29 @@
   background: var(--Black, #13191C);
 }
 
-
-.search {
-  margin-left: 30px;
-  background: var(--Black, #13191C);
-  position: fixed;
-  top: 0;
-  right: 500px;
+.search-results-container.light{
+  background: var(--bright-topic, #D1D1D6);
+  width: 1479px;
 }
+.best-name-pisen.light,
+.best-name.light{
+  color: #0B9F0D;
+}
+.search{
+  margin-left: 30px;
+  position: absolute;
+  top: 0;
+  background: var(--Black, #13191C);  
+  left: 325px;
+  right: 500px;
+  width: 1200px;
 
+}
+.search.light{
+  background: var(--bright-topic, #D1D1D6);
+}
 .results-container {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   z-index: 9999;

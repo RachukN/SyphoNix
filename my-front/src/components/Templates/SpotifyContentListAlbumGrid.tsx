@@ -4,7 +4,6 @@ import LeftGray from '../Main/Images/Frame 73.png';
 import RightGray from '../Main/Images/Frame 72 (2).png';
 import LeftGreen from '../Main/Images/Frame 73 (2).png';
 import RightGreen from '../Main/Images/Frame 72.png';
-import Play from '../../images/Frame 76.png';
 import '../../styles/Music.css';
 import { useTheme } from '../../services/ThemeContext';
 
@@ -19,11 +18,10 @@ interface SpotifyItem {
 
 interface SpotifyContentListProps {
   items: SpotifyItem[];
-  handlePlay: (uri: string) => void;
   title: string;
 }
 
-const SpotifyContentListAlbumGrid: React.FC<SpotifyContentListProps> = ({ items, handlePlay, title }) => {
+const SpotifyContentListAlbum: React.FC<SpotifyContentListProps> = ({ items,  title }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [leftArrow, setLeftArrow] = useState(LeftGray);
   const [rightArrow, setRightArrow] = useState(RightGreen);
@@ -39,40 +37,24 @@ const SpotifyContentListAlbumGrid: React.FC<SpotifyContentListProps> = ({ items,
     }
   };
 
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -scrollRef.current.clientWidth, behavior: 'smooth' });
-      setTimeout(updateArrows, 300);
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: scrollRef.current.clientWidth, behavior: 'smooth' });
-      setTimeout(updateArrows, 300);
-    }
-  };
 
   return (
-    <div className='music-c'>
+    <div className='musicgrid'>
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <div style={{ position: 'relative', width: '100%' }}>
-          <img src={leftArrow} alt="Scroll Left" className={`img-l ${isDarkMode ? 'dark' : 'light'}`} onClick={scrollLeft} />
-          <img src={rightArrow} alt="Scroll Right" className={`img-r ${isDarkMode ? 'dark' : 'light'}`} onClick={scrollRight} />
           <div className={`main-title ${isDarkMode ? 'dark' : 'light'}`}
           >{title}</div>
-          <div ref={scrollRef} className='music-c' onScroll={updateArrows}>
+          <div ref={scrollRef} className='musicgri' onScroll={updateArrows}>
             {items.map((item) => (
-              <div key={item.id} className="img-container">
+              <div key={item.id} className="img-container-g">
                 <div className='img-content'>
                   <img
                     src={item.images[0]?.url || 'default-image.png'}
                     alt={item.name}
                     className='m-5'
+                    
                   />
-                  <div onClick={() => handlePlay(item.uri)} className="play-icon">
-                    <img src={Play} alt="Play" />
-                  </div>
+                  
                 </div>
                 <div>
                 <div className="hover">
@@ -102,4 +84,4 @@ const SpotifyContentListAlbumGrid: React.FC<SpotifyContentListProps> = ({ items,
   );
 };
 
-export default SpotifyContentListAlbumGrid;
+export default SpotifyContentListAlbum;
