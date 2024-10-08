@@ -88,7 +88,11 @@ const SearchResults: React.FC = () => {
     const fetchUsers = async () => {
       try {
         const usersResponse = await axios.get('https://localhost:5051/api/UserProfile/all');
-        setUsers(usersResponse.data);
+        const updatedUsers = usersResponse.data.map((user: User) => ({
+          ...user,
+          role: user.email === 'spotify.sstep@gmail.com' ? 'admin' : 'client', // Assign roles based on email
+        }));
+        setUsers(updatedUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -239,7 +243,7 @@ const SearchResults: React.FC = () => {
   const indexOfLastTrack = currentPage * tracksPerPage;
   const indexOfFirstTrack = indexOfLastTrack - tracksPerPage;
   const currentTracks = tracks.slice(indexOfFirstTrack, indexOfLastTrack);
- 
+
   const totalPages = Math.ceil(tracks.length / tracksPerPage);
 
   const handleNextPage = () => {
@@ -401,7 +405,7 @@ const SearchResults: React.FC = () => {
       console.error('Error deleting user:', error);
     }
   };
-  
+
   return (
     <div className="search-results-container">
       <Sidebar />
@@ -418,7 +422,7 @@ const SearchResults: React.FC = () => {
               <div className="best-details">
                 <p className="best-item">{selectedUser.email}</p>
                 <p className="best-auth">{selectedUser.country}</p>
-                <p className="best-title">Role: {selectedUser.role}</p>
+                <p className="best-title">Role: {selectedUser.role}</p> 
               </div>
             </div>
           </div>
@@ -427,26 +431,27 @@ const SearchResults: React.FC = () => {
 
       <div className="results-section-a">
         <div className="pisen-a">
-          {users.length > usersPerPage && (
-            <div className="pagination">
-              <button onClick={handlePreviousUserPage} disabled={currentUserPage === 1}>
-                <img src={LeftGreen} alt="LeftGreen" />
-              </button>
-              <button className="knopka" onClick={toggleSortOrder}>
-                Сортувати {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
-              </button>
-              <button onClick={handleNextUserPage} disabled={currentUserPage === totalUserPages}>
-                <img src={RightGreen} alt="RightGreen" />
-              </button>
-            </div>
-          )}
-
+          <div className='margin-pag-p'>
+            {users.length > usersPerPage && (
+              <div className="pagination-aa">
+                <button className='knopik' onClick={handlePreviousUserPage} disabled={currentUserPage === 1}>
+                  <img src={LeftGreen} alt="LeftGreen" />
+                </button>
+                <button className="knopka" onClick={toggleSortOrder}>
+                  Сортувати {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
+                </button>
+                <button className='knopik' onClick={handleNextUserPage} disabled={currentUserPage === totalUserPages}>
+                  <img src={RightGreen} alt="RightGreen" />
+                </button>
+              </div>
+            )}
+          </div>
           <ul className="tracks-list-search">
             {currentUsers.map((user, index) => (
               <li key={`${user.id}-${index}`} onClick={() => handleUserSelect(user)} className="track-item">
                 <span className="track-index">{index + 1}</span>
-                <div className="border-r">
-                  <img src={UserImage} alt="User" />
+                <div >
+                  <img className="border-r" src={UserImage} alt="User" />
                 </div>
                 <div className="track-info">
                   <p className="track-name">
@@ -456,7 +461,7 @@ const SearchResults: React.FC = () => {
 
                   </p>
                 </div>
-                <button onClick={() => deleteUser(user.id)}>Видалити</button>
+                <button className='remove-pl' onClick={() => deleteUser(user.id)}>Видалити</button>
               </li>
             ))}
           </ul>
@@ -480,11 +485,11 @@ const SearchResults: React.FC = () => {
                   />
                   <div className="track-info">
                     <p className="track-name-a">
-                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{playlist.name}</span>
+                      <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{playlist.name}</span>
                     </p>
                   </div>
-                  <button onClick={() => fetchPlaylistTracks(playlist.id)}>View Tracks</button>
-                  <button onClick={() => fetchRecommendations(playlist.id)}>Show Recommendations</button>
+                  <button className='yelow' onClick={() => fetchPlaylistTracks(playlist.id)}>View Tracks</button>
+                  <button className='yelow' onClick={() => fetchRecommendations(playlist.id)}>Show Recommendations</button>
                 </li>
 
                 {selectedPlaylistId === playlist.id && (
@@ -497,10 +502,10 @@ const SearchResults: React.FC = () => {
 
                         <button className="pagination-r" onClick={handleNextPage} disabled={currentPage === totalPages}>
                           <img src={RightGreen} alt="RightGreen" />
-                          </button>
-                        </div>
+                        </button>
+                      </div>
                     )}
-                    
+
                     {currentTracks.map((track, index) => (
                       <li key={`${track.id}-${index}`} className={` track-item-a ${isDarkMode ? 'dark' : 'light'}`}>
                         <span className="track-index">{index + 1}</span>
@@ -511,10 +516,10 @@ const SearchResults: React.FC = () => {
                         />
                         <div className="track-info">
                           <p className="track-name-a">
-                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
+                            <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
                           </p>
                         </div>
-                        <button onClick={() => removeTrackFromPlaylist(playlist.id, track.uri)}>Remove</button>
+                        <button className='remove-pl' onClick={() => removeTrackFromPlaylist(playlist.id, track.uri)}>Remove</button>
                       </li>
                     ))}
 
@@ -530,10 +535,10 @@ const SearchResults: React.FC = () => {
                             />
                             <div className="track-info">
                               <p className="track-name-a">
-                                <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
+                                <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
                               </p>
                             </div>
-                            <button onClick={() => addTrackToPlaylist(playlist.id, track.uri)}>Add to Playlist</button>
+                            <button className='add-pl' onClick={() => addTrackToPlaylist(playlist.id, track.uri)}>Add to Playlist</button>
                           </li>
                         ))}
                       </>
@@ -543,86 +548,87 @@ const SearchResults: React.FC = () => {
               </>
             ))}
           </ul>
-        </div>
 
-        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Альбоми</h2>
-        <div className="cont-saa">
-          <div style={{ position: 'relative', width: '100%' }}>
-            <img
-              src={leftArrowSingles}
-              alt="Scroll Left"
-              className="img-l"
-              onClick={scrollLeftSingles}
-            />
-            <img
-              src={rightArrowSingles}
-              alt="Scroll Right"
-              className="img-r"
-              onClick={scrollRightSingles}
-            />
-            <div
-              ref={scrollRefSingles}
-              className="music-c"
-              onScroll={updateArrowsSingles}
-            >
-              {albums.map((album) => (
-                <div key={album.id} className="img-container-a">
-                  <div className="img-content">
-                    <img
-                      src={album?.images?.[0]?.url || 'default-album.png'}
-                      alt={album.name}
-                      className="track-image-a"
-                    />
-                    <div onClick={() => deleteFavoriteAlbum(album.id)} className="play-icon-a">
-                      <img src={Close} alt="Delete" />
+
+          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Альбоми</h2>
+          <div className="cont-saa">
+            <div style={{ position: 'relative', width: '100%' }}>
+              <img
+                src={leftArrowSingles}
+                alt="Scroll Left"
+                className="img-l"
+                onClick={scrollLeftSingles}
+              />
+              <img
+                src={rightArrowSingles}
+                alt="Scroll Right"
+                className="img-r"
+                onClick={scrollRightSingles}
+              />
+              <div
+                ref={scrollRefSingles}
+                className="music-c"
+                onScroll={updateArrowsSingles}
+              >
+                {albums.map((album) => (
+                  <div key={album.id} className="img-container-a">
+                    <div className="img-content">
+                      <img
+                        src={album?.images?.[0]?.url || 'default-album.png'}
+                        alt={album.name}
+                        className="track-image-a"
+                      />
+                      <div onClick={() => deleteFavoriteAlbum(album.id)} className="play-icon-a">
+                        <img src={Close} alt="Delete" />
+                      </div>
+                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                        {album.name.length > 16 ? `${album.name.substring(0, 12)}...` : album.name}
+                      </span>
                     </div>
-                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-                      {album.name.length > 16 ? `${album.name.substring(0, 12)}...` : album.name}
-                    </span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Артисти</h2>
-        <div>
-          <div style={{ position: 'relative', width: '100%' }}>
-            <img
-              src={leftArrowRelated}
-              alt="Scroll Left"
-              className="img-l"
-              onClick={scrollLeftRelated}
-            />
-            <img
-              src={rightArrowRelated}
-              alt="Scroll Right"
-              className="img-r"
-              onClick={scrollRightRelated}
-            />
-            <div
-              ref={scrollRefRelated}
-              className="music-c"
-              onScroll={updateArrowsRelated}
-            >
-              {artists.map((artist) => (
-                <div key={artist.id} className="img-container-a">
-                  <div className="img-content">
-                    <img
-                      src={artist.images?.[0]?.url || 'default-single.png'}
-                      alt={artist.name}
-                      className="img-content-a"
-                    />
-                    <div onClick={() => deleteFavoriteArtist(artist.id)} className="play-icona-a">
-                      <img src={Close} alt="Delete" />
+          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Артисти</h2>
+          <div className="cont-saa">
+            <div style={{ position: 'relative', width: '100%' }}>
+              <img
+                src={leftArrowRelated}
+                alt="Scroll Left"
+                className="img-l"
+                onClick={scrollLeftRelated}
+              />
+              <img
+                src={rightArrowRelated}
+                alt="Scroll Right"
+                className="img-r"
+                onClick={scrollRightRelated}
+              />
+              <div
+                ref={scrollRefRelated}
+                className="music-c"
+                onScroll={updateArrowsRelated}
+              >
+                {artists.map((artist) => (
+                  <div key={artist.id} className="img-container-a">
+                    <div className="img-content">
+                      <img
+                        src={artist.images?.[0]?.url || 'default-single.png'}
+                        alt={artist.name}
+                        className="img-content-a"
+                      />
+                      <div onClick={() => deleteFavoriteArtist(artist.id)} className="play-icona-a">
+                        <img src={Close} alt="Delete" />
+                      </div>
+                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                        {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                      </span>
                     </div>
-                    <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-                      {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
-                    </span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>

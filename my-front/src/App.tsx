@@ -58,7 +58,7 @@ const App: React.FC = () => {
         <Route path="/editprofile" element={<EditProfile/>} />
         <Route path="/premium-required" element={<PremiumRequired/>} />
         <Route path="/loading" element={<LoadingCategories/>} />
-        <Route path="/admi" element={<NewAdmin/>} />
+        <Route path="/admin" element={<NewAdmin/>} />
         <Route path="/category/:categoryId" element={<CategoryPage />} />
         <Route path="/album/:id" element={<AlbumPage />} />
         
