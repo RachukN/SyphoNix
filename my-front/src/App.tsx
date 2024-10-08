@@ -21,11 +21,12 @@ import PlaylistDetailsPage from './components/SongPage/PlaylistDetailsPage';
 import SubscriptionPage from './components/UserProfil/SubscriptionPage';
 import EditProfile from './components/UserProfil/EditProfile';
 import PremiumRequired from './components/UserProfil/PremiumRequired';
-import LoadingTrackPage from './components/Loading/LoadingTrackPage';
 import NewAdmin from './components/Admin/NewAdmin';
 import { ThemeProvider } from './services/ThemeContext';
 import { LanguageProvider } from './services/LanguageContext';
-import AdminPanel from './components/Admin/AdminPanel';
+import CategoryPage from './components/Search/CategoryPage';
+import AlbumSyphonix from './components/SongPage/AlbumSyphonix';
+import LoadingCategories from './components/Loading/LoadingResult';
 
 const App: React.FC = () => {
   
@@ -39,7 +40,6 @@ const App: React.FC = () => {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Login />} />
         <Route path="/callback" element={<Callback />} />
-        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/home" element={<MainPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/categories" element={<Categories />} /> 
@@ -53,13 +53,14 @@ const App: React.FC = () => {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/playlists" element={<PlaylistsPage />} />
         <Route path="/playlist/:id" element={<PlaylistDetailsPage/>} />
+        <Route path="/playlistdetails/:id" element={<AlbumSyphonix/>} />
         <Route path="/profileseting" element={<SubscriptionPage/>} />
         <Route path="/editprofile" element={<EditProfile/>} />
         <Route path="/premium-required" element={<PremiumRequired/>} />
-        <Route path="/loading" element={<LoadingTrackPage/>} />
+        <Route path="/loading" element={<LoadingCategories/>} />
         <Route path="/admi" element={<NewAdmin/>} />
-        
-        
+        <Route path="/category/:categoryId" element={<CategoryPage />} />
+        <Route path="/album/:id" element={<AlbumPage />} />
         
         
         </Route>

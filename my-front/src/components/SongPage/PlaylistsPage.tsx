@@ -153,15 +153,17 @@ const PlaylistsPage: React.FC = () => {
 
     return (
         <div>
-            <div className='search-p'><SearchBar /></div>
+            <div className={`search-p ${isDarkMode ? 'dark' : 'light'}`}><SearchBar /></div>
             <div className='search-i'><TopNavigation  /></div>
 
-            <div className="search-results-container-p">
-                <div className="bg-img-p"><img src={BGimage} alt="background" /></div>
-                <div className="results-container-p">
+            <div  className={`search-results-container-p ${isDarkMode ? 'dark' : 'light'}`}
+            >
+                <div  className={`bg-img-p ${isDarkMode ? 'dark' : 'light'}`}><img src={BGimage} alt="background" /></div>
+                <div className={`results-container-p ${isDarkMode ? 'dark' : 'light'}`}
+                >
                     <button className='button-m' onClick={openModal}>Create Playlist</button>
 
-                    <h2 className='margine'>Your Playlists</h2>
+                    <h2 className={`margine ${isDarkMode ? 'dark' : 'light'}`}>Your Playlists</h2>
                     <div className="music-c-c-p" >
                         {playlists.map((playlist) => (
                             <div key={playlist.id} className="marg-c-p">
@@ -170,16 +172,17 @@ const PlaylistsPage: React.FC = () => {
                                     alt={playlist.name}
                                     className="marg-c-p"
                                 />
-                                <p style={{ fontSize: 'small', color: '#666' }}>
-                                    {playlist.description.length > 16 ? `${playlist.description.substring(0, 12)}...` : playlist.description}
-                                </p>
+                                
                                 
                                     <Link to={`/playlist/${playlist.id}`}>
-                                    <p className="auth-p">
+                                    <p className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}
+                                                >
                                     {playlist.name}
                                     </p>
                                     </Link>
-                                
+                                    <p style={{ fontSize: 'small', color: '#666' }}>
+                                    {playlist.description.length > 16 ? `${playlist.description.substring(0, 12)}...` : playlist.description}
+                                </p>
                             </div>
                         ))}
                     </div>

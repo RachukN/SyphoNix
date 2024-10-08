@@ -41,7 +41,7 @@ const ArtistTopTracks: React.FC<ArtistTopTracksProps> = ({ tracks, handlePlayTra
                     <div className="track-info">
                         <p className="track-name">
                             <Link to={`/track/${track.id}`}>
-                                <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}
+                                <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}
                                     style={{ margin: '10px 0', cursor: 'pointer' }}>
                                     {track.name.length > 16 ? `${track.name.substring(0, 16)}...` : track.name}
                                 </span>

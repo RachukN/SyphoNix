@@ -239,17 +239,18 @@ const ArtistPage: React.FC = () => {
             handlePlayAlbum={handlePlayAlbum}
 
           />
-        </div>
-
-
-        {/* Related Artists Section with Scroll */}
-        <div className="results-section-a">
+          <div className="re">
           <SpotifyContentListArtist
             artists={relatedArtists}
             title={language.similarArtists}
           />
 
         </div>
+        </div>
+
+
+        {/* Related Artists Section with Scroll */}
+        
         <Footer />
       </div>
 

@@ -52,7 +52,7 @@ const PopularRadio: React.FC = () => {
   };
 
   if (loading) {
-    return <div><LoadingTrackAlbum/></div>;
+    return ;
   }
 
   if (error) {
