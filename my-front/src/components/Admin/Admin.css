@@ -179,11 +179,13 @@
 }
 
 .cont-a-a {
-  margin-top: 460px;
+  margin-top: 340px;
   width: 1100px;
   background: var(--Black, #13191C);
-  margin-left: 20px;
-
+  margin-left: -70px;
+  padding-left: 50px;
+  padding-right: 49px;
+padding-bottom: 170px;
 }
 
 .margin-pag-p {

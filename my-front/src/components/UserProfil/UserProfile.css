@@ -17,6 +17,13 @@
     width: 0px;
     
   }
+  .admin-button{
+    position: absolute;
+    top: 365px;
+    left: 50px;
+    background-color: #00FF03;
+    padding: 2px;
+  }
   .player{
     position: fixed;
     bottom: 0;
