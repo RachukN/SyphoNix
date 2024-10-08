@@ -428,7 +428,7 @@ const SearchResults: React.FC = () => {
       <div className="results-section-a">
         <div className="pisen-a">
           {users.length > usersPerPage && (
-            <div className="pagination">
+            <div className="pagination-aa">
               <button onClick={handlePreviousUserPage} disabled={currentUserPage === 1}>
                 <img src={LeftGreen} alt="LeftGreen" />
               </button>
@@ -445,8 +445,8 @@ const SearchResults: React.FC = () => {
             {currentUsers.map((user, index) => (
               <li key={`${user.id}-${index}`} onClick={() => handleUserSelect(user)} className="track-item">
                 <span className="track-index">{index + 1}</span>
-                <div className="border-r">
-                  <img src={UserImage} alt="User" />
+                <div >
+                  <img className="border-r" src={UserImage} alt="User" />
                 </div>
                 <div className="track-info">
                   <p className="track-name">

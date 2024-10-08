@@ -164,6 +164,10 @@ background: var(--Black, #13191C);
 margin-left: 20px;
 
 }
+.pagination-aa{
+  display: block;
+  margin-left: 50px;
+}
 .pagination-a{
   margin-left: 50px;
 }
