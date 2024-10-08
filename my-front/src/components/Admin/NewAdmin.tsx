@@ -425,50 +425,7 @@ const SearchResults: React.FC = () => {
                 <p className="best-title">Role: {selectedUser.role}</p> 
               </div>
             </div>
-          </div>
-        )}
-      </div>
-
-      <div className="results-section-a">
-        <div className="pisen-a">
-          <div className='margin-pag-p'>
-            {users.length > usersPerPage && (
-              <div className="pagination-aa">
-                <button className='knopik' onClick={handlePreviousUserPage} disabled={currentUserPage === 1}>
-                  <img src={LeftGreen} alt="LeftGreen" />
-                </button>
-                <button className="knopka" onClick={toggleSortOrder}>
-                  Сортувати {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
-                </button>
-                <button className='knopik' onClick={handleNextUserPage} disabled={currentUserPage === totalUserPages}>
-                  <img src={RightGreen} alt="RightGreen" />
-                </button>
-              </div>
-            )}
-          </div>
-          <ul className="tracks-list-search">
-            {currentUsers.map((user, index) => (
-              <li key={`${user.id}-${index}`} onClick={() => handleUserSelect(user)} className="track-item">
-                <span className="track-index">{index + 1}</span>
-                <div >
-                  <img className="border-r" src={UserImage} alt="User" />
-                </div>
-                <div className="track-info">
-                  <p className="track-name">
-                    <span className="name-title" style={{ margin: '10px 0', cursor: 'pointer' }}>
-                      {user.email}
-                    </span>
-
-                  </p>
-                </div>
-                <button className='remove-pl' onClick={() => deleteUser(user.id)}>Видалити</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="cont-a-a">
+            <div className="cont-a-a">
         <div className="top-tracks-a">
           <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Плейлисти</h2>
 
@@ -633,6 +590,50 @@ const SearchResults: React.FC = () => {
           </div>
         </div>
       </div>
+          </div>
+        )}
+      </div>
+
+      <div className="results-section-a">
+        <div className="pisen-a">
+          <div className='margin-pag-p'>
+            {users.length > usersPerPage && (
+              <div className="pagination-aa">
+                <button className='knopik' onClick={handlePreviousUserPage} disabled={currentUserPage === 1}>
+                  <img src={LeftGreen} alt="LeftGreen" />
+                </button>
+                <button className="knopka" onClick={toggleSortOrder}>
+                  Сортувати {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
+                </button>
+                <button className='knopik' onClick={handleNextUserPage} disabled={currentUserPage === totalUserPages}>
+                  <img src={RightGreen} alt="RightGreen" />
+                </button>
+              </div>
+            )}
+          </div>
+          <ul className="tracks-list-search">
+            {currentUsers.map((user, index) => (
+              <li key={`${user.id}-${index}`} onClick={() => handleUserSelect(user)} className="track-item">
+                <span className="track-index">{index + 1}</span>
+                <div >
+                  <img className="border-r" src={UserImage} alt="User" />
+                </div>
+                <div className="track-info">
+                  <p className="track-name">
+                    <span className="name-title" style={{ margin: '10px 0', cursor: 'pointer' }}>
+                      {user.email}
+                    </span>
+
+                  </p>
+                </div>
+                <button className='remove-pl' onClick={() => deleteUser(user.id)}>Видалити</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      
 
       <div className="results-container">
         <TopNavigation />
