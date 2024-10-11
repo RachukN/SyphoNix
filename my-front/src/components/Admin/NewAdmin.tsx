@@ -422,174 +422,174 @@ const SearchResults: React.FC = () => {
               <div className="best-details">
                 <p className="best-item">{selectedUser.email}</p>
                 <p className="best-auth">{selectedUser.country}</p>
-                <p className="best-title">Role: {selectedUser.role}</p> 
+                <p className="best-title">Role: {selectedUser.role}</p>
               </div>
             </div>
             <div className="cont-a-a">
-        <div className="top-tracks-a">
-          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Плейлисти</h2>
+              <div className="top-tracks-a">
+                <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Плейлисти</h2>
 
-          <ul className="tracks-list-a">
-            {playlists.map((playlist, index) => (
-              <>
-                <li key={`${playlist.id}-${index}`} className={` track-item ${isDarkMode ? 'dark' : 'light'}`}>
-                  <span className="track-index">{index + 1}</span>
-                  <img
-                    src={playlist.images?.[0]?.url || 'default-album.png'}
-                    alt={playlist.name}
-                    className="track-image"
-                    key={playlist.id}
-                  />
-                  <div className="track-info">
-                    <p className="track-name-a">
-                      <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{playlist.name}</span>
-                    </p>
-                  </div>
-                  <button className='yelow' onClick={() => fetchPlaylistTracks(playlist.id)}>View Tracks</button>
-                  <button className='yelow' onClick={() => fetchRecommendations(playlist.id)}>Show Recommendations</button>
-                </li>
-
-                {selectedPlaylistId === playlist.id && (
-                  <ul>
-                    {tracks.length > tracksPerPage && (
-                      <div className="pagination-a">
-                        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                          <img src={LeftGreen} alt="LeftGreen" />
-                        </button>
-
-                        <button className="pagination-r" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                          <img src={RightGreen} alt="RightGreen" />
-                        </button>
-                      </div>
-                    )}
-
-                    {currentTracks.map((track, index) => (
-                      <li key={`${track.id}-${index}`} className={` track-item-a ${isDarkMode ? 'dark' : 'light'}`}>
+                <ul className="tracks-list-a">
+                  {playlists.map((playlist, index) => (
+                    <>
+                      <li key={`${playlist.id}-${index}`} className={` track-item ${isDarkMode ? 'dark' : 'light'}`}>
                         <span className="track-index">{index + 1}</span>
                         <img
-                          src={track.album?.images?.[0]?.url || 'default-album.png'}
-                          alt={track.name}
+                          src={playlist.images?.[0]?.url || 'default-album.png'}
+                          alt={playlist.name}
                           className="track-image"
+                          key={playlist.id}
                         />
                         <div className="track-info">
                           <p className="track-name-a">
-                            <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
+                            <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{playlist.name}</span>
                           </p>
                         </div>
-                        <button className='remove-pl' onClick={() => removeTrackFromPlaylist(playlist.id, track.uri)}>Remove</button>
+                        <button className='yelow' onClick={() => fetchPlaylistTracks(playlist.id)}>View Tracks</button>
+                        <button className='yelow' onClick={() => fetchRecommendations(playlist.id)}>Show Recommendations</button>
                       </li>
-                    ))}
 
-                    {showRecommendations && selectedPlaylistId === playlist.id && (
-                      <>
-                        {recommendedTracks.map((track, index) => (
-                          <li key={`${track.id}-${index}`} className={` track-item-r ${isDarkMode ? 'dark' : 'light'}`}>
-                            <span className="track-index">{index + 1}</span>
-                            <img
-                              src={track.album?.images?.[0]?.url || 'default-album.png'}
-                              alt={track.name}
-                              className="track-image"
-                            />
-                            <div className="track-info">
-                              <p className="track-name-a">
-                                <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
-                              </p>
+                      {selectedPlaylistId === playlist.id && (
+                        <ul>
+                          {tracks.length > tracksPerPage && (
+                            <div className="pagination-a">
+                              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                                <img src={LeftGreen} alt="LeftGreen" />
+                              </button>
+
+                              <button className="pagination-r" onClick={handleNextPage} disabled={currentPage === totalPages}>
+                                <img src={RightGreen} alt="RightGreen" />
+                              </button>
                             </div>
-                            <button className='add-pl' onClick={() => addTrackToPlaylist(playlist.id, track.uri)}>Add to Playlist</button>
-                          </li>
-                        ))}
-                      </>
-                    )}
-                  </ul>
-                )}
-              </>
-            ))}
-          </ul>
+                          )}
+
+                          {currentTracks.map((track, index) => (
+                            <li key={`${track.id}-${index}`} className={` track-item-a ${isDarkMode ? 'dark' : 'light'}`}>
+                              <span className="track-index">{index + 1}</span>
+                              <img
+                                src={track.album?.images?.[0]?.url || 'default-album.png'}
+                                alt={track.name}
+                                className="track-image"
+                              />
+                              <div className="track-info">
+                                <p className="track-name-a">
+                                  <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
+                                </p>
+                              </div>
+                              <button className='remove-pl' onClick={() => removeTrackFromPlaylist(playlist.id, track.uri)}>Remove</button>
+                            </li>
+                          ))}
+
+                          {showRecommendations && selectedPlaylistId === playlist.id && (
+                            <>
+                              {recommendedTracks.map((track, index) => (
+                                <li key={`${track.id}-${index}`} className={` track-item-r ${isDarkMode ? 'dark' : 'light'}`}>
+                                  <span className="track-index">{index + 1}</span>
+                                  <img
+                                    src={track.album?.images?.[0]?.url || 'default-album.png'}
+                                    alt={track.name}
+                                    className="track-image"
+                                  />
+                                  <div className="track-info">
+                                    <p className="track-name-a">
+                                      <span className={`name-title-e ${isDarkMode ? 'dark' : 'light'}`}>{track.name}</span>
+                                    </p>
+                                  </div>
+                                  <button className='add-pl' onClick={() => addTrackToPlaylist(playlist.id, track.uri)}>Add to Playlist</button>
+                                </li>
+                              ))}
+                            </>
+                          )}
+                        </ul>
+                      )}
+                    </>
+                  ))}
+                </ul>
 
 
-          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Альбоми</h2>
-          <div className="cont-saa">
-            <div style={{ position: 'relative', width: '100%' }}>
-              <img
-                src={leftArrowSingles}
-                alt="Scroll Left"
-                className="img-l"
-                onClick={scrollLeftSingles}
-              />
-              <img
-                src={rightArrowSingles}
-                alt="Scroll Right"
-                className="img-r"
-                onClick={scrollRightSingles}
-              />
-              <div
-                ref={scrollRefSingles}
-                className="music-c"
-                onScroll={updateArrowsSingles}
-              >
-                {albums.map((album) => (
-                  <div key={album.id} className="img-container-a">
-                    <div className="img-content">
-                      <img
-                        src={album?.images?.[0]?.url || 'default-album.png'}
-                        alt={album.name}
-                        className="track-image-a"
-                      />
-                      <div onClick={() => deleteFavoriteAlbum(album.id)} className="play-icon-a">
-                        <img src={Close} alt="Delete" />
-                      </div>
-                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-                        {album.name.length > 16 ? `${album.name.substring(0, 12)}...` : album.name}
-                      </span>
+                <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Альбоми</h2>
+                <div className="cont-saa">
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <img
+                      src={leftArrowSingles}
+                      alt="Scroll Left"
+                      className="img-l"
+                      onClick={scrollLeftSingles}
+                    />
+                    <img
+                      src={rightArrowSingles}
+                      alt="Scroll Right"
+                      className="img-r"
+                      onClick={scrollRightSingles}
+                    />
+                    <div
+                      ref={scrollRefSingles}
+                      className="music-c"
+                      onScroll={updateArrowsSingles}
+                    >
+                      {albums.map((album) => (
+                        <div key={album.id} className="img-container-a">
+                          <div className="img-content">
+                            <img
+                              src={album?.images?.[0]?.url || 'default-album.png'}
+                              alt={album.name}
+                              className="track-image-a"
+                            />
+                            <div onClick={() => deleteFavoriteAlbum(album.id)} className="play-icon-a">
+                              <img src={Close} alt="Delete" />
+                            </div>
+                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                              {album.name.length > 16 ? `${album.name.substring(0, 12)}...` : album.name}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
+                </div>
 
-          <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Артисти</h2>
-          <div className="cont-saa">
-            <div style={{ position: 'relative', width: '100%' }}>
-              <img
-                src={leftArrowRelated}
-                alt="Scroll Left"
-                className="img-l"
-                onClick={scrollLeftRelated}
-              />
-              <img
-                src={rightArrowRelated}
-                alt="Scroll Right"
-                className="img-r"
-                onClick={scrollRightRelated}
-              />
-              <div
-                ref={scrollRefRelated}
-                className="music-c"
-                onScroll={updateArrowsRelated}
-              >
-                {artists.map((artist) => (
-                  <div key={artist.id} className="img-container-a">
-                    <div className="img-content">
-                      <img
-                        src={artist.images?.[0]?.url || 'default-single.png'}
-                        alt={artist.name}
-                        className="img-content-a"
-                      />
-                      <div onClick={() => deleteFavoriteArtist(artist.id)} className="play-icona-a">
-                        <img src={Close} alt="Delete" />
-                      </div>
-                      <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
-                        {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
-                      </span>
+                <h2 className={`popularity ${isDarkMode ? 'dark' : 'light'}`}>Артисти</h2>
+                <div className="cont-saa">
+                  <div style={{ position: 'relative', width: '100%' }}>
+                    <img
+                      src={leftArrowRelated}
+                      alt="Scroll Left"
+                      className="img-l"
+                      onClick={scrollLeftRelated}
+                    />
+                    <img
+                      src={rightArrowRelated}
+                      alt="Scroll Right"
+                      className="img-r"
+                      onClick={scrollRightRelated}
+                    />
+                    <div
+                      ref={scrollRefRelated}
+                      className="music-c"
+                      onScroll={updateArrowsRelated}
+                    >
+                      {artists.map((artist) => (
+                        <div key={artist.id} className="img-container-a">
+                          <div className="img-content">
+                            <img
+                              src={artist.images?.[0]?.url || 'default-single.png'}
+                              alt={artist.name}
+                              className="img-content-a"
+                            />
+                            <div onClick={() => deleteFavoriteArtist(artist.id)} className="play-icona-a">
+                              <img src={Close} alt="Delete" />
+                            </div>
+                            <span className={`name-title ${isDarkMode ? 'dark' : 'light'}`}>
+                              {artist.name.length > 16 ? `${artist.name.substring(0, 12)}...` : artist.name}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
           </div>
         )}
       </div>
@@ -633,7 +633,7 @@ const SearchResults: React.FC = () => {
         </div>
       </div>
 
-      
+
 
       <div className="results-container">
         <TopNavigation />

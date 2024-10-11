@@ -54,7 +54,7 @@ const SubscriptionPage: React.FC = () => {
     
           <div className={`section ${isDarkMode ? 'dark-section' : 'light-section'}`}>
             <h2 className={`sectio-h2 ${isDarkMode ? 'dark' : 'light'}`}>{language.account}</h2>
-            <Link to={`/profile`} className={`dark ${isDarkMode ? 'dark' : 'light'}`}>
+            <Link to={`/profile`} className={`darkk ${isDarkMode ? 'dark' : 'light'}`}>
               <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
                 <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}>
                   <img src={Logo} alt="Manage Subscription" />
@@ -65,7 +65,7 @@ const SubscriptionPage: React.FC = () => {
                 </span>
               </div>
             </Link>
-            <Link to={`/editprofile`} className={`dark ${isDarkMode ? 'dark' : 'light'}`}>
+            <Link to={`/editprofile`} className={`darkk ${isDarkMode ? 'dark' : 'light'}`}>
               <div className={`section-item ${isDarkMode ? 'dark-item' : 'light-item'}`}>
                 <span className={`frame ${isDarkMode ? 'dark' : 'light'}`}>
                   <img src={Edit} alt="Edit Profile" />

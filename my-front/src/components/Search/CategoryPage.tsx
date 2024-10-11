@@ -7,7 +7,7 @@ import SearchBar from './SearchBar';
 import TopNavigation from '../Navigation/TopNavigation';
 import { useLanguage } from '../../services/LanguageContext'; // Import language hook
 import { useTheme } from '../../services/ThemeContext';
-import {  handlePlayTrackList, formatDuration } from '../../utils/SpotifyPlayer';
+import { handlePlayTrackList, formatDuration } from '../../utils/SpotifyPlayer';
 import SpotifyContentListAlbumGrid from '../Templates/SpotifyContentListAlbumGrid';
 import LeftGreen from '../Main/Images/Frame 73 (2).png';
 import RightGreen from '../Main/Images/Frame 72.png';
@@ -88,7 +88,7 @@ const CategoryPage: React.FC = () => {
                                 headers: {
                                     Authorization: `Bearer ${accessToken}`,
                                 },
-                                
+
                             }
                         );
 
@@ -159,7 +159,7 @@ const CategoryPage: React.FC = () => {
     };
 
     if (loading) {
-        return <LoadingCategories/>;
+        return <LoadingCategories />;
     }
 
     return (
@@ -174,15 +174,15 @@ const CategoryPage: React.FC = () => {
             <div className="results-section">
                 <div className="pisen-g">
                     <h2 className={`best-name-pisen ${isDarkMode ? 'dark' : 'light'}`}>{language.songs}</h2>
-                    
+
                     <div className="pagination-controls">
                         <button onClick={prevTrackPage} disabled={trackPage === 1}>
-                        <img src={LeftGreen}  alt="Scroll Left" />
-                    
+                            <img src={LeftGreen} alt="Scroll Left" />
+
                         </button>
                         <button onClick={nextTrackPage} disabled={startTrackIndex + tracksPerPage >= tracks.length}>
-                        <img src={RightGreen} alt="Scroll Right"   />
-          
+                            <img src={RightGreen} alt="Scroll Right" />
+
                         </button>
                     </div>
                     <ul className={`tracks-list-g ${isDarkMode ? 'dark' : 'light'}`}>
@@ -212,18 +212,18 @@ const CategoryPage: React.FC = () => {
                         ))}
                     </ul>
 
-                    
+
                 </div>
                 <div className="pagination-controls-g">
-                <button onClick={prevAlbumPage} disabled={albumPage === 1}>
-                <img src={LeftGreen}  alt="Scroll Left" />
-                    
-                        </button>
-                        <button onClick={nextAlbumPage} disabled={startAlbumIndex + albumsPerPage >= tracks.length}>
-                        <img src={RightGreen} alt="Scroll Right"   />
-          
-                        </button>
-                    </div>
+                    <button onClick={prevAlbumPage} disabled={albumPage === 1}>
+                        <img src={LeftGreen} alt="Scroll Left" />
+
+                    </button>
+                    <button onClick={nextAlbumPage} disabled={startAlbumIndex + albumsPerPage >= tracks.length}>
+                        <img src={RightGreen} alt="Scroll Right" />
+
+                    </button>
+                </div>
                 <div className="grid">
 
                     <SpotifyContentListAlbumGrid
@@ -236,7 +236,7 @@ const CategoryPage: React.FC = () => {
                         }))}
                         title={language.albums}
                     />
-                  
+
                 </div>
             </div>
 

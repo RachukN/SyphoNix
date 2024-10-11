@@ -117,6 +117,7 @@ body{
     color: #FFF;
     margin-left: 21px;
     padding: 5px 0;
+    margin-bottom: 20px;
 }
 .sectio-h2.light{
 
@@ -208,7 +209,7 @@ color: #FFF;
     border-radius: 50%;
     transition: transform 0.3s;
 }
-.dark{
+.darkk{
 color: #fff;
 }
 .toggle-checkbox:checked+.toggle-label {
