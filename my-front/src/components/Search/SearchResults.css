@@ -60,7 +60,7 @@ border-radius: 10px;
 .best-name{
   position: absolute;
   top: -80px;
-  color: var(--green-less-saturated, #4BDD4C);
+  color: #00FF03;
 /* txt32 (semi bold) */
 font-size: 32px;
 font-style: normal;
@@ -115,7 +115,7 @@ line-height: normal;
   position: absolute;
   top: -64px;
   left: 40px;
-  color: var(--green-less-saturated, #4BDD4C);
+  color: #00FF03;
 /* txt32 (semi bold) */
 font-size: 32px;
 font-style: normal;

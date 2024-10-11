@@ -27,44 +27,44 @@ const EditProfile = () => {
     const storedLanguage = localStorage.getItem('selectedLanguage'); // Restore language
     const storedCountry = localStorage.getItem('selectedCountry'); // Restore country
     const storedRegion = localStorage.getItem('selectedRegion'); // Restore region
-  
+
     console.log("Restoring values from localStorage: ");
     console.log("Stored Language: ", storedLanguage);
     console.log("Stored Country: ", storedCountry);
     console.log("Stored Region: ", storedRegion);
-  
+
     if (storedLanguage && ['uk', 'en', 'cz', 'de'].includes(storedLanguage)) {
       setLanguage(storedLanguage as 'uk' | 'en' | 'cz' | 'de'); // Restore language from localStorage
     }
-  
+
     if (storedCountry) {
       setCountry(storedCountry); // Restore country from localStorage
     }
-  
+
     if (storedRegion) {
       setRegion(storedRegion); // Restore region from localStorage
     }
-  
+
     if (storedUserId) {
       setUserId(storedUserId);
       fetchUserProfile(storedUserId); // Fetch the user profile
     }
   }, [setLanguage]);
-  
-  
-  
-  
-  
+
+
+
+
+
 
 
   const handleCountryChange = (selectedCountry: string) => {
     console.log("Selected country: ", selectedCountry);
     setCountry(selectedCountry);
     localStorage.setItem('selectedCountry', selectedCountry); // Persist the selected country
-    
+
     let newLanguage: 'uk' | 'en' | 'cz' | 'de' = 'uk'; // Default to Ukrainian
     let newRegion = ''; // Default to empty string
-    
+
     if (['США', 'Канада', 'Мексика'].includes(selectedCountry)) {
       newLanguage = 'en';
       newRegion = language.northAmerica; // Set region to North America
@@ -74,19 +74,19 @@ const EditProfile = () => {
       newRegion = language.europe; // Set region to Europe
       console.log("Setting region to: ", newRegion);
     }
-    
+
     console.log("Changing language to: ", newLanguage);
-    
+
     setLanguage(newLanguage); // Set language in state
     setRegion(newRegion); // Set region in state
     localStorage.setItem('selectedLanguage', newLanguage); // Persist the language to localStorage
     localStorage.setItem('selectedRegion', newRegion); // Persist the region to localStorage
   };
-  
-  
-  
-  
-  
+
+
+
+
+
 
   const fetchUserProfile = async (id: string) => {
     try {
@@ -199,11 +199,11 @@ const EditProfile = () => {
 
           <label htmlFor="region">{language.region || 'Регіон'}</label>
           <input
-  id="region"
-  value={region}
-  onChange={(e) => setRegion(e.target.value)}
-  disabled
-/>
+            id="region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+            disabled
+          />
 
           <div className="buttons">
             <button type="button" className={`cancel-button ${isDarkMode ? 'dark' : 'light'}`}>

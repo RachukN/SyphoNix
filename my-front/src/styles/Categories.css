@@ -4,11 +4,11 @@
     text-align: center;
   }
   
-  .categories-title {
+  .categories-title.dark {
     color: #00ff00; /* Green color for the title */
-    font-size: 30px;
+    font-size: 35px;
     margin-bottom: 20px;
-    margin-left: 0px;
+    margin-left: -50px;
     text-align: left;
   }
   
