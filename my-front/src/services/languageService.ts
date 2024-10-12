@@ -1,3 +1,25 @@
+export interface LanguageStrings {
+    email: string;
+    genderAndBirthDate: string;
+    country: string;
+    region: string;
+    saveProfile: string;
+    cancel: string;
+    editProfileTitle: string;
+    yourPlan: string;
+    account: string;
+    manageSubscription: string;
+    europe: string;
+    northAmerica: string;
+  }
+  
+ export  interface Languages {
+    uk: LanguageStrings;
+    en: LanguageStrings;
+    cz: LanguageStrings;
+    de: LanguageStrings;
+  }
+
 export const languages = {
     uk: {
         email: 'Електронна пошта',
@@ -100,7 +122,7 @@ export const languages = {
         nonBinary: 'Небінарний',
         preferNotToSay: 'Краще не говорити',
         other: 'Інше',
-    
+
         // Month options
         january: 'Січень',
         february: 'Лютий',
@@ -114,7 +136,7 @@ export const languages = {
         october: 'Жовтень',
         november: 'Листопад',
         december: 'Грудень',
-    
+
         // Country options
         ukraine: 'Україна',
         usa: 'США',
@@ -125,7 +147,7 @@ export const languages = {
         topTracksThisMonth: 'Топ треки цього місяця',
         onlyVisibleToYou: 'Бачите лише ви',
         northAmerica: 'Північна Америка',
-    europe: 'Європа',
+        europe: 'Європа',
     },
     en: {
         email: 'Email',
@@ -228,7 +250,7 @@ export const languages = {
         nonBinary: 'Non-binary',
         preferNotToSay: 'Prefer not to say',
         other: 'Other',
-    
+
         // Month options
         january: 'January',
         february: 'February',
@@ -242,7 +264,7 @@ export const languages = {
         october: 'October',
         november: 'November',
         december: 'December',
-    
+
         // Country options
         ukraine: 'Ukraine',
         usa: 'USA',
@@ -356,7 +378,7 @@ export const languages = {
         nonBinary: 'Ne-binární',
         preferNotToSay: 'Raději neřeknu',
         other: 'Jiné',
-    
+
         // Month options
         january: 'Leden',
         february: 'Únor',
@@ -370,7 +392,7 @@ export const languages = {
         october: 'Říjen',
         november: 'Listopad',
         december: 'Prosinec',
-    
+
         // Country options
         ukraine: 'Ukrajina',
         usa: 'USA',
@@ -381,7 +403,7 @@ export const languages = {
         topTracksThisMonth: 'Top skladby tohoto měsíce',
         onlyVisibleToYou: 'Vidíte pouze vy',
         northAmerica: 'Severní Amerika',
-    europe: 'Evropa',
+        europe: 'Evropa',
 
     },
     de: {
@@ -450,7 +472,7 @@ export const languages = {
         tracks: 'Titel',
         home: 'Startseite',
         library: 'Bibliothek',
-        playlists: 'Wiedergabelisten',
+        playlists: 'Wiederga...',
         likedTracks: 'Gefällte Titel',
         playlist: 'Wiedergabeliste',
         quantity: 'Anzahl',
@@ -485,7 +507,7 @@ export const languages = {
         nonBinary: 'Nicht-binär',
         preferNotToSay: 'Bevorzuge keine Angabe',
         other: 'Andere',
-    
+
         // Month options
         january: 'Januar',
         february: 'Februar',
@@ -499,7 +521,7 @@ export const languages = {
         october: 'Oktober',
         november: 'November',
         december: 'Dezember',
-    
+
         // Country options
         ukraine: 'Ukraine',
         usa: 'USA',
